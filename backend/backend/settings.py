@@ -9,12 +9,24 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# React build directory
+REACT_APP_DIR = os.path.join(BASE_DIR.parent, 'frontend', 'dist')
+
+# Add React build directory to STATICFILES_DIRS
+STATICFILES_DIRS = [
+    REACT_APP_DIR,
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,9 +37,7 @@ SECRET_KEY = 'django-insecure-$p!8los#jmj2k$jkbq(ksj4qgc#9n&0^vmv9f6&a#1jf#i3=0k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,7 +59,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ALLOWED_HOSTS = [
@@ -56,21 +66,30 @@ ALLOWED_HOSTS = [
     'liuhongwei.me',
     'localhost',  # For local development
     '127.0.0.1',  # For local development
-    '127.0.0.1:8000',  # For local development with port
-]
+]  
 
 CORS_ALLOWED_ORIGINS = [
     'https://liuhongwei.org',
     'https://liuhongwei.me',
     'http://localhost:8000',  # For local development
+    'http://localhost:5173',  # For Vite development server
+    'http://127.0.0.1:5173'
 ]  
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
 
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [REACT_APP_DIR],  # Add React build directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,7 +114,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -127,11 +145,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

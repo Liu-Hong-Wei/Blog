@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
+    # API routes 
+    path('api/', include('blog.urls')),
+    # Serve React frontend at root URL - this should be last to catch all non-matched routes
+    path('', never_cache(TemplateView.as_view(template_name='index.html'))),
 ]
