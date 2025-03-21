@@ -25,8 +25,6 @@ SECRET_KEY = 'django-insecure-$p!8los#jmj2k$jkbq(ksj4qgc#9n&0^vmv9f6&a#1jf#i3=0k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -52,16 +50,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
 ALLOWED_HOSTS = [
     'liuhongwei.org',
     'liuhongwei.me',
     'localhost',  # For local development
-]  
+    '127.0.0.1',  # For local development
+    '127.0.0.1:8000',  # For local development with port
+]
 
 CORS_ALLOWED_ORIGINS = [
     'https://liuhongwei.org',
     'https://liuhongwei.me',
-    'http://localhost:3000',  # For local development
+    'http://localhost:8000',  # For local development
 ]  
 
 ROOT_URLCONF = 'backend.urls'
