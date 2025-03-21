@@ -65,6 +65,7 @@ ALLOWED_HOSTS = [
     'liuhongwei.org',
     'liuhongwei.me',
     'localhost',  # For local development
+    '159.65.2.200', # For server IP
     '127.0.0.1',  # For local development
 ]  
 
