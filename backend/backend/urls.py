@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,3 +28,7 @@ urlpatterns = [
     # Serve React frontend at root URL - this should be last to catch all non-matched routes
     path('', never_cache(TemplateView.as_view(template_name='index.html'))),
 ]
+
+# 在开发环境中添加静态文件服务
+if settings.DEBUG:
+    urlpatterns += static('/', document_root=settings.REACT_APP_DIR)

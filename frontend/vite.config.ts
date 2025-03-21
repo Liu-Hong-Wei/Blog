@@ -4,6 +4,12 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // 添加base配置，确保资源路径正确
+  base: '/',
+  build: {
+    // 确保资源文件放在assets目录下
+    assetsDir: 'assets',
+  },
   server: {
     proxy: {
       '/api': {
