@@ -17,17 +17,38 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-STATIC_URL = '/'
+# Static files configuration
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# React build directory
-REACT_APP_DIR = os.path.join(BASE_DIR.parent, 'frontend', 'dist')
+# React build directory and static files
+REACT_APP_DIR = BASE_DIR.parent / 'frontend' / 'dist'
+STATICFILES_DIRS = []
+if REACT_APP_DIR.exists():
+    STATICFILES_DIRS.extend([
+        REACT_APP_DIR,
+        REACT_APP_DIR / 'assets',  # Add the assets directory explicitly
+    ])
 
-# Add React build directory to STATICFILES_DIRS
-STATICFILES_DIRS = [
-    REACT_APP_DIR,
-]
+# Update MIME types to handle Vite's asset files
+STATICFILES_MIME_TYPES = {
+    'js': 'application/javascript',
+    'mjs': 'application/javascript',
+    'css': 'text/css',
+    'woff': 'font/woff',
+    'woff2': 'font/woff2',
+    'ttf': 'font/ttf',
+    'svg': 'image/svg+xml',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+}
+
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -40,16 +61,29 @@ DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
+    'rest_framework',
+    'corsheaders', 
+    'blog',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders', 
-    'blog',
 ]
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -146,7 +180,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

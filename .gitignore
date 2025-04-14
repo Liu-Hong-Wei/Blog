@@ -1,12 +1,28 @@
 # React / Frontend
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
-/coverage
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage
 
 # production
-/build
+frontend/build
+frontend/dist
+
+# Django / Backend
+backend/**/*.log
+backend/**/*.pot
+backend/**/*.pyc
+backend/**/__pycache__/
+backend/**/local_settings.py
+backend/**/db.sqlite3
+backend/**/db.sqlite3-journal
+backend/**/media
+backend/**/staticfiles
+
+# Distribution / packaging
+backend/**/.Python
+backend/**/env/
 
 # misc
 .DS_Store

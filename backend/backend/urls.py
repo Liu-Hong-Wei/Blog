@@ -21,14 +21,24 @@ from django.views.decorators.cache import never_cache
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Import REACT_APP_DIR from settings
+from .settings import REACT_APP_DIR
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # API routes 
     path('api/', include('blog.urls')),
-    # Serve React frontend at root URL - this should be last to catch all non-matched routes
+    # Serve React frontend at root URL
     path('', never_cache(TemplateView.as_view(template_name='index.html'))),
+    # Catch all non-matched routes
+    path('<path:path>', never_cache(TemplateView.as_view(template_name='index.html'))),
 ]
 
-# 在开发环境中添加静态文件服务
 if settings.DEBUG:
-    urlpatterns += static('/', document_root=settings.REACT_APP_DIR)
+    urlpatterns = [
+        # Serve static files first
+        *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+        *static('/assets/', document_root=REACT_APP_DIR / 'assets'),
+        *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+        *urlpatterns
+    ]
