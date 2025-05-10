@@ -1,37 +1,71 @@
 import { config } from '../config/env';
 
-interface ApiOptions {
-  method?: string;
-  headers?: Record<string, string>;
-  body?: any;
+// 定义接口类型
+export interface Post {
+  id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  is_published: boolean;
+  slug: string;
+  tags: Tag[];
 }
 
-export async function fetchApi<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
-  const { method = 'GET', headers = {}, body } = options;
-  
-  const requestOptions: RequestInit = {
-    method,
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface About {
+  id: number;
+  title: string;
+  content: string;
+  updated_at: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+// API请求函数
+const API_URL = config.apiUrl;
+
+// 通用请求处理函数
+async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_URL}/${endpoint}`, {
     headers: {
       'Content-Type': 'application/json',
-      ...headers,
     },
-    ...(body && { body: JSON.stringify(body) }),
-  };
+    ...options,
+  });
 
-  const response = await fetch(`${config.apiUrl}${endpoint}`, requestOptions);
-  
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `API error: ${response.status}`);
+    throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
-  
-  return response.json();
+
+  return response.json() as Promise<T>;
 }
 
-export const postsApi = {
-  getPosts: () => fetchApi<any[]>('/posts/'),
-  getPost: (id: number) => fetchApi<any>(`/posts/${id}/`),
-  createPost: (data: any) => fetchApi<any>('/posts/', { method: 'POST', body: data }),
-  updatePost: (id: number, data: any) => fetchApi<any>(`/posts/${id}/`, { method: 'PUT', body: data }),
-  deletePost: (id: number) => fetchApi<void>(`/posts/${id}/`, { method: 'DELETE' }),
+// 博客文章API
+export const PostsAPI = {
+  getAll: () => fetchAPI<Post[]>('posts/'),
+  getBySlug: (slug: string) => fetchAPI<Post>(`posts/${slug}/`),
+  getByTag: (tagSlug: string) => fetchAPI<Post[]>(`posts/by_tag/?tag=${tagSlug}`),
+};
+
+// 标签API
+export const TagsAPI = {
+  getAll: () => fetchAPI<Tag[]>('tags/'),
+  getBySlug: (slug: string) => fetchAPI<Tag>(`tags/${slug}/`),
+};
+
+// 关于页面API
+export const AboutAPI = {
+  get: () => fetchAPI<About[]>('about/').then(data => data[0]),
 };

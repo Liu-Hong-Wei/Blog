@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { postsApi } from '../services/api';
+import { PostsAPI } from '../services/api';
 
 export function usePosts() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -10,8 +10,9 @@ export function usePosts() {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const data = await postsApi.getPosts();
-        setPosts(data);
+        const data = await PostsAPI.getAll();
+        // If paginated, use data.results; otherwise, use data directly
+        setPosts(Array.isArray(data) ? data : data.results || []);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error'));
       } finally {

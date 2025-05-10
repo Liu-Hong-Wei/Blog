@@ -15,7 +15,6 @@ const Posts: React.FC = () => {
   return (
     <MainContentLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Blog Posts</h1>
         {posts.length === 0 ? (
           <p>No posts found.</p>
         ) : (
