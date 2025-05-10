@@ -1,12 +1,12 @@
-import { Outlet } from "react-router";
 import ContainerLayout from "../layouts/ContainerLayout";
+import Postlists from "./Postslist";
 
-const MainContent = () => {
+const MainSection = () => {
   return (
     <ContainerLayout className="md:w-[742px]" >
-      <Outlet />
+      <Postlists />
     </ ContainerLayout>
   );
 };
 
-export default MainContent;
+export default MainSection;

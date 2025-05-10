@@ -1,4 +1,4 @@
-import { usePosts } from '../hooks/usePosts';
+import usePosts from '../hooks/usePosts';
 import MainContentLayout from '../layouts/MainContentLayout';
 
 const Posts: React.FC = () => {

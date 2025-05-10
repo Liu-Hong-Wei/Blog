@@ -24,6 +24,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # React build directory and static files
 REACT_APP_DIR = BASE_DIR.parent / 'frontend' / 'dist'
+
 STATICFILES_DIRS = []
 if REACT_APP_DIR.exists():
     STATICFILES_DIRS.extend([
