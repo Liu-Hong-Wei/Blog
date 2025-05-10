@@ -1,10 +1,11 @@
 import { Outlet } from "react-router";
+import ContainerLayout from "../layouts/ContainerLayout";
 
 const MainContent = () => {
   return (
-    <main className="w-full md:w-[742px] p-6 bg-white rounded-lg shadow-sm">
+    <ContainerLayout className="md:w-[742px]" >
       <Outlet />
-    </main>
+    </ ContainerLayout>
   );
 };
 
