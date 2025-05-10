@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Post } from '../types/types';
 import { PostsAPI } from '../services/api';
 
 export function usePosts() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -11,8 +12,7 @@ export function usePosts() {
       try {
         setLoading(true);
         const data = await PostsAPI.getAll();
-        // If paginated, use data.results; otherwise, use data directly
-        setPosts(Array.isArray(data) ? data : data.results || []);
+        setPosts(data.results);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error'));
       } finally {

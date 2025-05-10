@@ -1,37 +1,5 @@
 import { config } from '../config/env';
-
-// 定义接口类型
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  updated_at: string;
-  is_published: boolean;
-  slug: string;
-  tags: Tag[];
-}
-
-export interface Tag {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-export interface About {
-  id: number;
-  title: string;
-  content: string;
-  updated_at: string;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-}
+import { About, Post, Tag } from '../types/types';
 
 // API请求函数
 const API_URL = config.apiUrl;
@@ -52,11 +20,19 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
   return response.json() as Promise<T>;
 }
 
+// Define the paginated response type for posts
+type PaginatedPostsResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Post[];
+};
+
 // 博客文章API
 export const PostsAPI = {
-  getAll: () => fetchAPI<Post[]>('posts/'),
-  getBySlug: (slug: string) => fetchAPI<Post>(`posts/${slug}/`),
-  getByTag: (tagSlug: string) => fetchAPI<Post[]>(`posts/by_tag/?tag=${tagSlug}`),
+  getAll: (): Promise<PaginatedPostsResponse> => fetchAPI<PaginatedPostsResponse>('posts/'),
+  getBySlug: (slug: string): Promise<Post> => fetchAPI<Post>(`posts/${slug}/`),
+  getByTag: (tagSlug: string): Promise<Post[]> => fetchAPI<Post[]>(`posts/by_tag/?tag=${tagSlug}`),
 };
 
 // 标签API
