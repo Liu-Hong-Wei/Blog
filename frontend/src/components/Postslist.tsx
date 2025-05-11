@@ -1,5 +1,7 @@
 import usePosts from '../hooks/usePosts';
 import ContainerLayout from '../layouts/ContainerLayout';
+import ReactMarkdown from 'react-markdown';
+
 
 function Postslist() {
     const { posts, loading, error } = usePosts();
@@ -19,11 +21,12 @@ function Postslist() {
                 ) : (
                     <div className="space-y-4">
                         {posts.map((post) => (
-                            <ContainerLayout className='border-y-1 border-gray-300 p-2 rounded-none'>
-                                <article key={post.id}>
-                                    <h2 className="text-xl font-semibold">{post.title}</h2>
+                            <ContainerLayout className='border-y-1 border-gray-300 p-2 rounded-none hover:bg-gray-50 transition-all group hover:text-blue-400' key={post.id}>
+                                <article>
+                                    <h2 className="text-xl font-semibold group-hover:underline underline-offset-4">{post.title}</h2>
                                     <p className="text-sm">{new Date(post.created_at).toLocaleDateString()}</p>
-                                    <p className="text-md mt-2">{post.content.substring(0, 150)}...</p>
+                                    <p className="text-md mt-2">{post.content.substring(0, 100)}...</p>
+                                    {/* <ReactMarkdown>{post.content}</ReactMarkdown> */}
                                 </article>
                             </ContainerLayout>
                         ))}

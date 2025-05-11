@@ -5,6 +5,8 @@ from .serializers import PostSerializer, TagSerializer, AboutSerializer
 from django.views.generic import TemplateView
 from rest_framework.decorators import action
 from rest_framework.response import Response
+import markdown
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
@@ -14,6 +16,12 @@ class PostViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'content']
     ordering_fields = ['created_at', 'title']
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.content_html = markdown.markdown(instance.content)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
     @action(detail=False, methods=['get'])
     def by_tag(self, request):

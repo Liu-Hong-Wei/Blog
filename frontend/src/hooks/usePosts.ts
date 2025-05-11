@@ -19,7 +19,6 @@ export default function usePosts() {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, []);
 
