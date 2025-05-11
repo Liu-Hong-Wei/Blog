@@ -8,6 +8,8 @@ import Homepage from "./pages/Homepage.tsx";
 import About from "./pages/About.tsx";
 import Posts from "./pages/Posts.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import Ideas from "./pages/Ideas.tsx";
+import Projects from "./pages/Projects.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Homepage />,
+          },
+          {
+            path: "Ideas",
+            element: <Ideas />,
+          },
+          {
+            path: "projects",
+            element: <Projects />,
           },
           {
             path: "about",

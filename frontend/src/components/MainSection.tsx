@@ -1,10 +1,10 @@
 import ContainerLayout from "../layouts/ContainerLayout";
-import Postlists from "./Postslist";
+import Postslist from "./Postslist";
 
 const MainSection = () => {
   return (
-    <ContainerLayout className="md:w-[742px]" >
-      <Postlists />
+    <ContainerLayout className="md:w-[742px] p-4">
+      <Postslist />
     </ ContainerLayout>
   );
 };

@@ -19,7 +19,7 @@ function Postslist() {
                 ) : (
                     <div className="space-y-4">
                         {posts.map((post) => (
-                            <ContainerLayout className='shadow-md p-2 rounded-xs'>
+                            <ContainerLayout className='border-y-1 border-gray-300 p-2 rounded-none'>
                                 <article key={post.id}>
                                     <h2 className="text-xl font-semibold">{post.title}</h2>
                                     <p className="text-sm">{new Date(post.created_at).toLocaleDateString()}</p>
