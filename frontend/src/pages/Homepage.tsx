@@ -4,7 +4,7 @@ import MainContentLayout from "../layouts/MainContentLayout";
 
 function Homepage() {
   return (
-    <MainContentLayout className="">
+    <MainContentLayout>
       <MainContent />
       <Sidebar />
     </MainContentLayout>

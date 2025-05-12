@@ -1,5 +1,6 @@
 import MeInTheForbiddenPalace from "../assets/images/Me-in-the-Forbidden-Palace.png";
 import ContainerLayout from "../layouts/ContainerLayout";
+import ScoialIcons from "./SocialIcons";
 
 function ProfileCard({className}: { className?: string; }) {
   return (
@@ -15,6 +16,7 @@ function ProfileCard({className}: { className?: string; }) {
             draggable="false"
           />
         </div>
+        <ScoialIcons />
         <h1 className="text-center text-xl mb-2">👋 Hi there! I'm Liu Hongwei</h1>
         <h1 className="text-center text-xl mb-2">🎓 Currently studying at CUC</h1>
         <h1 className="text-center text-xl mb-2">📚 Passionate about learning</h1>
