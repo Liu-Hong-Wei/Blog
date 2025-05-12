@@ -47,9 +47,9 @@ function Navbar() {
               { to: "/about", text: "About" }
             ].map(({ to, text }) => (
               <li key={to}>
-                <NavLink 
+                <NavLink
                   to={to}
-                  className={({isActive}) => isActive ? "text-blue-400 font-medium" : ""}
+                  className={({ isActive }) => isActive ? "text-blue-400 font-medium" : ""}
                 >
                   {text}
                 </NavLink>
@@ -67,9 +67,14 @@ function Navbar() {
             onClick={() => setDrawerOpen(false)}
           ></div>
           {/* 侧边栏 */}
-          <aside className="fixed top-0 left-0 h-full w-64 bg-white z-50 shadow-lg flex flex-col transition-transform duration-300">
+          <aside className="fixed top-0 left-0 h-full w-48 bg-white z-50 shadow-lg flex flex-col transition-transform duration-300">
             <div className="flex items-center justify-between h-16 px-4 border-b-1 border-gray-400">
-              <span className="text-lg font-bold">Menu</span>
+              <NavLink
+                to="/"
+                onClick={() => setDrawerOpen(false)}
+              >
+                <span className="text-lg font-bold">Ethan's Blog</span>
+              </NavLink>
               <button
                 className="text-2xl"
                 onClick={() => setDrawerOpen(false)}
@@ -102,7 +107,7 @@ function Navbar() {
                   </NavLink>
                 </li>
               ))}
-                <li className="pb-2 border-t-2 border-gray-200"></li>
+              <li className="pb-2 border-t-2 border-gray-200"></li>
             </ul>
           </aside>
         </>

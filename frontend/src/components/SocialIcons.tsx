@@ -24,7 +24,7 @@ interface SocialIconProps {
 function SocialIcon({ platform, url, lightIcon, darkIcon }: SocialIconProps) {
   return (
     <a href={url} target="_blank" rel="noreferrer">
-      <div className="rounded-full relative w-8 h-8 group">
+      <div className="rounded-full relative md:w-8 md:h-8 w-6 h-6 group">
         <img 
           src={lightIcon}
           alt={`${platform} light`}
@@ -93,7 +93,7 @@ function SocialIcons() {
   ];
 
   return (
-    <div className="flex justify-center mb-4 relative" >  
+    <div className="w-full flex justify-center mb-4 relative" >  
       <ul className="flex space-x-4 border-y-2 border-gray-200 py-2 px-4 w-fit">
         {socialIcons.map((icon) => (
           <li key={icon.platform}>
