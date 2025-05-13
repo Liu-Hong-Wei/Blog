@@ -1,5 +1,7 @@
 export interface Post {
   id: number;
+  tldr: string | null;
+  views: number;
   title: string;
   content: string;
   created_at: string;

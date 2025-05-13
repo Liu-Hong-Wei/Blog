@@ -10,6 +10,8 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
     slug = models.SlugField(max_length=250, unique=True)
+    views = models.PositiveIntegerField(default=0)
+    tldr = models.CharField(max_length=500, blank=True, null=True, help_text="简介，可选")
     
     def __str__(self):
         return self.title

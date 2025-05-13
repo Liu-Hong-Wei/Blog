@@ -13,6 +13,7 @@ function Post() {
             {!loading && !error && !post && <div className="p-4">未找到文章。</div>}
             {!loading && !error && post && (
                 <article className="space-y-4">
+                    <h1 className="text-2xl font-bold mb-2">{post.views}</h1>
                     <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
                     <p className="text-sm text-gray-500">{new Date(post.created_at).toLocaleDateString()}</p>
                     <div className="prose max-w-none mt-4">{post.content}</div>
