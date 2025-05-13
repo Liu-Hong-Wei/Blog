@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router';
 import usePosts from '../hooks/usePosts';
 import ContainerLayout from '../layouts/ContainerLayout';
 // import ReactMarkdown from 'react-markdown';
@@ -15,12 +16,15 @@ function Postslist() {
     }
 
     return (
-            <div className="space-y-6">
-                {posts.length === 0 ? (
-                    <p>No posts found.</p>
-                ) : (
-                    <div className="space-y-4">
-                        {posts.map((post) => (
+        <div className="space-y-6">
+            {posts.length === 0 ? (
+                <p>No posts found.</p>
+            ) : (
+                <div className="space-y-4">
+                    {posts.map((post) => (
+                        <NavLink
+                            to={`/posts/${post.slug}`}
+                        >
                             <ContainerLayout className='border-y-1 border-gray-300 p-2 rounded-none hover:bg-gray-50 transition-all group hover:text-blue-400' key={post.id}>
                                 <article>
                                     <h2 className="text-xl font-semibold group-hover:underline underline-offset-4">{post.title}</h2>
@@ -29,10 +33,11 @@ function Postslist() {
                                     {/* <ReactMarkdown>{post.content}</ReactMarkdown> */}
                                 </article>
                             </ContainerLayout>
-                        ))}
-                    </div>
-                )}
-            </div>
+                        </NavLink>
+                    ))}
+                </div>
+            )}
+        </div>
     );
 }
 

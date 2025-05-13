@@ -10,6 +10,7 @@ import Posts from "./pages/Posts.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import Ideas from "./pages/Ideas.tsx";
 import Projects from "./pages/Projects.tsx";
+import Post from "./pages/Post.tsx";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
           },
           {
             path: "posts",
-            element: <Posts />,
+            element: <Posts />, 
+          },
+          {
+            path: "posts/:slug",
+            element: <Post />,
           },
         ],
       },
