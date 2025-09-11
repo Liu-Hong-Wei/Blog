@@ -32,7 +32,7 @@ class ErrorBoundary extends Component<Props, State> {
       }
       return (
         <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-          <h2 className="text-lg font-semibold text-red-700">Something went wrong</h2>
+          <h2 className="text-lg font-semibold text-red-700">Oops, Something went wrong</h2>
           <p className="text-red-600">{this.state.error?.message}</p>
         </div>
       );
