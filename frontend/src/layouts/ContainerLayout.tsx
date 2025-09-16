@@ -1,7 +1,7 @@
-function ContainerLayout({ 
+function ContainerLayout({
     children,
     className
-}: { 
+}: {
     children: React.ReactNode;
     className?: string;
 }) {

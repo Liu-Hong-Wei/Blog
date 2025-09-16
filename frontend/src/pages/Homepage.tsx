@@ -1,13 +1,20 @@
-import MainContent from "../components/MainSection";
-import Sidebar from "../components/Sidebar";
-import MainContentLayout from "../layouts/MainContentLayout";
 
 function Homepage() {
   return (
-    <MainContentLayout>
-      <MainContent />
-      <Sidebar />
-    </MainContentLayout>
+    <>
+      <main className="w-full min-h-screen p-[10%] bg-amber-50 flex justify-center items-center text-4xl">
+        一般来说，个人博客会用某种方式介绍自己，
+        用一两句话说说自己的职业，价值观或是一句座右铭。
+        这段话也不例外，只是想到这我大脑几乎空白，似乎我还没有找到定义自己的角度，
+        我是学生，不过快要结束十几年的“求学生涯”了，我也许会步入职场，但是估计我也不爱上班。
+        仿佛谈起自我介绍，就必须谈论人生的意义一样，好像一定要认真说说。
+        目前我喜欢的东西不多：阅读，运动，音乐，影视，旅行。
+        我的人生目标是在一个静谧的接近自然的地方生活、读书、做饭、身旁有爱人和三五好友陪伴。
+        在合适的季节，去世界各地转转，去见见不同的人；
+        大多数时候，待在家中做自己喜欢的事情，再在落日时分出去跑跑步。
+        也许人生最大的意义就在于感受吧。如果不能实现目标的话，那么这一路上的感受也是不错的，这样也挺好的。
+      </main>
+    </>
   );
 }
 
