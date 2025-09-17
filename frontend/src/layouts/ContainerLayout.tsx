@@ -6,7 +6,7 @@ function ContainerLayout({
     className?: string;
 }) {
     return (
-        <div className={`${className || ''} w-full p-4 bg-white rounded-md shadow-xs hover:shadow-sm ease-in`}>
+        <div className={`${className || ''} w-full p-4 rounded-md shadow-xs hover:shadow-sm ease-in`}>
             {children}
         </div>
     );
