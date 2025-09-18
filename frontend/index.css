@@ -7,8 +7,11 @@
 
   --default-font-family: "Noto Serif SC", serif;
 
-  --color-bgprimary: rgb(252, 252, 253);
-  --color-primary: var(--color-amber-50)
+  --color-bgprimary: oklch(0.9913 0.0013 286.38);
+  --color-bgsecondary: var(--color-gray-100);
+
+  --color-primary: var(--color-zinc-800);
+  --color-secondary: var(--color-violet-800);
 }
 
 @layer components {
