@@ -3,7 +3,7 @@ import Button from "../components/Button";
 function Homepage() {
   return (
     <>
-      <main className="w-full h-full grow-1 p-[10%] flex justify-center items-start gap-6 flex-col text-3xl">
+      <main className="w-full h-full grow-1 p-[10%] flex justify-center items-start gap-6 flex-col text-2xl">
         <p>
           一般来说，个人博客会用某种方式介绍自己，
           用一两句话说说自己的职业，价值观或是一句座右铭。

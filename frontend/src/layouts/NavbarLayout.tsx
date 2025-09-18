@@ -60,7 +60,7 @@ function Navbar() {
   return (
     <>
       <div className="min-h-screen bg-bgprimary">
-        <nav className={`h-16 fixed top-0 w-screen text-xl backdrop-blur-xl flex justify-center transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
+        <nav className={`h-16 fixed top-0 w-screen text-xl backdrop-blur-md flex justify-center transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
           <header className="flex justify-center items-center mr-12 w-max md:mr-64">
             <div className="text-primary text-xl font-bold">
               <NavLink to="/">Ethan's Blog</NavLink>
@@ -98,13 +98,13 @@ function Navbar() {
             <>
               {/* 覆盖层 */}
               <div
-                className="fixed inset-0 bg-bgsecondary/10 backdrop-blur-lg z-40"
+                className="fixed inset-0 bg-bgsecondary/10 backdrop-blur-xl z-40"
                 onClick={() => setDrawerOpen(false)}
               ></div>
               {/* 侧边栏 */}
               <aside className="fixed top-0 left-0 h-fit w-screen bg-bgprimary z-50 shadow-xl rounded-xl flex flex-col transition-transform duration-300">
                 <header className="h-16 flex justify-center items-center">
-                  <div className="text-secondary text-4xl font-bold">
+                  <div className="text-secondary text-2xl font-bold">
                     <NavLink
                       to="/"
                       onClick={() => setDrawerOpen(false)}
