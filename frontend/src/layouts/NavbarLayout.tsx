@@ -36,7 +36,7 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, scrolled, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`h-16 fixed top-0 w-screen text-xl backdrop-blur-md flex justify-center transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
+      <nav className={`h-16 fixed top-0 w-screen text-xl backdrop-blur-xl flex justify-center transition-shadow duration-300 ${scrolled ? 'shadow-xl' : ''}`}>
         <header className="flex justify-center items-center mr-12 w-max md:mr-64">
           <NavLink
             className="text-primary text-xl font-bold"
@@ -63,15 +63,15 @@ function NavBar({ setDrawerOpen, drawerVisible, scrolled, drawerActive }: NavBar
               onClick={() => setDrawerOpen(false)}
             ></div>
             {/* 顶部下拉抽屉：从上方滑入/滑出 */}
-            <aside className={`fixed top-0 left-0 w-screen z-50 shadow-xl rounded-b-xl flex flex-col transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
-              <header className="flex justify-center items-center h-16">
+            <aside className={`fixed top-0 left-0 w-screen z-50 shadow-xl rounded-b-xl flex flex-col bg-bgprimary transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
+              <header className="flex justify-center items-center h-16 border-b-2 border-bgsecondary">
                 <NavLink
                   to="/"
                   className="text-secondary text-2xl font-bold"
                   onClick={() => setDrawerOpen(false)}
                 >Ethan's Blog</NavLink>
               </header>
-              <NavLinks onClick={() => setDrawerOpen(false)} className="flex-col" />
+              <NavLinks onClick={() => setDrawerOpen(false)} className="flex-col gap-2" />
             </aside>
           </>
         )
