@@ -14,7 +14,7 @@ export default function Button({
     children = null,
     className = "",
     variant = "primary",
-    size = "large",
+    size = "mid",
     onClick = () => { },
     disabled = false,
     ...prop
@@ -26,8 +26,8 @@ export default function Button({
     focus:outline-none hover:cursor-pointer
     ${variant === "primary" && "text-primary bg-transparent"}
     ${variant === "secondary" && "text-secondary bg-transparent"}
-    ${size === "small" && "h-12 p-2 text-base font-light "}
-    ${size === "mid" && "h-14 p-2 text-lg font-normal "}
+    ${size === "small" && "h-8 p-2 text-base font-light "}
+    ${size === "mid" && "h-12 p-2 text-lg font-normal "}
     ${size === "large" && "h-16 p-2 text-xl font-medium "}
     `;
 

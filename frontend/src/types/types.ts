@@ -53,6 +53,5 @@ export interface NavButtonProps {
 export interface NavBarProps {
   setDrawerOpen: (open: boolean) => void;
   drawerVisible: boolean;
-  scrolled: boolean;
   drawerActive: boolean;
 }

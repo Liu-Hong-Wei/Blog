@@ -33,25 +33,27 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
   )
 }
 
-function NavBar({ setDrawerOpen, drawerVisible, scrolled, drawerActive }: NavBarProps) {
+function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`h-16 fixed top-0 w-screen text-xl backdrop-blur-xl flex justify-center transition-shadow duration-300 ${scrolled ? 'shadow-xl' : ''}`}>
-        <header className="flex justify-center items-center mr-12 w-max md:mr-64">
-          <NavLink
-            className="text-primary text-xl font-bold"
-            to="/"
-          >Ethan's Blog</NavLink>
-        </header>
-        <NavButton
-          onClick={() => setDrawerOpen(true)}
-          className="md:hidden"
-          ariaLabel="Open menu">
-          {/* 菜单按钮，仅在小屏显示 */}
-          <HamburgerIcon />
-        </NavButton>
-        {/* 原有NavLink，仅在md及以上显示 */}
-        <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+      <nav className={`fixed top-0 w-screen text-xl backdrop-blur-3xl `}>
+        <section className="flex justify-evenly items-center md:max-w-5xl mx-auto md:h-fit h-16">
+          <header className="flex justify-center items-center">
+            <NavLink
+              className="text-primary text-xl font-bold"
+              to="/"
+            >Ethan's Blog</NavLink>
+          </header>
+          <NavButton
+            onClick={() => setDrawerOpen(true)}
+            className="md:hidden"
+            ariaLabel="Open menu">
+            {/* 菜单按钮，仅在小屏显示 */}
+            <HamburgerIcon />
+          </NavButton>
+          {/* 原有NavLink，仅在md及以上显示 */}
+          <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+        </section>
       </nav >
       {/* Drawer蒙层和侧边栏，仅在小屏幕下显示（带动画）*/}
       {
@@ -146,14 +148,13 @@ function useBodyScrollLock(locked: boolean) {
 
 function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const scrolled = useScrollShadow();
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen, 300);
   useBodyScrollLock(drawerOpen);
 
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} scrolled={scrolled} drawerActive={drawerActive} />
+      <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
       <div className="min-h-screen bg-bgprimary">
         <div className={`pt-16 min-h-screen flex flex-col bg-bgprimary`}>
           <Outlet />
