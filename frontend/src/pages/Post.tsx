@@ -1,8 +1,8 @@
 import MainContentLayout from '../layouts/MainContentLayout';
 import usePosts from '../hooks/usePosts';
 import { useParams } from 'react-router';
-import markdownToHtml, { MarkdownResult } from '../utils/markdownToHTML';
 import { ReactElement, useEffect, useState } from 'react';
+import markdownToHtml, { MarkdownResult } from '../utils/markdownToHtml';
 
 // 定义内容状态类型
 interface ContentState {

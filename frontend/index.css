@@ -1,9 +1,13 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+
+  /* --line-height: 1.7; // for readability */
 
   --default-font-family: "Noto Serif SC", serif;
 
@@ -12,16 +16,26 @@
 
   --color-primary: var(--color-zinc-800);
   --color-secondary: var(--color-violet-800);
+
 }
 
 @layer components {
-  .card {
-    background-color: var(--color-white);
-    border-radius: var(--radius-lg);
-    padding: --spacing(6);
-    box-shadow: var(--shadow-xl);
+  .card-hover-effect > * { /* 为所有直接子元素应用过渡 */
+    @apply transition-colors duration-300;
   }
+  /* 或者更具体地指定 */
+  .card-hover-effect h3, .card-hover-effect p {
+    @apply transition-colors duration-300;
+  }
+}
 
+@layer utilities {
+  .text-transition {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+  .icon-transition {
+    @apply transition-transform duration-200 ease-in-out;
+  }
 }
 
 /*

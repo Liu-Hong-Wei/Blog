@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode } from "react";
 
-import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import ErrorBoundary from "./layouts/ErrorBoundary.tsx";
 import NavbarLayout from "./layouts/NavbarLayout.tsx";
 import Homepage from "./pages/Homepage.tsx";
 import About from "./pages/About.tsx";

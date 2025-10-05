@@ -1,6 +1,6 @@
 import MeInTheForbiddenPalace from "../assets/images/Me-in-the-Forbidden-Palace.png";
 import ContainerLayout from "../layouts/ContainerLayout";
-import SocialIcon from "./SocialIcon";
+import SocialIcon from "./icons/SocialIcon";
 import { socialIcons } from "../constants/socialIcons";
 
 function ProfileCard({className}: { className?: string; }) {

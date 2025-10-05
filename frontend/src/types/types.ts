@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Post {
   id: number;
   tldr: string | null;
@@ -37,4 +39,20 @@ export interface SocialIconProps {
   url: string;
   lightIcon: string;
   darkIcon: string;
+}
+
+
+export interface NavButtonProps {
+  onClick?: () => void;
+  className?: string;
+  to?: string;
+  ariaLabel: string;
+  children: ReactNode;
+};
+
+export interface NavBarProps {
+  setDrawerOpen: (open: boolean) => void;
+  drawerVisible: boolean;
+  scrolled: boolean;
+  drawerActive: boolean;
 }

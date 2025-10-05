@@ -1,6 +1,8 @@
+import MainContentLayout from "../layouts/MainContentLayout";
+
 function Ideas() {
     return (
-        <div>
+        <MainContentLayout>
             <h1 className="text-3xl font-bold mb-4">Ideas</h1>
             <p>Here are some ideas for your next project:</p>
             <ul className="list-disc pl-6">
@@ -10,7 +12,7 @@ function Ideas() {
                 <li>Create a portfolio website</li>
                 <li>Build a recipe app</li>
             </ul>
-        </div>  
+        </MainContentLayout>
     );
 }
 

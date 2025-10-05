@@ -1,5 +1,4 @@
-import { SocialIconProps } from "../types/types";
-
+import { SocialIconProps } from "../../types/types";
 
 function SocialIcon({ platform, url, lightIcon, darkIcon }: SocialIconProps) {
   return (

@@ -1,5 +1,3 @@
-import Button from "../components/Button";
-
 function Homepage() {
   return (
     <>
@@ -25,9 +23,6 @@ function Homepage() {
           也许人生最大的意义就在于感受吧。如果不能实现目标的话，那么这一路上的感受也是不错的，这样也挺好的。
           哦对了，如果有机会，我想我会去创业。如果生命明天就结束，那么我仍会这样选择。
         </p>
-        <Button size="small">Hello，世界！</Button>
-        <Button variant="secondary" size="mid">Hello，世界！</Button>
-        <Button size="large">Hello，世界！</Button>
       </main>
     </>
   );
