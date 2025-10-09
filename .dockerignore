@@ -1,0 +1,40 @@
+# VCS
+.git
+.gitignore
+
+# Node dependencies and builds
+node_modules
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Python virtual env and caches
+backend/env/
+backend/.venv/
+backend/venv/
+**/__pycache__/
+**/*.py[cod]
+
+# Django artifacts
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+
+# Env and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Logs and caches
+*.log
+**/.cache
+coverage
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+
