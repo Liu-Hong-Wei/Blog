@@ -82,18 +82,18 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
 }
 
 // 监听滚动以切换阴影
-function useScrollShadow() {
-  const [scrolled, setScrolled] = useState(false);
+// function useScrollShadow() {
+//   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 0);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+//   useEffect(() => {
+//     const handleScroll = () => setScrolled(window.scrollY > 0);
+//     handleScroll();
+//     window.addEventListener("scroll", handleScroll, { passive: true });
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
 
-  return scrolled;
-}
+//   return scrolled;
+// }
 
 // 控制抽屉的挂载与动画：打开立即挂载，关闭延迟卸载
 function useDrawerTransition(isOpen: boolean, delayMs = 300) {
