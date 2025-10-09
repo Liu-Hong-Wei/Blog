@@ -1,8 +1,7 @@
 # backend/Dockerfile
 
 # 使用官方的 Python 镜像
-# FROM python:3.11-slim
-FROM docker.m.daocloud.io/library/python:3.11-slim
+FROM python:3.11-slim
 
 # 设置环境变量
 ENV PYTHONDONTWRITEBYTECODE 1

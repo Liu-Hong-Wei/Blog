@@ -1,7 +1,6 @@
 # --- 第一阶段：构建环境 (Builder) ---
 # 使用一个特定版本的 Node.js 镜像作为构建基础
-# FROM node:18-alpine AS builder
-FROM docker.m.daocloud.io/library/node:18-alpine AS builder
+FROM node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -28,16 +27,12 @@ RUN npm run build
 
 # --- 第二阶段：运行环境 (Runner) ---
 # 使用一个非常轻量的 Nginx 镜像
-# FROM nginx:1.25-alpine
-FROM docker.m.daocloud.io/library/nginx:1.25-alpine
+FROM nginx:1.25-alpine
 
 # 将第一阶段构建好的静态文件，从 builder 的 /app/public (或 /app/dist) 目录
 # 复制到 Nginx 的网站根目录 /usr/share/nginx/html
 # 【重要】请确认您的构建输出目录是 public, dist, .vuepress/dist 还是其他
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# 拷贝自定义的 nginx.conf 用于本地/容器内反向代理到 backend 服务
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 暴露 80 端口
 EXPOSE 80
