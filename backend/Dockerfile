@@ -21,6 +21,6 @@ COPY . .
 EXPOSE 8000
 
 # 运行 Django 开发服务器 (生产环境推荐使用 Gunicorn)
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # 生产环境推荐使用 Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]

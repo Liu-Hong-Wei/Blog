@@ -6,22 +6,22 @@ services:
     build:
       context: ./backend
     container_name: blog_backend
-    volumes:
-      - ./backend:/app # 开发时挂载代码，方便热更新
+    # 生产环境中，建议注释掉 volume 挂载，让代码固化在镜像里
+    # volumes:
+    #   - ./backend:/app
     networks:
-      - blog-network # 连接到博客内部网络
+      - blog-network
     environment:
-      # 数据库连接信息
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=db
       - DB_PORT=5432
-      # Django 设置
-      - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - DEBUG=${DJANGO_DEBUG}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
     depends_on:
-      - db
+      db:
+        condition: service_healthy # 增加健康检查依赖 暂时不忽略数据库健康
     restart: unless-stopped
 
   # 前端 React 服务
@@ -29,32 +29,38 @@ services:
     build:
       context: ./frontend
     container_name: blog_frontend
-    volumes:
-      - ./frontend:/app # 开发时挂载代码
-      - /app/node_modules # 避免覆盖容器内的node_modules
+    # 生产环境中，建议注释掉 volume 挂载
+    # volumes:
+    #   - ./frontend:/app
+    #   - /app/node_modules
     networks:
-      - blog-network # 连接到博客内部网络
-      - nginx-proxy # 连接到外部的 nginx-proxy 网络
+      - blog-network
+      - nginx-proxy   # 【关键修正】连接到 nginx-proxy 网络
     environment:
-      # nginx-proxy 需要的环境变量
-      - VIRTUAL_HOST=liuhongwei.org # 【重要】改成你的博客域名
-      - LETSENCRYPT_HOST=liuhongwei.org # 【重要】改成你的博客域名
+      # 【关键修正】添加 nginx-proxy 所需的环境变量
+      - VIRTUAL_HOST=liuhongwei.org,www.liuhongwei.org
+      - LETSENCRYPT_HOST=liuhongwei.org,www.liuhongwei.org
     depends_on:
       - backend
     restart: unless-stopped
 
   # PostgreSQL 数据库服务
   db:
-    image: postgres:15-alpine
+    image: postgres:18.0-alpine
     container_name: blog_db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
-      - blog-network # 只在内部网络可访问
+      - blog-network
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck: # 为数据库添加健康检查
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
 volumes:
