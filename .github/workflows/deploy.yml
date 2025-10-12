@@ -67,8 +67,6 @@ jobs:
       # 通过 SSH 在 VPS 上执行一系列部署操作
       - name: Deploy to VPS
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
