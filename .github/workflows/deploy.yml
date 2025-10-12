@@ -1,0 +1,91 @@
+# .github/workflows/deploy.yml
+
+# 工作流名称
+name: Deploy to VPS
+
+# 触发条件：当代码被推送到 main 分支时触发
+on:
+  push:
+    branches:
+      - main
+
+# 定义工作任务
+jobs:
+  # ---- 测试任务 ----
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- 针对 TypeScript/JavaScript 项目的测试 ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+      - name: Install dependencies (npm)
+        run: |
+          cd frontend
+          npm install
+      # - name: Run tests (npm)
+      #  run: npm test
+
+      # --- Python 项目的测试 ---
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies (pip)
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests (pytest)
+        run: |
+          pip install pytest
+          pytest # 运行测试
+  
+  deploy:
+    # 运行环境：使用最新的 Ubuntu 系统
+    runs-on: ubuntu-latest
+
+    # 步骤
+    steps:
+      # 步骤1: 检出代码
+      # 把仓库代码下载到 Runner 中
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步骤2: 设置 SSH
+      # 配置 SSH 密钥，连接到 VPS
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      # 步骤3: 连接到 VPS 并执行部署命令
+      # 通过 SSH 在 VPS 上执行一系列部署操作
+      - name: Deploy to VPS
+        run: |
+          # 添加 VPS 的指纹，避免首次连接时的交互式确认
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          
+          # 通过 SSH 连接到 VPS 并执行部署脚本
+          # -t 选项是为了模拟一个终端，某些命令（如 sudo）可能需要它
+          ssh -t ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
+          
+            # 进入项目目录
+            cd /home/et/Blog
+            
+            # 拉取最新的代码
+            git pull
+            
+            # 使用 Docker Compose 重新构建并启动服务
+            # --build 会强制重新构建镜像
+            # -d 会在后台运行
+            docker compose down
+            docker compose up --build -d
+            # 清理旧的、未使用的 Docker 镜像
+            docker image prune -f
+            exit
+          EOF
