@@ -35,7 +35,7 @@ services:
     #   - /app/node_modules
     networks:
       - blog-network
-      - nginx-proxy   # 【关键修正】连接到 nginx-proxy 网络
+      - nginx-proxy
     environment:
       # 【关键修正】添加 nginx-proxy 所需的环境变量
       - VIRTUAL_HOST=liuhongwei.org,www.liuhongwei.org

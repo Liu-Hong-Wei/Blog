@@ -1,6 +1,6 @@
 # --- 第一阶段：构建环境 (Builder) ---
 # 使用一个特定版本的 Node.js 镜像作为构建基础
-FROM node:18-alpine AS builder
+FROM node:24-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -8,13 +8,9 @@ WORKDIR /app
 # 复制 package.json 和 package-lock.json (或 yarn.lock/pnpm-lock.yaml)
 # 这样可以利用 Docker 的缓存机制，只有在依赖变化时才重新安装
 COPY package*.json ./
-# 如果您使用 pnpm, 请用下面这行代替
-# COPY package.json pnpm-lock.yaml ./
 
 # 安装项目依赖
 RUN npm install
-# 如果您使用 pnpm, 请用下面这行代替
-# RUN npm install -g pnpm && pnpm install
 
 # 复制所有剩余的源代码到容器中
 COPY . .
