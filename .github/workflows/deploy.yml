@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '23'
+          node-version: "23"
       - name: Install dependencies (npm)
         run: |
           cd frontend
@@ -34,17 +34,17 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: "3.13"
       - name: Install dependencies (pip)
         run: |
           cd backend
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      # - name: Run tests (pytest)
         # run: |
-          # pip install pytest
-          # pytest # 运行测试
-  
+        # pip install pytest
+        # pytest # 运行测试
+      # - name: Run tests (pytest)
+
   deploy:
     # 运行环境：使用最新的 Ubuntu 系统
     runs-on: ubuntu-latest
@@ -67,25 +67,17 @@ jobs:
       # 通过 SSH 在 VPS 上执行一系列部署操作
       - name: Deploy to VPS
         run: |
-          # 添加 VPS 的指纹，避免首次连接时的交互式确认
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-          
-          # 通过 SSH 连接到 VPS 并执行部署脚本
-          # -t 选项是为了模拟一个终端，某些命令（如 sudo）可能需要它
-          ssh -t ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
-          
-            # 进入项目目录
+
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
+            set -e  # 如果任意命令失败则立即退出
+
             cd /home/et/Blog
-            
-            # 拉取最新的代码
             git pull
-            
-            # 使用 Docker Compose 重新构建并启动服务
-            # --build 会强制重新构建镜像
-            # -d 会在后台运行
+
             docker compose down
             docker compose up --build -d
-            # 清理旧的、未使用的 Docker 镜像
             docker image prune -f
-            exit
           EOF
