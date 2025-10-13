@@ -68,13 +68,10 @@ jobs:
       - name: Deploy to VPS
         run: |
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
             set -e  # 如果任意命令失败则立即退出
-
             cd /home/et/Blog
             git pull
-
             docker compose down
             docker compose up --build -d
             docker image prune -f
