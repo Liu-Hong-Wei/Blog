@@ -1,3 +1,10 @@
+# notes
+
+using docker with proper permission:
+```
+docker compose -f docker-compose.dev.yml up --build
+```
+
 # TODO
 
 ## Frontend

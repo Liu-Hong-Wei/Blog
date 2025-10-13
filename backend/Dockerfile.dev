@@ -1,3 +1,6 @@
+ARG HTTP_PROXY=http://127.0.0.1:20171
+ARG HTTPS_PROXY=http://127.0.0.1:20171
+
 # 使用官方 Python 镜像作为基础镜像
 FROM python:3.12-slim
 
