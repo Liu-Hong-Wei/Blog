@@ -58,15 +58,7 @@ jobs:
 
       # 步骤2: 设置 SSH
       # 配置 SSH 密钥，连接到 VPS
-      - name: Check SSH key secret
-        run: |
-          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
-            echo "VPS_SSH_KEY secret is missing!"
-            exit 1
-          fi
-
       - name: Setup SSH
-        if: ${{ secrets.VPS_SSH_KEY }} != ''
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
@@ -74,13 +66,15 @@ jobs:
       # 步骤3: 连接到 VPS 并执行部署命令
       # 通过 SSH 在 VPS 上执行一系列部署操作
       - name: Deploy to VPS
-        if: ${{ secrets.VPS_SSH_KEY }} != ''
         run: |
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
-            set -e
+
+            set -e  # 如果任意命令失败则立即退出
+
             cd /home/et/Blog
             git pull
+
             docker compose down
             docker compose up --build -d
             docker image prune -f
