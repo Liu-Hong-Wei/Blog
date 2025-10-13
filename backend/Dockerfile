@@ -1,7 +1,7 @@
 # backend/Dockerfile
 
 # 使用官方的 Python 镜像
-FROM python:3.13-slim
+FROM python:3.12-slim
 
 # 设置环境变量
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -9,6 +9,14 @@ ENV PYTHONUNBUFFERED 1
 
 # 设置工作目录
 WORKDIR /app
+
+# 在安装 Python 依赖前，先安装系统级依赖
+# build-essential 包含 C/C++ 编译器
+# libpq-dev 包含编译 psycopg2 所需的 pg_config 和头文件
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # 安装依赖
 COPY requirements.txt .
@@ -20,7 +28,5 @@ COPY . .
 # 暴露 Django 运行的端口
 EXPOSE 8000
 
-# 运行 Django 开发服务器 (生产环境推荐使用 Gunicorn)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-# 生产环境推荐使用 Gunicorn
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
+# 运行 Django (推荐使用 Gunicorn)
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
