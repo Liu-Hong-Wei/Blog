@@ -10,14 +10,6 @@ ENV PYTHONUNBUFFERED 1
 # 设置工作目录
 WORKDIR /app
 
-# 在安装 Python 依赖前，先安装系统级依赖
-# build-essential 包含 C/C++ 编译器
-# libpq-dev 包含编译 psycopg2 所需的 pg_config 和头文件
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 # 安装依赖
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
