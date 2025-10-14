@@ -1,11 +1,10 @@
 import MeInTheForbiddenPalace from "../assets/images/Me-in-the-Forbidden-Palace.png";
-import ContainerLayout from "../layouts/ContainerLayout";
 import SocialIcon from "./icons/SocialIcon";
 import { socialIcons } from "../constants/socialIcons";
 
 function ProfileCard({className}: { className?: string; }) {
   return (
-    <ContainerLayout className={className}>
+    <div className={className}>
       <div className="w-full flex flex-col">
         <div className="w-full max-w-[180px] mx-auto aspect-square my-8 select-none">
           <img
@@ -31,7 +30,7 @@ function ProfileCard({className}: { className?: string; }) {
         <h1 className="text-center text-xl mb-2">📚 Passionate about learning</h1>
         <h1 className="text-center text-xl mb-2">💻 Self-taught developer</h1>
       </div>
-    </ContainerLayout>
+    </div>
   )
 }
 

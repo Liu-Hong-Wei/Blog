@@ -23,11 +23,10 @@ RUN npm run build
 
 # --- 第二阶段：运行环境 (Runner) ---
 # 使用一个非常轻量的 Nginx 镜像
-FROM nginx:1.25-alpine
+FROM nginx:1.29-alpine
 
 # 将第一阶段构建好的静态文件，从 builder 的 /app/public (或 /app/dist) 目录
 # 复制到 Nginx 的网站根目录 /usr/share/nginx/html
-# 【重要】请确认您的构建输出目录是 public, dist, .vuepress/dist 还是其他
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 暴露 80 端口
