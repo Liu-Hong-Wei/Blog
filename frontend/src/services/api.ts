@@ -20,19 +20,23 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
   return response.json() as Promise<T>;
 }
 
-// Define the paginated response type for posts
-type PaginatedPostsResponse = {
+// 定义分页响应的类型
+interface PaginatedResponse<T> {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Post[];
-};
+  results: T[];
+}
 
 // 博客文章API
 export const PostsAPI = {
-  getAll: (): Promise<PaginatedPostsResponse> => fetchAPI<PaginatedPostsResponse>('posts/'),
+  getAll: (): Promise<Post[]> => 
+    fetchAPI<PaginatedResponse<Post>>('posts/')
+      .then(response => response.results),
   getBySlug: (slug: string): Promise<Post> => fetchAPI<Post>(`posts/${slug}/`),
-  getByTag: (tagSlug: string): Promise<Post[]> => fetchAPI<Post[]>(`posts/by_tag/?tag=${tagSlug}`),
+  getByTag: (tagSlug: string): Promise<Post[]> => 
+    fetchAPI<PaginatedResponse<Post>>(`posts/by_tag/?tag=${tagSlug}`)
+      .then(response => response.results),
 };
 
 // 标签API

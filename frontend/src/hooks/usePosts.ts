@@ -1,26 +1,31 @@
-import { useState, useEffect } from 'react';
+import { PostsAPI } from '../services/api'; 
 import { Post } from '../types/types';
-import { PostsAPI } from '../services/api';
+import createResource from '../utils/resource';
 
+// 全局资源缓存 - 确保整个应用只有一个 posts 资源实例
+let postsResource: ReturnType<typeof createResource<Post[]>> | null = null;
+
+/**
+ * 使用 Suspense 获取文章列表的 Hook
+ * 使用全局缓存避免重复请求
+ * @returns 返回文章列表
+ */
 export default function usePosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  // 如果没有缓存的资源，创建一个新的
+  if (!postsResource) {
+    const promise = PostsAPI.getAll();
+    postsResource = createResource<Post[]>(promise);
+  }
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        const data = await PostsAPI.getAll();
-        setPosts(data.results);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPosts();
-  }, []);
+  // 尝试读取资源。这将在数据准备好之前"暂停"组件渲染。
+  const posts = postsResource.read();
 
-  return { posts, loading, error };
+  return posts;
+}
+
+/**
+ * 清除缓存的资源，用于刷新数据
+ */
+export function clearPostsCache() {
+  postsResource = null;
 }

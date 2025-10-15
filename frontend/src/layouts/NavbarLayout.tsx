@@ -1,6 +1,7 @@
 import { Outlet, NavLink } from "react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 
+import { PageLoadingSpinner } from "../utils/lazyLoading.tsx";
 import { NavBarProps } from "../types/types";
 import NavButton from "../components/buttons/NavButton";
 import HamburgerIcon from "../components/icons/HamburgerIcon";
@@ -156,8 +157,10 @@ function Navbar() {
     <>
       <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
       <div className="min-h-screen bg-bgprimary">
-        <div className={`pt-16 h-screen flex flex-col bg-bgprimary`}>
-          <Outlet />
+        <div className={`pt-16 min-h-screen flex flex-col bg-bgprimary`}>
+          <Suspense fallback={<PageLoadingSpinner />}>
+            <Outlet />
+          </Suspense>
         </div>
       </div >
     </>

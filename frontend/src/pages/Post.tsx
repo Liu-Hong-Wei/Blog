@@ -2,151 +2,73 @@ import MainContentLayout from '../layouts/MainContentLayout';
 import usePosts from '../hooks/usePosts';
 import { useParams } from 'react-router';
 import { ReactElement, useEffect, useState } from 'react';
-import markdownToHtml, { MarkdownResult } from '../utils/markdownToHtml';
-
-// 定义内容状态类型
-interface ContentState {
-    content: ReactElement | null;
-    loading: boolean;
-    error: string | null;
-}
+import markdownToHtml from '../utils/markdownToHtml';
 
 function Post() {
-    const { posts, loading, error } = usePosts();
+    const posts = usePosts();
     const { slug } = useParams();
-    const post = posts && posts.length > 0 ? posts.find(post => post.slug === slug) : null;
+    const post = posts?.find(post => post.slug === slug);
 
-    // 使用新的状态管理
-    const [contentState, setContentState] = useState<ContentState>({
-        content: null,
-        loading: false,
-        error: null
-    });
+    const [renderedContent, setRenderedContent] = useState<ReactElement | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
         if (!post?.content) {
-            setContentState({
-                content: null,
-                loading: false,
-                error: null
-            });
+            setRenderedContent(null);
             return;
         }
 
-        // 开始处理 markdown
-        setContentState(prev => ({
-            ...prev,
-            loading: true,
-            error: null
-        }));
-
+        setIsProcessing(true);
         markdownToHtml(post.content)
-            .then((result: MarkdownResult) => {
-                if (result.success && result.content) {
-                    setContentState({
-                        content: result.content,
-                        loading: false,
-                        error: null
-                    });
-                } else {
-                    setContentState({
-                        content: null,
-                        loading: false,
-                        error: result.error || '内容处理失败'
-                    });
-                }
+            .then((result) => {
+                setRenderedContent(result.success ? result.content || null : null);
             })
             .catch((error) => {
-                console.error('Markdown 处理异常:', error);
-                setContentState({
-                    content: null,
-                    loading: false,
-                    error: '内容处理时发生未知错误'
-                });
+                console.error('Markdown processing failed:', error);
+                setRenderedContent(null);
+            })
+            .finally(() => {
+                setIsProcessing(false);
             });
-    }, [post]);
+    }, [post?.content]);
 
     return (
         <MainContentLayout>
-            {/* 文章加载状态 */}
-            {loading && <div className="p-4">加载中...</div>}
-            {error && <div className="p-4 text-red-600">出错了: {error.message}</div>}
-            {!loading && !error && !post && <div className="p-4">未找到文章。</div>}
+            {/* 加载中状态（仅 markdown 处理） */}
+            {isProcessing && (
+                <div className="flex items-center justify-center py-16">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <span className="ml-3 text-gray-600">处理内容...</span>
+                </div>
+            )}
+
+            {/* 文章未找到 */}
+            {!isProcessing && !post && (
+                <div className="p-6 text-center text-gray-600">
+                    <p>文章不存在</p>
+                </div>
+            )}
 
             {/* 文章内容 */}
-            {!loading && !error && post && (
-                <article className="space-y-4 w-full">
-                    <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-                    <div className="flex items-center text-sm text-gray-600 mb-4">
-                        <span className="font-extralight">{post.views} views</span>
-                        <span className="mx-2">·</span>
-                        <span>{new Date(post.created_at).toLocaleDateString()}</span>
-                    </div>
-
-                    {/* Markdown 内容处理状态 */}
-                    {contentState.loading && (
-                        <div className="flex items-center justify-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                            <span className="ml-2 text-gray-600">正在处理内容...</span>
+            {!isProcessing && post && (
+                <article className="space-y-6 w-full">
+                    {/* 文章标题和元信息 */}
+                    <header>
+                        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+                        <div className="flex items-center text-sm text-gray-500 space-x-4">
+                            <span>{post.views} 次浏览</span>
+                            <span>{new Date(post.created_at).toLocaleDateString('zh-CN')}</span>
                         </div>
-                    )}
+                    </header>
 
-                    {contentState.error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <div className="flex items-center">
-                                <svg className="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                </svg>
-                                <span className="text-red-700 font-medium">内容处理失败</span>
+                    {/* 文章内容 */}
+                    <main className="prose prose-gray max-w-none">
+                        {renderedContent || (
+                            <div className="text-gray-500 italic">
+                                暂无内容
                             </div>
-                            <p className="text-red-600 mt-1">{contentState.error}</p>
-                            <button
-                                onClick={() => {
-                                    if (post?.content) {
-                                        setContentState(prev => ({ ...prev, loading: true, error: null }));
-                                        markdownToHtml(post.content)
-                                            .then((result: MarkdownResult) => {
-                                                if (result.success && result.content) {
-                                                    setContentState({
-                                                        content: result.content,
-                                                        loading: false,
-                                                        error: null
-                                                    });
-                                                } else {
-                                                    setContentState({
-                                                        content: null,
-                                                        loading: false,
-                                                        error: result.error || '内容处理失败'
-                                                    });
-                                                }
-                                            })
-                                            .catch(() => {
-                                                setContentState({
-                                                    content: null,
-                                                    loading: false,
-                                                    error: '内容处理时发生未知错误'
-                                                });
-                                            });
-                                    }
-                                }}
-                                className="mt-2 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
-                            >
-                                重试
-                            </button>
-                        </div>
-                    )}
-
-                    {!contentState.loading && !contentState.error && contentState.content && (
-                        <div className="prose max-w-none mt-4">
-                            {contentState.content}
-                        </div>
-                    )}
-
-                    {!contentState.loading && !contentState.error && !contentState.content && post?.content && (
-                        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-600">
-                            暂无内容显示
-                        </div>
-                    )}
+                        )}
+                    </main>
                 </article>
             )}
         </MainContentLayout>

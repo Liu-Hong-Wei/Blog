@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { StrictMode } from "react";
+import { StrictMode, lazy } from "react";
 
 import ErrorBoundary from "./layouts/ErrorBoundary.tsx";
 import NavbarLayout from "./layouts/NavbarLayout.tsx";
-import Homepage from "./pages/Homepage.tsx";
-import About from "./pages/About.tsx";
-import Posts from "./pages/Posts.tsx";
-import Ideas from "./pages/Ideas.tsx";
-import Projects from "./pages/Projects.tsx";
-import Post from "./pages/Post.tsx";
-import NotFound from "./pages/NotFound.tsx";
+
+// 懒加载页面组件 - 使用 React.lazy 的标准方式
+const Homepage = lazy(() => import("./pages/Homepage.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
+const Posts = lazy(() => import("./pages/Posts.tsx"));
+const Ideas = lazy(() => import("./pages/Ideas.tsx"));
+const Projects = lazy(() => import("./pages/Projects.tsx"));
+const Post = lazy(() => import("./pages/Post.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const router = createBrowserRouter([
   {
@@ -46,8 +48,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-],
-);
+]);
 
 function App() {
   return (
