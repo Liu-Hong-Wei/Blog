@@ -7,6 +7,5 @@ router.register(r'posts', PostViewSet)
 router.register(r'tags', TagViewSet)
 router.register(r'about', AboutViewSet)
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = router.urls
+# path('', include(router.urls)),

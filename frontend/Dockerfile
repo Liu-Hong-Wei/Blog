@@ -16,9 +16,6 @@ RUN npm install
 COPY . .
 
 # 执行构建命令，生成静态文件
-# 【重要】请根据您博客的实际命令修改！
-# Hexo 通常是: hexo generate
-# VuePress/VitePress 通常是: npm run docs:build 或 npm run build
 RUN npm run build
 
 # --- 第二阶段：运行环境 (Runner) ---

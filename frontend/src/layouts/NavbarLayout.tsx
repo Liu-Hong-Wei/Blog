@@ -156,7 +156,7 @@ function Navbar() {
     <>
       <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
       <div className="min-h-screen bg-bgprimary">
-        <div className={`pt-16 min-h-screen flex flex-col bg-bgprimary`}>
+        <div className={`pt-16 h-screen flex flex-col bg-bgprimary`}>
           <Outlet />
         </div>
       </div >

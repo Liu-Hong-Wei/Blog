@@ -1,17 +1,13 @@
 from django.contrib import admin
-from .models import Post, Tag, PostTag, About
-
-class PostTagInline(admin.TabularInline):
-    model = PostTag
-    extra = 1
+from .models import Post, Tag, About
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at', 'is_published')
+    list_display = ('title', 'slug', 'created_at', 'is_published', 'views')
     list_filter = ('is_published', 'created_at')
     search_fields = ('title', 'content')
     prepopulated_fields = {'slug': ('title',)}
-    inlines = [PostTagInline]
+    filter_horizontal = ('tags',)
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -21,3 +17,4 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(About)
 class AboutAdmin(admin.ModelAdmin):
     list_display = ('title', 'updated_at')
+

@@ -1,33 +1,24 @@
 from rest_framework import serializers
-from .models import Post, Tag, PostTag, About
-from django.contrib.auth.models import User
-
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id', 'username', 'email', 'first_name', 'last_name']
+from .models import Post, Tag, About
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ['id', 'name', 'slug']
 
 class PostSerializer(serializers.ModelSerializer):
-    tags = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
     views = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Post
         fields = ['id', 'title', 'content', 'tldr', 'created_at', 'updated_at', 'is_published', 'slug', 'views', 'tags']
-    
-    def get_tags(self, obj):
-        post_tags = PostTag.objects.filter(post=obj)
-        return TagSerializer(
-            [post_tag.tag for post_tag in post_tags], 
-            many=True
-        ).data
+        read_only_fields = ['created_at', 'updated_at', 'views']
 
 class AboutSerializer(serializers.ModelSerializer):
     class Meta:
         model = About
+        fields = ['id', 'title', 'content', 'updated_at']
+        read_only_fields = ['updated_at']
         fields = '__all__'
+

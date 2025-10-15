@@ -9,6 +9,7 @@ import Posts from "./pages/Posts.tsx";
 import Ideas from "./pages/Ideas.tsx";
 import Projects from "./pages/Projects.tsx";
 import Post from "./pages/Post.tsx";
+import NotFound from "./pages/NotFound.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "posts/:slug",
         element: <Post />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

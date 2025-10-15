@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -11,10 +11,16 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True)
     slug = models.SlugField(max_length=250, unique=True)
     views = models.PositiveIntegerField(default=0)
-    tldr = models.CharField(max_length=500, blank=True, null=True, help_text="简介，可选")
+    tldr = models.CharField(max_length=500, blank=True, null=True, help_text="A short summary of the post.")
+    tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
     
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_at']
@@ -26,12 +32,10 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class PostTag(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_tags')
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='post_tags')
-    
-    class Meta:
-        unique_together = ('post', 'tag')
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class About(models.Model):
     title = models.CharField(max_length=200)
@@ -43,3 +47,4 @@ class About(models.Model):
     
     class Meta:
         verbose_name_plural = 'About'
+
