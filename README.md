@@ -182,16 +182,65 @@ EXPOSE 8000
 # 运行 Django (推荐使用 Gunicorn)
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
 $ ~/Blog: cat .env
-# /home/et/Blog/.env
+# .env.example - 复制此文件为 .env 并填入实际值
 
-# Django 配置
-DJANGO_SECRET_KEY=
-DJANGO_DEBUG=1 # 开发时设为1，生产环境设为0
+# =============================================================================
+# Django 后端配置
+# =============================================================================
 
-# PostgreSQL 数据库配置
+# Django 安全密钥 - 生产环境必须修改！
+# 可以使用: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+DJANGO_SECRET_KEY=your_super_secret_key_here_change_this_in_production
+
+# 调试模式 - 生产环境设为 False
+DEBUG=True
+
+# 允许的主机 - 生产环境需要设置实际域名
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+# =============================================================================
+# 数据库配置 (PostgreSQL)
+# =============================================================================
+
+# 数据库名称
 DB_NAME=blog_db
-DB_USER=
-DB_PASSWORD=
+
+# 数据库用户名
+DB_USER=blog_user
+
+# 数据库密码 - 请使用强密码
+DB_PASSWORD=your_secure_database_password
+
+# 数据库主机 (Docker 内部使用服务名)
+DB_HOST=db
+
+# 数据库端口
+DB_PORT=5432
+
+# =============================================================================
+# CORS 配置 (跨域请求)
+# =============================================================================
+
+# 前端开发服务器地址
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
+
+# CSRF 信任域名
+CSRF_TRUSTED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
+
+# =============================================================================
+# 生产环境配置 (可选)
+# =============================================================================
+
+# 生产环境域名 (nginx-proxy 使用)
+# VIRTUAL_HOST=yourdomain.com,www.yourdomain.com
+# LETSENCRYPT_HOST=yourdomain.com,www.yourdomain.com
+
+# =============================================================================
+# 开发环境配置
+# =============================================================================
+
+# 开发模式设置
+DJANGO_DEBUG=1
 ```
 
 ## nginx-proxy setup example
