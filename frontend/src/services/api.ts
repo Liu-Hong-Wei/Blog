@@ -1,7 +1,7 @@
 import { About, Post, Tag } from '../types/types';
 
-// API请求函数
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// TODO: 根据实际后端API地址修改
+const API_URL = 'http://localhost:8000/api';
 
 // 通用请求处理函数
 async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
