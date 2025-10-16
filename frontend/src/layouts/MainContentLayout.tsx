@@ -6,7 +6,7 @@ function MainContentLayout({
   className?: string;
 }) {
   return (
-    <div className={`w-full h-full p-2 ${className || ''} max-w-5xl mx-auto`}>
+    <div className={`w-full h-full p-2 pb-4 ${className || ''} max-w-4xl mx-auto`}>
         {children}
     </div>
   );

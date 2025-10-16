@@ -479,6 +479,8 @@ docker compose -f docker-compose.dev.yml up --build
 - Dropdown menu:
   - create more fancy dropdown menu open and close animation
 - convert Markdown to HTML
+- to use React Query
+- to use Zustand
 
 ## Backend
 

@@ -37,8 +37,8 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`fixed top-0 w-screen text-xl backdrop-blur-3xl `}>
-        <section className="flex justify-evenly items-center md:max-w-5xl mx-auto md:h-fit h-16">
+      <nav className={`sticky top-0 md:w-3xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
+        <section className="flex justify-evenly items-center md:max-w-4xl mx-auto w-full md:h-fit h-16">
           <header className="flex justify-center items-center">
             <NavLink
               className="text-primary text-xl font-bold"
@@ -62,15 +62,15 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
           <>
             {/* 覆盖层：淡入淡出 */}
             <div
-              className={`fixed inset-0 bg-bgsecondary/10 backdrop-blur-xl z-40 transition-opacity duration-300 ${drawerActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+              className={`fixed inset-0 bg-bgsecondary/10 backdrop-blur-3xl z-40 transition-opacity duration-300 ${drawerActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
               onClick={() => setDrawerOpen(false)}
             ></div>
             {/* 顶部下拉抽屉：从上方滑入/滑出 */}
-            <aside className={`fixed top-0 left-0 w-screen z-50 shadow-xl rounded-b-xl flex flex-col bg-bgprimary transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
-              <header className="flex justify-center items-center h-16 border-b-2 border-bgsecondary">
+            <aside className={`fixed top-0 w-full mx-auto z-50 backdrop-blur-2xl bg-bgsecondary/80 rounded-b-xl shadow-md flex flex-col transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
+              <header className="flex justify-center items-center h-16">
                 <NavLink
                   to="/"
-                  className="text-secondary text-2xl font-bold"
+                  className="text-primary text-2xl font-bold"
                   onClick={() => setDrawerOpen(false)}
                 >Ethan's Blog</NavLink>
               </header>
@@ -155,14 +155,14 @@ function Navbar() {
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
-      <div className="min-h-screen bg-bgprimary">
-        <div className={`pt-16 min-h-screen flex flex-col bg-bgprimary`}>
+      <div className="min-w-full min-h-screen bg-secondary/10"> {/* just for the notch design */}
+        <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
+        <div className={`pt-2 flex flex-col w-full h-fit`}>
           <Suspense fallback={<PageLoadingSpinner />}>
             <Outlet />
           </Suspense>
-        </div>
-      </div >
+        </div >
+      </div>
     </>
   );
 }

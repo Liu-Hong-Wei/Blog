@@ -1,6 +1,8 @@
 import React, { Component, ReactNode, Suspense } from 'react';
 import { PageLoadingSpinner } from '../utils/lazyLoading';
 import Error from '../pages/errors/Error';
+import { NotFoundError, APIError } from '../utils/errors';
+import NotFound from '../pages/errors/NotFound';
 
 interface Props {
   children: ReactNode;
@@ -9,6 +11,7 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  error?: Error;
 }
 
 /**
@@ -20,8 +23,8 @@ class ErrorBoundary extends Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error) {
@@ -30,13 +33,36 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   handleRetry = () => {
-    this.setState({ hasError: false });
+    this.setState({ hasError: false, error: undefined });
   };
 
   render() {
     if (this.state.hasError) {
+      const { error } = this.state;
+      
+      // 404 错误处理
+      if (error instanceof NotFoundError) {
+        return (
+          <NotFound />
+        );
+      }
+      
+      // API 错误处理
+      if (error instanceof APIError) {
+        return (
+          <Error 
+            emoji="🚫" 
+            content="API Error" 
+            error={`${error.status}: ${error.message}`}
+          />
+        );
+      }
+      
+      // 通用错误处理
       return (
-        <Error />
+        <Error 
+          error={error?.message || 'An unexpected error occurred'}
+        />
       );
     }
 

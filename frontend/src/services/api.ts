@@ -1,4 +1,5 @@
 import { About, Post, Tag } from '../types/types';
+import { NotFoundError, APIError } from '../utils/errors';
 
 // TODO: 根据实际后端API地址修改
 const API_URL = 'http://localhost:8000/api';
@@ -13,7 +14,10 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
   });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
+    if (response.status === 404) {
+      throw new NotFoundError(`Resource not found: ${endpoint}`);
+    }
+    throw new APIError(`API error: ${response.statusText}`, response.status);
   }
 
   return response.json() as Promise<T>;
