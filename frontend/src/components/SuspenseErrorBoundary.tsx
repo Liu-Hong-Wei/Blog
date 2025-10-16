@@ -1,5 +1,6 @@
 import React, { Component, ReactNode, Suspense } from 'react';
 import { PageLoadingSpinner } from '../utils/lazyLoading';
+import Error from '../pages/status/Error';
 
 interface Props {
   children: ReactNode;
@@ -25,6 +26,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error) {
     console.error('Error caught:', error);
+    return error;
   }
 
   handleRetry = () => {
@@ -34,15 +36,7 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-8 text-center">
-          <p className="text-gray-600 mb-4">加载失败</p>
-          <button
-            onClick={this.handleRetry}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            重试
-          </button>
-        </div>
+        <Error />
       );
     }
 
