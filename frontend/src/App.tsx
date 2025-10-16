@@ -11,7 +11,7 @@ const Posts = lazy(() => import("./pages/Posts.tsx"));
 const Ideas = lazy(() => import("./pages/Ideas.tsx"));
 const Projects = lazy(() => import("./pages/Projects.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
-const NotFound = lazy(() => import("./pages/status/NotFound.tsx"));
+const NotFound = lazy(() => import("./pages/errors/NotFound.tsx"));
 
 const router = createBrowserRouter([
   {

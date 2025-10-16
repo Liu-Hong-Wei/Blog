@@ -1,6 +1,6 @@
 import React, { Component, ReactNode, Suspense } from 'react';
 import { PageLoadingSpinner } from '../utils/lazyLoading';
-import Error from '../pages/status/Error';
+import Error from '../pages/errors/Error';
 
 interface Props {
   children: ReactNode;

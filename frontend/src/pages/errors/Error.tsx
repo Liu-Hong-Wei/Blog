@@ -1,13 +1,19 @@
 import { Link } from "react-router";
 
-const Error = ({ error = "" }: { error?: string }) => {
-    const hasError = Boolean(error && error.trim().length);
-
+const Error = ({
+    emoji = "👾",
+    content = "Oops, something went wrong",
+    error = ""
+}: {
+    emoji?: string;
+    content?: string;
+    error?: string;
+}) => {
     return (
         <div className="h-fit p-16 flex flex-col items-center justify-center">
-            <div className="text-6xl mb-4">👾</div>
+            <div className="text-6xl mb-4">{emoji}</div>
             <h1 className="text-4xl font-bold mb-4">
-                Oops, something went wrong
+                {content}
                 <span
                     onClick={() => {
                         window.location.reload();
@@ -17,7 +23,7 @@ const Error = ({ error = "" }: { error?: string }) => {
                     &#x27F3;
                 </span>
             </h1>
-            {hasError && (
+            {error && (
                 <p className="text-xl mb-4">
                     {error}
                 </p>
