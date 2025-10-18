@@ -6,6 +6,9 @@ services:
     build:
       context: ./backend
     container_name: blog_backend
+    volumes:
+      # 将我们新创建的 static_volume 挂载到后端容器的 /app/staticfiles 目录(settings.py 中定义的 STATIC_ROOT)
+      - static_volume:/app/staticfiles
     # 生产环境中，建议注释掉 volume 挂载，让代码固化在镜像里
     # volumes:
     #   - ./backend:/app
@@ -32,6 +35,10 @@ services:
     build:
       context: ./frontend
     container_name: blog_frontend
+    volumes:
+      # 同样将 static_volume 挂载到前端容器的一个可访问目录
+      # 这样前端的 Nginx 就能读取到后端收集的静态文件了
+      - static_volume:/usr/share/nginx/html/static
     # 生产环境中，建议注释掉 volume 挂载
     # volumes:
     #   - ./frontend:/app
@@ -68,6 +75,7 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:
 
 networks:
   blog-network:

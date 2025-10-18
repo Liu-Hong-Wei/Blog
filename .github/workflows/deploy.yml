@@ -46,6 +46,9 @@ jobs:
             git pull
             echo "✅ Code updated"
 
+            # 将后端所有静态文件复制到我们指定的 STATIC_ROOT 目录
+            docker compose exec backend python manage.py collectstatic --no-input
+
             # 使用 Docker Compose 重启服务
             echo "🐳 Restarting Docker containers..."
             docker compose down

@@ -132,7 +132,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# 让 Django 在运行 collectstatic 命令时，把所有静态文件复制到这个目录下
+# 生产环境中，我们将其定义在项目根目录之外的一个共享位置
+if DJANGO_DEBUG:
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+else:
+    STATIC_ROOT = '/app/staticfiles'
+
 STATICFILES_DIRS = []
 
 MEDIA_URL = '/media/'
