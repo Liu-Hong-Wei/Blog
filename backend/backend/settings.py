@@ -16,6 +16,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-$p!8los#jmj2k$jkbq(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DJANGO_DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes', 'on')
+DEBUG = DJANGO_DEBUG
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -131,7 +132,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 # 让 Django 在运行 collectstatic 命令时，把所有静态文件复制到这个目录下
 # 生产环境中，我们将其定义在项目根目录之外的一个共享位置
 if DJANGO_DEBUG:

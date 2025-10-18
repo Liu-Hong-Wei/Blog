@@ -1,12 +1,17 @@
 import { unified } from 'unified'
+// remark-parse：解析 Markdown 文本。
 import remarkParse from 'remark-parse'
+// remark-rehype：将 Markdown 抽象语法树（MDAST）转换为 HTML 抽象语法树（HAST）。
 import remarkRehype from 'remark-rehype'
+// rehype-highlight：为代码块添加语法高亮。
 import rehypeHighlight from 'rehype-highlight'
+// rehype-sanitize：对 HTML 进行消毒，防止 XSS 攻击。
 import rehypeSanitize from 'rehype-sanitize'
+// rehype-react：将 HAST 转换为 React 元素。
 import rehypeReact from 'rehype-react'
 import { createElement, ReactElement, Fragment } from 'react'
-import { jsx } from 'react/jsx-runtime'
-import { jsxDEV } from 'react/jsx-dev-runtime'
+// 仅导入生产环境需要的 jsx 和 Fragment
+import { jsx, jsxs } from 'react/jsx-runtime'
 
 // 定义返回类型，包含成功和错误状态
 export interface MarkdownResult {
@@ -26,7 +31,7 @@ export class MarkdownError extends Error {
 export default async function markdownToHtml(markdown: string): Promise<MarkdownResult> {
   try {
     // 输入验证
-    if (!markdown || typeof markdown !== 'string') {
+    if (markdown === null || markdown === undefined || typeof markdown !== 'string') {
       throw new MarkdownError('Markdown content cannot be empty or invalid format');
     }
 
@@ -41,16 +46,14 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     // 处理 markdown 转换
     const file = await unified()
       .use(remarkParse)          // 1. Parse Markdown to MDAST
-      .use(remarkRehype)         // 2. Transform MDAST to HAST
-      .use(rehypeHighlight)      // 3. Add syntax highlighting for code blocks
-      .use(rehypeSanitize)       // 4. Sanitize HTML to prevent XSS
-      .use(rehypeReact, {        // 5. Transform HAST to React JSX elements
+      .use(remarkRehype, { allowDangerousHtml: true }) // allow HTML
+      .use(rehypeHighlight)      // 2. Add syntax highlighting for code blocks
+      .use(rehypeSanitize)       // 3. Sanitize HTML to prevent XSS
+      .use(rehypeReact, {        // 4. Transform HAST to React elements
         createElement,
         Fragment,
-        // 根据环境动态配置
-        development: import.meta.env.DEV,
-        jsx: import.meta.env.DEV ? jsxDEV : jsx,
-        jsxDEV: import.meta.env.DEV ? jsxDEV : undefined,
+        jsx,
+        jsxs,
       })
       .process(markdown);
 
