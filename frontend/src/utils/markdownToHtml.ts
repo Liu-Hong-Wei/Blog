@@ -1,8 +1,11 @@
-import {unified} from 'unified'
+import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeSanitize from 'rehype-sanitize'
 import rehypeReact from 'rehype-react'
 import { createElement, ReactElement, Fragment } from 'react'
+import { jsx } from 'react/jsx-runtime'
 import { jsxDEV } from 'react/jsx-dev-runtime'
 
 // 定义返回类型，包含成功和错误状态
@@ -24,14 +27,14 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
   try {
     // 输入验证
     if (!markdown || typeof markdown !== 'string') {
-      throw new MarkdownError('Markdown 内容不能为空或格式不正确');
+      throw new MarkdownError('Markdown content cannot be empty or invalid format');
     }
 
     // 如果内容为空，返回空元素
     if (markdown.trim() === '') {
       return {
         success: true,
-        content: createElement('div', { className: 'empty-content' }, '暂无内容')
+        content: createElement('div', { className: 'empty-content' }, 'No content available')
       };
     }
 
@@ -39,11 +42,15 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     const file = await unified()
       .use(remarkParse)          // 1. Parse Markdown to MDAST
       .use(remarkRehype)         // 2. Transform MDAST to HAST
-      .use(rehypeReact, {        // 3. Transform HAST to React JSX elements
-        // createElement,           // React's createElement function
-        development: true,       // Enable development mode for Vite dev server
-      jsxDEV,                  // Required for development JSX handling
-        Fragment,                // React's Fragment for wrapping
+      .use(rehypeHighlight)      // 3. Add syntax highlighting for code blocks
+      .use(rehypeSanitize)       // 4. Sanitize HTML to prevent XSS
+      .use(rehypeReact, {        // 5. Transform HAST to React JSX elements
+        createElement,
+        Fragment,
+        // 根据环境动态配置
+        development: import.meta.env.DEV,
+        jsx: import.meta.env.DEV ? jsxDEV : jsx,
+        jsxDEV: import.meta.env.DEV ? jsxDEV : undefined,
       })
       .process(markdown);
 
@@ -51,7 +58,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
 
     // 验证结果
     if (!result) {
-      throw new MarkdownError('Markdown 转换失败：未生成有效内容');
+      throw new MarkdownError('Markdown conversion failed: No valid content generated');
     }
 
     return {
@@ -60,8 +67,8 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     };
 
   } catch (error) {
-    console.error('Markdown 转换错误:', error);
-    
+    console.error('Markdown conversion error:', error);
+
     // 处理不同类型的错误
     if (error instanceof MarkdownError) {
       return {
@@ -76,13 +83,13 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       if (errorMessage.includes('parse')) {
         return {
           success: false,
-          error: 'Markdown 格式解析错误，请检查语法是否正确'
+          error: 'Markdown parsing error: Please check the syntax'
         };
       }
       if (errorMessage.includes('transform')) {
         return {
           success: false,
-          error: 'Markdown 转换错误，请检查内容格式'
+          error: 'Markdown transformation error: Please check the content format'
         };
       }
     }
@@ -90,7 +97,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     // 默认错误处理
     return {
       success: false,
-      error: 'Markdown 处理失败，请稍后重试'
+      error: 'Markdown processing failed: Please try again later'
     };
   }
 }
