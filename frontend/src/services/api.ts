@@ -1,8 +1,8 @@
 import { About, Post, Tag } from '../types/types';
 import { NotFoundError, APIError } from '../utils/errors';
 
-// TODO: 根据实际后端API地址修改
-const API_URL = 'http://localhost:8000/api';
+// API URL is determined by the environment (production or development)
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:8000/api';
 
 // 通用请求处理函数
 async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {

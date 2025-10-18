@@ -70,7 +70,8 @@ function PostContent({ slug }: { slug: string }) {
 
                     {/* 文章内容 */}
                     <main className="prose prose-gray max-w-none">
-                        {renderedContent || (
+                        {renderedContent}
+                        {!isProcessing && post && !post.content && (
                             <Error emoji='🤔' content='Nothing here' />
                         )}
                     </main>

@@ -37,8 +37,8 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`sticky top-0 md:w-3xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
-        <section className="flex justify-evenly items-center md:max-w-4xl mx-auto w-full md:h-fit h-16">
+      <nav className={`sticky top-0 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
+        <section className="flex justify-between items-center px-2 md:max-w-4xl mx-auto w-full md:h-fit h-16">
           <header className="flex justify-center items-center">
             <NavLink
               className="text-primary text-xl font-bold"
