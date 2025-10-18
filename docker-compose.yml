@@ -18,7 +18,10 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-0}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
     depends_on:
       db:
         condition: service_healthy # 增加健康检查依赖 暂时不忽略数据库健康

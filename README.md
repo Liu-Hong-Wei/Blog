@@ -192,11 +192,11 @@ $ ~/Blog: cat .env
 # 可以使用: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 DJANGO_SECRET_KEY=your_super_secret_key_here_change_this_in_production
 
-# 调试模式 - 生产环境设为 False
-DEBUG=True
-
 # 允许的主机 - 生产环境需要设置实际域名
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+# 开发模式设置
+DJANGO_DEBUG=1
 
 # =============================================================================
 # 数据库配置 (PostgreSQL)
@@ -226,22 +226,6 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhos
 
 # CSRF 信任域名
 CSRF_TRUSTED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
-
-# =============================================================================
-# 生产环境配置 (可选)
-# =============================================================================
-
-# 生产环境域名 (nginx-proxy 使用)
-# VIRTUAL_HOST=yourdomain.com,www.yourdomain.com
-# LETSENCRYPT_HOST=yourdomain.com,www.yourdomain.com
-
-# =============================================================================
-# 开发环境配置
-# =============================================================================
-
-# 开发模式设置
-DJANGO_DEBUG=1
-```
 
 ## nginx-proxy setup example
 
