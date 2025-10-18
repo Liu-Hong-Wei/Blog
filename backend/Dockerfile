@@ -20,5 +20,4 @@ COPY . .
 # 暴露 Django 运行的端口
 EXPOSE 8000
 
-# 运行 Django (推荐使用 Gunicorn)
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
