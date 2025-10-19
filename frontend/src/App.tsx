@@ -3,6 +3,7 @@ import { StrictMode, lazy } from "react";
 
 import ErrorBoundary from "./layouts/ErrorBoundary.tsx";
 import NavbarLayout from "./layouts/NavbarLayout.tsx";
+import Test from "./tests/Test.tsx";
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
 const Homepage = lazy(() => import("./pages/Homepage.tsx"));
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
       {
         path: "posts/:slug",
         element: <Post />,
+      },
+      {
+        path: "test",
+        element: <Test />,
+
       },
       {
         path: "*",
