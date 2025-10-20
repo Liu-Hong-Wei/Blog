@@ -1,3 +1,20 @@
+# TODO
+
+## Frontend
+
+- Set up basic [Tailwind CSS](https://tailwindcss.com/docs/)
+  - Set up theme
+- Convert Markdown to HTML
+  - Fix code highlighting
+  - Style the generated HTML
+- Plan for building the blog admin frontend panel
+- Switch to using React Query
+- Switch to using Zustand
+
+## Backend
+
+... currently seem to be ok
+
 # development logs
 
 ## 1. add basic frontend and backend functions
@@ -11,8 +28,8 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
 ## 3. optimize the docker deployment experiences
 
 - configure CI/CD using GitHub Actions (not perfect yet)
-    - and it takes a little bit longer to connect VPS with SSH
-    - it caused by port mapping while VPS SSH port is customized but GitHub Actions'port is using the default. (actually it's stupid)
+  - and it takes a little bit longer to connect VPS with SSH
+  - it caused by port mapping while VPS SSH port is customized but GitHub Actions'port is using the default. (actually it's stupid)
 - add configuration setting example to README.md file in case to forget how to initial docker setup
 - frontend's nginx didn't works as expect, it turn out that the conf file is not copied into docker conf to override it.
 
@@ -20,10 +37,13 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
 
 - simplified backend code by removing redundant code
 - implemented lazy loading and data fetching with React Suspense
-    - Example: 
-    ```jsx
-    <Suspense fallback={<LoadingSpinner />}> <LazyLoadedComponent /> </Suspense>
-    ```
+  - Example:
+  ```jsx
+  <Suspense fallback={<LoadingSpinner />}>
+    {" "}
+    <LazyLoadedComponent />{" "}
+  </Suspense>
+  ```
 - implemented code splitting in the frontend by Route-based Splitting and Bundle Splitting
 
 ## fix frontend route to django admin panel issue

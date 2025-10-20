@@ -453,19 +453,3 @@ docker compose -f docker-compose.dev.yml up --build
 | **安全性** | **更高**。VPS 无需访问代码仓库，只需访问镜像仓库 | **稍低**。需要在 VPS 上配置 Git 仓库的访问权限 |
 | **回滚能力** | **非常强**。可以轻松地从镜像仓库部署任意历史版本 | 较弱。需要手动 `git checkout` 到旧 commit 再重新构建 |
 | **推荐场景** | 生产环境、多服务器集群、对可靠性和版本管理要求高的场景 | **个人项目、开发/测试环境、单服务器部署** |
-
-# TODO
-
-## Frontend
-
-- Set up basic [tailwind CSS](https://tailwindcss.com/docs/)
-- theme setup: selection style
-- Dropdown menu:
-  - create more fancy dropdown menu open and close animation
-- convert Markdown to HTML
-- to use React Query
-- to use Zustand
-
-## Backend
-
-...
