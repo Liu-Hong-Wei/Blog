@@ -1,7 +1,7 @@
 import { Outlet, NavLink } from "react-router";
 import { useState, useEffect, useRef, Suspense } from "react";
 
-import { PageLoadingSpinner } from "../utils/lazyLoading.tsx";
+import { PageLoadingSpinner } from "../components/Spinners.tsx";
 import { NavBarProps } from "../types/types";
 import NavButton from "../components/buttons/NavButton";
 import HamburgerIcon from "../components/icons/HamburgerIcon";
@@ -37,7 +37,7 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`sticky top-0 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
+      <nav className={`sticky top-0 mb-2 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
         <section className="flex justify-between items-center px-2 md:max-w-4xl mx-auto w-full md:h-fit h-16">
           <header className="flex justify-center items-center">
             <NavLink
@@ -157,7 +157,7 @@ function Navbar() {
     <>
       <div className="min-w-full min-h-screen bg-secondary/10"> {/* just for the notch design */}
         <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
-        <div className={`pt-2 flex flex-col w-full h-fit`}>
+        <div className={`flex flex-col w-full h-fit`}>
           <Suspense fallback={<PageLoadingSpinner />}>
             <Outlet />
           </Suspense>

@@ -1,8 +1,9 @@
-import React, { Component, ReactNode, Suspense } from 'react';
-import { PageLoadingSpinner } from '../utils/lazyLoading';
+import React, { Component, ErrorInfo, ReactNode, Suspense } from 'react';
+import { PageLoadingSpinner } from './Spinners';
 import Error from '../pages/errors/Error';
 import { NotFoundError, APIError } from '../utils/errors';
 import NotFound from '../pages/errors/NotFound';
+import Button from './buttons/Button';
 
 interface Props {
   children: ReactNode;
@@ -15,7 +16,8 @@ interface State {
 }
 
 /**
- * 简化的错误边界
+ * 统一的错误边界组件
+ * 结合了 Suspense 和多种错误类型的处理
  */
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
@@ -27,9 +29,8 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error) {
-    console.error('Error caught:', error);
-    return error;
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
   handleRetry = () => {
@@ -40,14 +41,12 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       const { error } = this.state;
       
-      // 404 错误处理
+      // 404 Not Found Error
       if (error instanceof NotFoundError) {
-        return (
-          <NotFound />
-        );
+        return <NotFound />;
       }
       
-      // API 错误处理
+      // API Error
       if (error instanceof APIError) {
         return (
           <Error 
@@ -58,11 +57,19 @@ class ErrorBoundary extends Component<Props, State> {
         );
       }
       
+      // 自定义 fallback
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       // 通用错误处理
       return (
-        <Error 
-          error={error?.message || 'An unexpected error occurred'}
-        />
+        <div className="flex flex-col justify-center items-center space-y-4">
+          <Error emoji="⚠️" content={`Oops, Something went wrong: ${this.state.error?.message || 'An unexpected error occurred'}`} />
+          <Button onClick={this.handleRetry}>
+            Try Again
+          </Button>
+        </div>
       );
     }
 
@@ -71,9 +78,9 @@ class ErrorBoundary extends Component<Props, State> {
 }
 
 /**
- * 简单的 Suspense 包装器
+ * Suspense 和 ErrorBoundary 的包装器
  */
-export const SuspenseWrapper: React.FC<{ children: ReactNode; fallback?: ReactNode }> = ({ 
+export const SuspenseErrorBoundary: React.FC<{ children: ReactNode; fallback?: ReactNode }> = ({ 
   children, 
   fallback = <PageLoadingSpinner /> 
 }) => {
@@ -86,4 +93,4 @@ export const SuspenseWrapper: React.FC<{ children: ReactNode; fallback?: ReactNo
   );
 };
 
-export default SuspenseWrapper;
+export default SuspenseErrorBoundary;

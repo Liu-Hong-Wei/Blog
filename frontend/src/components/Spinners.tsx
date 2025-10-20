@@ -25,23 +25,9 @@ export const InlineLoadingSpinner = () => (
   </div>
 );
 
-// 懒加载包装器组件 - 更好的类型安全
-interface LazyWrapperProps {
-  children: ReactNode;
-  fallback?: ReactNode;
-}
-
-export const LazyWrapper = ({ 
-  children, 
-  fallback = <ComponentLoadingSpinner />, 
-}: LazyWrapperProps) => {
-  return  <Suspense fallback={fallback}>{children}</Suspense>;
-};
-
 // 导出所有加载组件和工具
 export default {
   PageLoadingSpinner,
   ComponentLoadingSpinner,
   InlineLoadingSpinner,
-  LazyWrapper,
 };

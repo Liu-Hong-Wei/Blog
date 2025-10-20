@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode, lazy } from "react";
 
-import ErrorBoundary from "./layouts/ErrorBoundary.tsx";
+import SuspenseErrorBoundary from "./components/SuspenseErrorBoundary.tsx";
 import NavbarLayout from "./layouts/NavbarLayout.tsx";
 import Test from "./tests/Test.tsx";
 
@@ -59,9 +59,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <StrictMode>
-      <ErrorBoundary>
-        <RouterProvider router={router} />
-      </ErrorBoundary>
+        <SuspenseErrorBoundary>
+          <RouterProvider router={router} />
+        </SuspenseErrorBoundary>
     </StrictMode >
   );
 }

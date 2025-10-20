@@ -1,9 +1,9 @@
-import Error from "./errors/Error";
+import UnderConstruction from "./errors/UnderConstruction";
 
 function Homepage() {
   return (
     <>
-      <Error emoji='🚧' content='Homepage is under construction' showRefresh={false} showGoHome={false} />
+      <UnderConstruction name="Homepage" />
     </>
   );
 }

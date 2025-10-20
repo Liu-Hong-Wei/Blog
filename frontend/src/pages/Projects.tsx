@@ -1,9 +1,10 @@
 import MainContentLayout from "../layouts/MainContentLayout";
+import UnderConstruction from "./errors/UnderConstruction";
 
 function Projects() {
     return (
         <MainContentLayout>
-            Nothing here yet!
+            <UnderConstruction name="Projects page"/>
         </MainContentLayout>
     )
 }

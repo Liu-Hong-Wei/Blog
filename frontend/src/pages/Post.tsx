@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { ReactElement, useEffect, useState } from 'react';
 import markdownToHtml from '../utils/markdownToHtml';
 import usePost from '../hooks/usePost';
-import { PageLoadingSpinner } from '../utils/lazyLoading';
+import { PageLoadingSpinner } from '../components/Spinners';
 import Error from './errors/Error';
 import { SuspenseWrapper } from '../components/SuspenseErrorBoundary';
 
