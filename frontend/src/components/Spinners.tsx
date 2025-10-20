@@ -1,5 +1,3 @@
-import { Suspense, ReactNode } from 'react';
-
 // 加载状态组件 - 使用统一的设计系统
 export const PageLoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading">
@@ -10,11 +8,11 @@ export const PageLoadingSpinner = () => (
   </div>
 );
 
-export const ComponentLoadingSpinner = () => (
+export const ComponentLoadingSpinner = ({ componentName = "" }: { componentName?: string }) => (
   <div className="flex items-center justify-center p-6" role="status" aria-label="Loading component">
     <div className="flex items-center space-x-3">
       <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-200 border-t-blue-600" />
-      <span className="text-gray-600 text-sm">Loading component...</span>
+      <span className="text-gray-600 text-sm">Loading {componentName}...</span>
     </div>
   </div>
 );
@@ -25,7 +23,6 @@ export const InlineLoadingSpinner = () => (
   </div>
 );
 
-// 导出所有加载组件和工具
 export default {
   PageLoadingSpinner,
   ComponentLoadingSpinner,

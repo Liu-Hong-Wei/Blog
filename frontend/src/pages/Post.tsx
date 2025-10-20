@@ -5,7 +5,6 @@ import markdownToHtml from '../utils/markdownToHtml';
 import usePost from '../hooks/usePost';
 import { PageLoadingSpinner } from '../components/Spinners';
 import Error from './errors/Error';
-import { SuspenseWrapper } from '../components/SuspenseErrorBoundary';
 
 function PostContent({ slug }: { slug: string }) {
     const post = usePost(slug);
@@ -86,7 +85,6 @@ function Post() {
 
     return (
         <MainContentLayout>
-            <SuspenseWrapper>
                 {!slug ? (
                     <Error 
                         emoji="⚠️" 
@@ -96,7 +94,6 @@ function Post() {
                 ) : (
                     <PostContent slug={slug} />
                 )}
-            </SuspenseWrapper>
         </MainContentLayout>
     );
 }
