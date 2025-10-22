@@ -1,10 +1,11 @@
-import MainContentLayout from '../layouts/MainContentLayout';
-import { useParams } from 'react-router';
 import { ReactElement, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+
+import { PageLoadingSpinner } from '../components/Spinners';
+import MainContentLayout from '../layouts/MainContentLayout';
+import Error from './errors/Error';
 import markdownToHtml from '../utils/markdownToHtml';
 import usePost from '../hooks/usePost';
-import { PageLoadingSpinner } from '../components/Spinners';
-import Error from './errors/Error';
 
 function PostContent({ slug }: { slug: string }) {
     const post = usePost(slug);
@@ -39,9 +40,9 @@ function PostContent({ slug }: { slug: string }) {
             {!isProcessing && post && (
                 <article className="space-y-6 w-full">
                     {/* 文章标题和元信息 */}
-                    <header>
-                        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-                        <div className="flex items-center text-sm text-gray-500 space-x-4">
+                    <header className="max-w-none">
+                        <h1>{post.title}</h1>
+                        <div className="flex items-center text-lg text-gray-500 space-x-4">
                             <span>{post.views} views</span>
                             <span>{new Date(post.created_at).toLocaleDateString('zh-CN')}</span>
                         </div>
@@ -51,7 +52,7 @@ function PostContent({ slug }: { slug: string }) {
                                 {post.tags.map((tag) => (
                                     <span
                                         key={tag.id}
-                                        className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                                        className="px-2 py-1 bg-blue-100 text-blue-800 text-lg rounded-full"
                                     >
                                         {tag.name}
                                     </span>
@@ -61,14 +62,14 @@ function PostContent({ slug }: { slug: string }) {
                         {/* 显示 TLDR */}
                         {post.tldr && (
                             <div className="mt-4 p-4 bg-secondary/5 border-l-4 border-secondary">
-                                <h3 className="text-sm font-semibold text-secondary mb-2">TL;DR</h3>
-                                <p className="text-sm text-secondary">{post.tldr}</p>
+                                <div className="text-2xl font-semibold text-secondary mb-2">TL;DR</div>
+                                <div className="text-xl text-secondary">{post.tldr}</div>
                             </div>
                         )}
                     </header>
 
                     {/* 文章内容 */}
-                    <main className="prose prose-gray max-w-none">
+                    <main className="max-w-none">
                         {renderedContent}
                         {!isProcessing && post && !post.content && (
                             <Error emoji='🤔' content='Nothing here' />
