@@ -3,7 +3,7 @@ import { StrictMode, lazy } from "react";
 
 import SuspenseErrorBoundary from "./components/SuspenseErrorBoundary.tsx";
 import NavbarLayout from "./layouts/NavbarLayout.tsx";
-import Test from "./tests/Test.tsx";
+// import Test from "./tests/Test.tsx";
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
 const Homepage = lazy(() => import("./pages/Homepage.tsx"));
@@ -43,11 +43,10 @@ const router = createBrowserRouter([
         path: "posts/:slug",
         element: <Post />,
       },
-      {
-        path: "test",
-        element: <Test />,
-
-      },
+      // {
+      //   path: "test",
+      //   element: <Test />,
+      // },
       {
         path: "*",
         element: <NotFound />,
