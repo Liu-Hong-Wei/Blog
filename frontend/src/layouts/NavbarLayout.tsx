@@ -5,6 +5,7 @@ import { PageLoadingSpinner } from "../components/Spinners.tsx";
 import { NavBarProps } from "../types/types";
 import NavButton from "../components/buttons/NavButton";
 import HamburgerIcon from "../components/icons/HamburgerIcon";
+import ToggleDarkModeButton from "../components/buttons/ToggleDarkModeButton.tsx";
 
 // 导航链接常量，避免在渲染期间重复创建
 const NAV_LINKS = [
@@ -45,11 +46,12 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
               to="/"
             >Ethan's Blog</NavLink>
           </header>
+          <ToggleDarkModeButton />
+          {/* 菜单按钮，仅在小屏显示 */}
           <NavButton
             onClick={() => setDrawerOpen(true)}
             className="md:hidden"
             ariaLabel="Open menu">
-            {/* 菜单按钮，仅在小屏显示 */}
             <HamburgerIcon />
           </NavButton>
           {/* 原有NavLink，仅在md及以上显示 */}
