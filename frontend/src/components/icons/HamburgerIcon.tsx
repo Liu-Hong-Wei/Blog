@@ -1,9 +1,8 @@
 export default function HamburgerIcon() {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <span className="block w-6 h-0.5 bg-gray-400 mb-1"></span>
-      <span className="block w-6 h-0.5 bg-gray-400 mb-1"></span>
-      <span className="block w-6 h-0.5 bg-gray-400"></span>
-    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+
   );
 }

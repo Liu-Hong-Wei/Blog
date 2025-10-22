@@ -19,16 +19,16 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
   return (
     <ul className={`flex ${className}`}>
       {NAV_LINKS.map(({ to, text }) => (
-        <NavButton
-          key={to}
-          to={to}
-          onClick={onClick}
-          ariaLabel={`${text} link`}
-        >
-          <li>
+        <li>
+          <NavButton
+            key={to}
+            to={to}
+            onClick={onClick}
+            ariaLabel={`${text} link`}
+          >
             {text}
-          </li>
-        </NavButton>
+          </NavButton>
+        </li>
       ))}
     </ul>
 
@@ -38,7 +38,7 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`sticky top-0 mb-2 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
+      <nav className={`sticky top-0 mb-2 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 dark:bg-bgsecondary/80 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
         <section className="flex justify-between items-center px-2 md:max-w-4xl mx-auto w-full md:h-fit h-16">
           <header className="flex justify-center items-center">
             <NavLink
@@ -46,16 +46,18 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
               to="/"
             >Ethan's Blog</NavLink>
           </header>
-          <ToggleDarkModeButton />
-          {/* 菜单按钮，仅在小屏显示 */}
-          <NavButton
-            onClick={() => setDrawerOpen(true)}
-            className="md:hidden"
-            ariaLabel="Open menu">
-            <HamburgerIcon />
-          </NavButton>
-          {/* 原有NavLink，仅在md及以上显示 */}
-          <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+          <div className="flex">
+            {/* 原有NavLink，仅在md及以上显示 */}
+            <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+            <ToggleDarkModeButton />
+            {/* 菜单按钮，仅在小屏显示 */}
+            <NavButton
+              onClick={() => setDrawerOpen(true)}
+              className="md:hidden ml-2"
+              ariaLabel="Open menu">
+              <HamburgerIcon />
+            </NavButton>
+          </div>
         </section>
       </nav >
       {/* Drawer蒙层和侧边栏，仅在小屏幕下显示（带动画）*/}
@@ -157,7 +159,7 @@ function Navbar() {
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <div className="max-w-screen min-h-screen bg-bgprimary/10"> {/* wrapper for the notch design */}
+      <div className="max-w-screen min-h-screen bg-bgprimary/10 dark:bg-bgdarkprimary/80 transition-colors duration-200"> {/* wrapper for the notch design */}
         <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
         <div className={`flex flex-col w-full h-fit`}>
           <Suspense fallback={<PageLoadingSpinner />}>

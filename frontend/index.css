@@ -1,6 +1,8 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* TODO: lots of customizations to be done later */
 @theme {
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -13,6 +15,7 @@
 
   --color-bgprimary: oklch(0.9913 0.0013 286.38);
   --color-bgsecondary: var(--color-gray-100);
+  --color-bgdarkprimary: var(--color-gray-800);
 
   --color-primary: var(--color-zinc-800);
   --color-secondary: var(--color-violet-800);
