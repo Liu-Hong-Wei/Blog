@@ -155,7 +155,7 @@ function Navbar() {
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <div className="min-w-full min-h-screen bg-secondary/10"> {/* just for the notch design */}
+      <div className="max-w-screen min-h-screen bg-bgprimary/10"> {/* wrapper for the notch design */}
         <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
         <div className={`flex flex-col w-full h-fit`}>
           <Suspense fallback={<PageLoadingSpinner />}>
