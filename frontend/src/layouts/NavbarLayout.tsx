@@ -96,9 +96,9 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
             to="/"
           >Ethan's Blog</NavLink>
         </header>
-        <div className="flex">
+        <div className="flex ">
           {/* 原有NavLink，仅在md及以上显示 */}
-          <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+          <NavLinks className="hidden md:flex h-full *:grow gap-4 " />
           <ToggleDarkModeButton />
           {/* 菜单按钮，仅在小屏显示 */}
           <NavButton
