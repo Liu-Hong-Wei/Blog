@@ -8,7 +8,7 @@ export default function NavButton({ onClick, className, to, ariaLabel, children 
   if (to) {
     child = <NavLink
       to={to}
-      className={({ isActive }) => isActive ? "text-secondary font-bold no-underline" : "text-primary/50 hover:underline hover:underline-offset-2"}
+      className={({ isActive }) => isActive ? "text-secondary font-bold no-underline" : "text-primary hover:underline hover:underline-offset-2"}
     >
       {children}
     </NavLink>

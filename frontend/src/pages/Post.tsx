@@ -41,7 +41,7 @@ function PostContent({ slug }: { slug: string }) {
                 <article className="space-y-6 w-full">
                     {/* 文章标题和元信息 */}
                     <header className="max-w-none">
-                        <h1>{post.title}</h1>
+                        <h1 className='text-4xl font-bold'>{post.title}</h1>
                         <div className="flex items-center text-lg text-gray-500 space-x-4">
                             <span>{post.views} views</span>
                             <span>{new Date(post.created_at).toLocaleDateString('zh-CN')}</span>
@@ -52,7 +52,7 @@ function PostContent({ slug }: { slug: string }) {
                                 {post.tags.map((tag) => (
                                     <span
                                         key={tag.id}
-                                        className="px-2 py-1 bg-blue-100 text-blue-800 text-lg rounded-full"
+                                        className="px-2 py-1 bg-blue-100 text-blue-800 text-md rounded-full"
                                     >
                                         {tag.name}
                                     </span>
@@ -62,8 +62,8 @@ function PostContent({ slug }: { slug: string }) {
                         {/* 显示 TLDR */}
                         {post.tldr && (
                             <div className="mt-4 p-4 bg-secondary/5 border-l-4 border-secondary">
-                                <div className="text-2xl font-semibold text-secondary mb-2">TL;DR</div>
-                                <div className="text-xl text-secondary">{post.tldr}</div>
+                                <div className="text-xl font-semibold text-secondary mb-2">TL;DR</div>
+                                <div className="text-lg text-secondary">{post.tldr}</div>
                             </div>
                         )}
                     </header>

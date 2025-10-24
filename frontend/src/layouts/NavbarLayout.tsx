@@ -15,91 +15,6 @@ const NAV_LINKS = [
   { to: "/about", text: "About" }
 ];
 
-function NavLinks({ onClick, className }: { onClick?: () => void, className?: string }) {
-  return (
-    <ul className={`flex ${className}`}>
-      {NAV_LINKS.map(({ to, text }) => (
-        <li>
-          <NavButton
-            key={to}
-            to={to}
-            onClick={onClick}
-            ariaLabel={`${text} link`}
-          >
-            {text}
-          </NavButton>
-        </li>
-      ))}
-    </ul>
-
-  )
-}
-
-function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
-  return (
-    <>
-      <nav className={`sticky top-0 mb-2 md:w-2xl w-full text-xl backdrop-blur-sm bg-bgsecondary/50 dark:bg-bgsecondary/80 rounded-b-xl mx-auto z-50 shadow-md transition-shadow duration-300`}>
-        <section className="flex justify-between items-center px-2 md:max-w-4xl mx-auto w-full md:h-fit h-16">
-          <header className="flex justify-center items-center">
-            <NavLink
-              className="text-primary text-xl font-bold"
-              to="/"
-            >Ethan's Blog</NavLink>
-          </header>
-          <div className="flex">
-            {/* 原有NavLink，仅在md及以上显示 */}
-            <NavLinks className="hidden md:flex h-full *:grow gap-4" />
-            <ToggleDarkModeButton />
-            {/* 菜单按钮，仅在小屏显示 */}
-            <NavButton
-              onClick={() => setDrawerOpen(true)}
-              className="md:hidden ml-2"
-              ariaLabel="Open menu">
-              <HamburgerIcon />
-            </NavButton>
-          </div>
-        </section>
-      </nav >
-      {/* Drawer蒙层和侧边栏，仅在小屏幕下显示（带动画）*/}
-      {
-        drawerVisible && (
-          <>
-            {/* 覆盖层：淡入淡出 */}
-            <div
-              className={`fixed inset-0 bg-bgsecondary/10 backdrop-blur-3xl z-40 transition-opacity duration-300 ${drawerActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-              onClick={() => setDrawerOpen(false)}
-            ></div>
-            {/* 顶部下拉抽屉：从上方滑入/滑出 */}
-            <aside className={`fixed top-0 w-full mx-auto z-50 backdrop-blur-2xl bg-bgsecondary/80 rounded-b-xl shadow-md flex flex-col transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
-              <header className="flex justify-center items-center h-16">
-                <NavLink
-                  to="/"
-                  className="text-primary text-2xl font-bold"
-                  onClick={() => setDrawerOpen(false)}
-                >Ethan's Blog</NavLink>
-              </header>
-              <NavLinks onClick={() => setDrawerOpen(false)} className="flex-col gap-2" />
-            </aside>
-          </>
-        )
-      }</>
-  )
-}
-
-// 监听滚动以切换阴影
-// function useScrollShadow() {
-//   const [scrolled, setScrolled] = useState(false);
-
-//   useEffect(() => {
-//     const handleScroll = () => setScrolled(window.scrollY > 0);
-//     handleScroll();
-//     window.addEventListener("scroll", handleScroll, { passive: true });
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   return scrolled;
-// }
-
 // 控制抽屉的挂载与动画：打开立即挂载，关闭延迟卸载
 function useDrawerTransition(isOpen: boolean, delayMs = 300) {
   const [visible, setVisible] = useState(false);
@@ -151,6 +66,89 @@ function useBodyScrollLock(locked: boolean) {
   }, [locked]);
 }
 
+function NavLinks({ onClick, className }: { onClick?: () => void, className?: string }) {
+  return (
+    <ul className={`flex text-2xl ${className}`}>
+      {NAV_LINKS.map(({ to, text }) => (
+        <li>
+          <NavButton
+            key={to}
+            to={to}
+            onClick={onClick}
+            ariaLabel={`${text} link`}
+          >
+            {text}
+          </NavButton>
+        </li>
+      ))}
+    </ul>
+
+  )
+}
+
+function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
+  return (
+    <>
+      <nav className={`sticky top-2 mx-auto z-50 my-2 p-2 h-12 md:max-w-3xl w-full flex justify-between items-center backdrop-blur-sm bg-bgprimary/50 rounded-xl shadow-md transition-all duration-300`}>
+          <header className="flex justify-center items-center">
+            <NavLink
+              className="text-2xl font-bold"
+              to="/"
+            >Ethan's Blog</NavLink>
+          </header>
+          <div className="flex">
+            {/* 原有NavLink，仅在md及以上显示 */}
+            <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+            <ToggleDarkModeButton />
+            {/* 菜单按钮，仅在小屏显示 */}
+            <NavButton
+              onClick={() => setDrawerOpen(true)}
+              className="md:hidden ml-2"
+              ariaLabel="Open menu">
+              <HamburgerIcon />
+            </NavButton>
+          </div>
+      </nav >
+      {/* Drawer蒙层和侧边栏，仅在小屏幕下显示（带动画）*/}
+      {
+        drawerVisible && (
+          <>
+            {/* 覆盖层：淡入淡出 */}
+            <div
+              className={`fixed inset-0 bg-bgprimary/10 backdrop-blur-3xl z-40 transition-opacity duration-300 ${drawerActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+              onClick={() => setDrawerOpen(false)}
+            ></div>
+            {/* 顶部下拉抽屉：从上方滑入/滑出 */}
+            <aside className={`fixed top-0 w-full mx-auto z-50 backdrop-blur-2xl bg-bgprimary/50 rounded-b-xl shadow-md flex flex-col transition-transform duration-300 ${drawerActive ? '' : '-translate-y-full'}`}>
+              <header className="flex justify-center items-center text-secondary h-12">
+                <NavLink
+                  to="/"
+                  className="text-2xl font-bold"
+                  onClick={() => setDrawerOpen(false)}
+                >Ethan's Blog</NavLink>
+              </header>
+              <NavLinks onClick={() => setDrawerOpen(false)} className="flex-col gap-2" />
+            </aside>
+          </>
+        )
+      }</>
+  )
+}
+
+// 监听滚动以切换阴影
+// function useScrollShadow() {
+//   const [scrolled, setScrolled] = useState(false);
+
+//   useEffect(() => {
+//     const handleScroll = () => setScrolled(window.scrollY > 0);
+//     handleScroll();
+//     window.addEventListener("scroll", handleScroll, { passive: true });
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   return scrolled;
+// }
+
 function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen, 300);
@@ -159,7 +157,7 @@ function Navbar() {
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <div className="max-w-screen min-h-screen bg-bgprimary/10 dark:bg-bgdarkprimary/80 transition-colors duration-200"> {/* wrapper for the notch design */}
+      <div className="max-w-screen min-h-screen p-[0.05px] bg-bgprimary text-primary transition-colors duration-300"> {/* wrapper for the notch design */}
         <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
         <div className={`flex flex-col w-full h-fit`}>
           <Suspense fallback={<PageLoadingSpinner />}>

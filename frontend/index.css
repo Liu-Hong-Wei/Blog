@@ -8,26 +8,45 @@
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-
-  /* --line-height: 1.7; // for readability */
-
   --default-font-family: "Noto Serif SC", serif;
+  --line-height: 1.7;
+  /* for readability */
 
-  --color-bgprimary: oklch(0.9913 0.0013 286.38);
+  /* paper white background */
+  --color-bgprimary: var(--color-zinc-50);
+  /* secondary paper gray background */
   --color-bgsecondary: var(--color-gray-100);
-  --color-bgdarkprimary: var(--color-gray-800);
 
+  /* text colors nearly black */
   --color-primary: var(--color-zinc-800);
+  /* theme color violet */
   --color-secondary: var(--color-violet-800);
 
 }
 
+/* Dark mode overrides */
+.dark {
+  /* dark mode background nearly black */
+  --color-bgprimary: var(--color-neutral-900);
+  /* secondary dark mode gray background */
+  --color-bgsecondary: var(--color-gray-200);
+
+  /* light text color nearly white */
+  --color-primary: #fff;
+  /* theme color cyan */
+  --color-secondary: var(--color-cyan-400);
+}
+
+
 @layer components {
-  .card-hover-effect > * { /* 为所有直接子元素应用过渡 */
+  .card-hover-effect>* {
+    /* 为所有直接子元素应用过渡 */
     @apply transition-colors duration-300;
   }
+
   /* 或者更具体地指定 */
-  .card-hover-effect h3, .card-hover-effect p {
+  .card-hover-effect h3,
+  .card-hover-effect p {
     @apply transition-colors duration-300;
   }
 }
@@ -36,6 +55,7 @@
   .text-transition {
     @apply transition-colors duration-300 ease-in-out;
   }
+
   .icon-transition {
     @apply transition-transform duration-200 ease-in-out;
   }

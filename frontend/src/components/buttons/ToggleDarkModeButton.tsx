@@ -46,7 +46,8 @@ export default function ToggleDarkModeButton({ className = "" }: { className?: s
 
     return (
         <Button
-            className={`flex justify-center items-center text-primary ${className}`}
+            className={`flex justify-center items-center${className}`}
+            variant="primary"
             onClick={handleClick}
             aria-label={`Change to ${newMode} Mode`}
         >

@@ -23,9 +23,10 @@ export default function Button({
     ${className}
     inline-flex items-center justify-center
     rounded-md transition-colors duration-300
+    bg-transparent
     focus:outline-none hover:cursor-pointer
-    ${variant === "primary" && "text-primary bg-transparent"}
-    ${variant === "secondary" && "text-secondary bg-transparent"}
+    ${variant === "primary" && "text-primary "}
+    ${variant === "secondary" && "text-secondary"}
     ${size === "small" && "h-8 p-2 text-base font-light "}
     ${size === "mid" && "h-12 p-2 text-lg font-normal "}
     ${size === "large" && "h-16 p-2 text-xl font-medium "}
