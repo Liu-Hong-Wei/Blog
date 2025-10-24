@@ -69,10 +69,10 @@ function PostContent({ slug }: { slug: string }) {
                     </header>
 
                     {/* 文章内容 */}
-                    <main className="max-w-none">
+                    <main className="max-w-full">
                         {renderedContent}
                         {!isProcessing && post && !post.content && (
-                            <Error emoji='🤔' content='Nothing here' />
+                            <Error emoji='🤔' content='This post is empty?!' />
                         )}
                     </main>
                 </article>

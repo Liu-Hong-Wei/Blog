@@ -89,25 +89,25 @@ function NavLinks({ onClick, className }: { onClick?: () => void, className?: st
 function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   return (
     <>
-      <nav className={`sticky top-2 mx-auto z-50 my-2 p-2 h-12 md:max-w-3xl w-full flex justify-between items-center backdrop-blur-sm bg-bgprimary/50 rounded-xl shadow-md transition-all duration-300`}>
-          <header className="flex justify-center items-center">
-            <NavLink
-              className="text-2xl font-bold"
-              to="/"
-            >Ethan's Blog</NavLink>
-          </header>
-          <div className="flex">
-            {/* 原有NavLink，仅在md及以上显示 */}
-            <NavLinks className="hidden md:flex h-full *:grow gap-4" />
-            <ToggleDarkModeButton />
-            {/* 菜单按钮，仅在小屏显示 */}
-            <NavButton
-              onClick={() => setDrawerOpen(true)}
-              className="md:hidden ml-2"
-              ariaLabel="Open menu">
-              <HamburgerIcon />
-            </NavButton>
-          </div>
+      <nav className={`sticky top-2 mx-auto z-50 m-2 p-2 h-12 md:max-w-3xl w-full flex justify-between items-center backdrop-blur-sm bg-bgprimary/50 rounded-xl shadow-md transition-all duration-300`}>
+        <header className="flex justify-center items-center">
+          <NavLink
+            className="text-2xl font-bold"
+            to="/"
+          >Ethan's Blog</NavLink>
+        </header>
+        <div className="flex">
+          {/* 原有NavLink，仅在md及以上显示 */}
+          <NavLinks className="hidden md:flex h-full *:grow gap-4" />
+          <ToggleDarkModeButton />
+          {/* 菜单按钮，仅在小屏显示 */}
+          <NavButton
+            onClick={() => setDrawerOpen(true)}
+            className="md:hidden ml-2"
+            ariaLabel="Open menu">
+            <HamburgerIcon />
+          </NavButton>
+        </div>
       </nav >
       {/* Drawer蒙层和侧边栏，仅在小屏幕下显示（带动画）*/}
       {
@@ -135,7 +135,7 @@ function NavBar({ setDrawerOpen, drawerVisible, drawerActive }: NavBarProps) {
   )
 }
 
-// 监听滚动以切换阴影
+// 监听滚动
 // function useScrollShadow() {
 //   const [scrolled, setScrolled] = useState(false);
 
@@ -157,9 +157,9 @@ function Navbar() {
   // TODO: 在阅读文章时，Ethan Blog 转成文章标题
   return (
     <>
-      <div className="max-w-screen min-h-screen p-[0.05px] bg-bgprimary text-primary transition-colors duration-300"> {/* wrapper for the notch design */}
+      <div className="max-w-screen min-h-screen p-[0.05px] bg-bgprimary text-primary flex flex-col transition-colors duration-300"> {/* wrapper for the notch design */}
         <NavBar setDrawerOpen={setDrawerOpen} drawerVisible={drawerVisible} drawerActive={drawerActive} />
-        <div className={`flex flex-col w-full h-fit`}>
+        <div className={`grow flex flex-col bg-bgprimary transition-colors duration-300`}>
           <Suspense fallback={<PageLoadingSpinner />}>
             <Outlet />
           </Suspense>

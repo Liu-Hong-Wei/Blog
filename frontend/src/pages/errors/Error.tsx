@@ -18,7 +18,7 @@ const Error = ({
     const navigate = useNavigate();
 
     return (
-        <div className="h-fit p-16 flex flex-col items-center justify-center">
+        <div className="size-full p-16 flex flex-col items-center justify-center">
             <div className="text-6xl mb-4">{emoji}</div>
             <h1 className="text-4xl font-bold mb-4">
                 {content}

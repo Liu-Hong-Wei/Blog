@@ -58,9 +58,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <StrictMode>
-        <SuspenseErrorBoundary>
-          <RouterProvider router={router} />
-        </SuspenseErrorBoundary>
+      <SuspenseErrorBoundary>
+        <RouterProvider router={router} />
+      </SuspenseErrorBoundary>
     </StrictMode >
   );
 }
