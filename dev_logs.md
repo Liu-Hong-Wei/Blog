@@ -63,4 +63,4 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
 ## 7. rendering md article and gradually support mdx article
 
 - support code syntax highlight with [rehype and shiki tooling](https://shiki.matsu.io/packages/rehype)
-- 
+- Rendering markdown using [customized styles](https://github.com/syntax-tree/hast-util-to-jsx-runtime#components) with [rehype-react](https://github.com/rehypejs/rehype-react#components)
