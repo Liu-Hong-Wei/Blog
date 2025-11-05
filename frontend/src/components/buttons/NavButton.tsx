@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { NavButtonProps } from "../../types/types";
 import Button from "./Button";
 
-export default function NavButton({ onClick, className = "", to, ariaLabel, ariaExpanded, ariaControls, children }: NavButtonProps) {
+export default function ravButton({ onClick, className = "", to, ariaLabel, ariaExpanded, ariaControls, children }: NavButtonProps) {
   let child = children;
   if (to) {
     child = (
@@ -22,7 +22,7 @@ export default function NavButton({ onClick, className = "", to, ariaLabel, aria
 
   return (
     <Button
-      className={`flex items-center ${className}`}
+      className={`flex justify-center items-center ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
       aria-expanded={ariaExpanded}

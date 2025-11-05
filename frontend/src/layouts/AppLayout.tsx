@@ -103,7 +103,7 @@ function NavLinks({ orientation = "horizontal", onNavigate, className = "" }: Na
       aria-orientation={orientation}
     >
       {NAV_LINKS.map(({ to, label }) => (
-        <li key={to} role="none">
+        <li key={to} role="menuitem">
           <NavButton to={to} onClick={onNavigate} ariaLabel={`${label} link`} className={buttonClasses}>
             {label}
           </NavButton>
