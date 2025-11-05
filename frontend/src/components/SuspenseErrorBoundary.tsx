@@ -67,7 +67,7 @@ class ErrorBoundary extends Component<Props, State> {
         <div className="flex flex-col justify-center items-center space-y-4">
           <Error emoji="⚠️" content={`Oops, Something went wrong: ${this.state.error?.message || 'An unexpected error occurred'}`} />
           <Button onClick={this.handleRetry}>
-            Try Again;0
+            Try Again;0 btw this is a general error boundary
           </Button>
         </div>
       );

@@ -6,6 +6,7 @@ import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
 import markdownToHtml from '../utils/markdownToHtml';
 import usePost from '../hooks/usePost';
+import SuspenseErrorBoundary from '../components/SuspenseErrorBoundary';
 
 function PostContent({ slug }: { slug: string }) {
     const post = usePost(slug);
@@ -86,15 +87,17 @@ function Post() {
 
     return (
         <MainContentLayout>
+            <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
                 {!slug ? (
-                    <Error 
-                        emoji="⚠️" 
-                        content="Invalid Article Link" 
+                    <Error
+                        emoji="⚠️"
+                        content="Invalid Article Link"
                         error="The article link is missing or invalid."
                     />
                 ) : (
                     <PostContent slug={slug} />
                 )}
+            </SuspenseErrorBoundary>
         </MainContentLayout>
     );
 }
