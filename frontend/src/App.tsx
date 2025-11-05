@@ -43,10 +43,6 @@ const router = createBrowserRouter([
         path: "posts/:slug",
         element: <Post />,
       },
-      // {
-      //   path: "test",
-      //   element: <Test />,
-      // },
       {
         path: "*",
         element: <NotFound />,

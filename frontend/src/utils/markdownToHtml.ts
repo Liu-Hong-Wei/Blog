@@ -3,15 +3,15 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 // remark-rehype：将 Markdown 抽象语法树（MDAST）转换为 HTML 抽象语法树（HAST）。
 import remarkRehype from 'remark-rehype'
-// rehype-highlight：为代码块添加语法高亮。
-import rehypeHighlight from 'rehype-highlight'
-// rehype-sanitize：对 HTML 进行消毒，防止 XSS 攻击。
-import rehypeSanitize from 'rehype-sanitize'
 // rehype-react：将 HAST 转换为 React 元素。
 import rehypeReact from 'rehype-react'
 import { createElement, ReactElement, Fragment } from 'react'
 // 仅导入生产环境需要的 jsx 和 Fragment
 import { jsx, jsxs } from 'react/jsx-runtime'
+
+// Shiki in rehype for syntax highlighting
+import rehypeShiki from '@shikijs/rehype'
+import rehypeStringify from 'rehype-stringify'
 
 // 定义返回类型，包含成功和错误状态
 export interface MarkdownResult {
@@ -46,9 +46,16 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     // 处理 markdown 转换
     const file = await unified()
       .use(remarkParse)          // 1. Parse Markdown to MDAST
-      .use(remarkRehype, { allowDangerousHtml: true }) // allow HTML
-      .use(rehypeHighlight)      // 2. Add syntax highlighting for code blocks
-      .use(rehypeSanitize)       // 3. Sanitize HTML to prevent XSS
+      .use(remarkRehype) 
+      .use(rehypeShiki, {    // 2. Syntax highlighting
+        // or `theme` for a single theme
+        themes: {
+          light: 'vitesse-light',
+          dark: 'vitesse-dark',
+        }
+      })         // Transform MDAST to HAST
+      .use(rehypeStringify)
+      // .use(rehypeSanitize)       // 3. Sanitize HTML to prevent XSS (attention: may remove some custom elements, MAYBE DON'T NEED IT)
       .use(rehypeReact, {        // 4. Transform HAST to React elements
         createElement,
         Fragment,
