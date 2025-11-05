@@ -68,7 +68,7 @@ function PostContent({ slug }: { slug: string }) {
 
                     {/* 文章内容 */}
                     <main className="max-w-full">
-                        {isProcessing && (<ComponentLoadingSpinner />)}
+                        {isProcessing && (<ComponentLoadingSpinner loading="Rendering" />)}
                         {!isProcessing && renderedContent}
                         {/* 加载中状态（仅 markdown 处理） */}
                         {!isProcessing && post && !post.content && (

@@ -1,18 +1,12 @@
-import { NavLink, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import NavButton from "../components/buttons/NavButton";
-import ToggleDarkModeButton from "../components/buttons/ToggleDarkModeButton.tsx";
-import HamburgerIcon from "../components/icons/HamburgerIcon";
 import SuspenseErrorBoundary from "../components/SuspenseErrorBoundary.tsx";
 import { PageLoadingSpinner } from "../components/Spinners.tsx";
+import SiteHeader from "../components/SiteHeader.tsx";
+import SiteFooter from "../components/SiteFooter.tsx";
+import MobileDrawer from "../components/MobileDrawer.tsx";
 
-const NAV_LINKS = [
-  { to: "/posts", label: "Posts" },
-  { to: "/ideas", label: "Ideas" },
-  { to: "/projects", label: "Projects" },
-  { to: "/about", label: "About" }
-] as const;
 
 const DRAWER_DISMISS_DELAY = 300;
 
@@ -79,123 +73,6 @@ function useBodyScrollLock(locked: boolean) {
     body.style.width = "";
     body.style.overflow = "";
   }, [locked]);
-}
-
-type NavLinksProps = {
-  orientation?: "horizontal" | "vertical";
-  onNavigate?: () => void;
-  className?: string;
-};
-
-function NavLinks({ orientation = "horizontal", onNavigate, className = "" }: NavLinksProps) {
-  const layoutClasses =
-    orientation === "horizontal"
-      ? "flex-row items-center gap-4"
-      : "flex-col items-stretch gap-2";
-  const buttonClasses =
-    orientation === "horizontal"
-      ? "justify-center px-2 py-1"
-      : "w-full justify-start px-4 py-2 text-left";
-
-  return (
-    <ul
-      className={`flex text-2xl ${layoutClasses} ${className}`}
-      role="menubar"
-      aria-orientation={orientation}
-    >
-      {NAV_LINKS.map(({ to, label }) => (
-        <li key={to} role="menuitem">
-          <NavButton to={to} onClick={onNavigate} ariaLabel={`${label} link`} className={buttonClasses}>
-            {label}
-          </NavButton>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-type SiteHeaderProps = {
-  onOpenDrawer: () => void;
-  isDrawerOpen: boolean;
-};
-
-function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
-  return (
-    <header role="banner" className="sticky top-2 z-50 my-2 mx-4 flex justify-center md:mx-auto md:min-w-3xl">
-      <nav
-        className="flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl shadow-sm shadow-bgsecondary ring-1 ring-bgsecondary transition-all duration-300"
-        aria-label="Primary navigation"
-      >
-        <NavLink className="text-2xl font-bold" to="/">
-          Ethan&apos;s Blog
-        </NavLink>
-        <div className="flex items-center">
-          <NavLinks className="hidden md:flex" />
-          <NavButton
-            onClick={onOpenDrawer}
-            className="ml-2 md:hidden"
-            ariaLabel="Open navigation menu"
-            aria-expanded={isDrawerOpen}
-            aria-controls="mobile-navigation"
-          >
-            <HamburgerIcon />
-          </NavButton>
-        </div>
-      </nav>
-    </header>
-  );
-}
-
-type MobileDrawerProps = {
-  visible: boolean;
-  active: boolean;
-  onClose: () => void;
-};
-
-function MobileDrawer({ visible, active, onClose }: MobileDrawerProps) {
-  if (!visible) {
-    return null;
-  }
-
-  return (
-    <>
-      <div
-        className={`fixed inset-0 z-40 bg-bgprimary/10 backdrop-blur-3xl transition-opacity duration-300 ${
-          active ? "opacity-100 pointer-events-auto" : "pointer-events-none opacity-0"
-        }`}
-        onClick={onClose}
-        role="presentation"
-      />
-      <aside
-        id="mobile-navigation"
-        className={`fixed top-0 z-50 w-full rounded-b-xl bg-bgprimary/50 backdrop-blur-2xl shadow-md transition-transform duration-300 ${
-          active ? "translate-y-0" : "-translate-y-full"
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation"
-      >
-        <div className="flex h-12 items-center justify-center text-secondary">
-          <NavLink to="/" className="text-2xl font-bold" onClick={onClose}>
-            Ethan&apos;s Blog
-          </NavLink>
-        </div>
-        <NavLinks orientation="vertical" className="px-6 pb-6" onNavigate={onClose} />
-      </aside>
-    </>
-  );
-}
-
-function SiteFooter() {
-  return (
-    <footer
-      className="mx-4 flex h-16 max-w-full items-center justify-between border-t-2 border-bgsecondary px-4 text-md text-primary transition-all duration-300 md:mx-auto md:min-w-3xl"
-      role="contentinfo"
-    >
-      <div>© {new Date().getFullYear()} Ethan&apos;s Blog. All rights reserved.</div>
-      <ToggleDarkModeButton />
-    </footer>
-  );
 }
 
 function AppLayout() {
