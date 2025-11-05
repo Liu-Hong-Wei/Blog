@@ -6,6 +6,7 @@ export interface Post {
   views: number;
   title: string;
   content: string;
+  //TODO: content_format: 'md' | 'mdx';
   created_at: string;
   updated_at: string;
   is_published: boolean;

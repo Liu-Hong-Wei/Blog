@@ -50,8 +50,8 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       .use(rehypeShiki, {    // 2. Syntax highlighting
         // or `theme` for a single theme
         themes: {
-          light: 'vitesse-light',
-          dark: 'vitesse-dark',
+          light: 'github-light',
+          dark: 'github-dark',
         }
       })         // Transform MDAST to HAST
       .use(rehypeStringify)

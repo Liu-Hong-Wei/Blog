@@ -4,7 +4,7 @@ import MainContentLayout from "../layouts/MainContentLayout";
 function About() {
   return (
     <MainContentLayout>
-        <ProfileCard />
+      <ProfileCard />
     </MainContentLayout>
   );
 }
