@@ -47,11 +47,8 @@ export interface NavButtonProps {
   className?: string;
   to?: string;
   ariaLabel: string;
+  ariaExpanded?: boolean;
+  ariaControls?: string;
   children: ReactNode;
 };
 
-export interface NavBarProps {
-  setDrawerOpen: (open: boolean) => void;
-  drawerVisible: boolean;
-  drawerActive: boolean;
-}

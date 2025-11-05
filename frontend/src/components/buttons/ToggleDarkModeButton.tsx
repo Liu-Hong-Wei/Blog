@@ -72,22 +72,22 @@ export default function ToggleDarkModeButton() {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className={`flex items-center space-x-1 rounded-full p-1 transition-all duration-500 ease-in-out ${isHovered ? 'max-w-xs' : 'max-w-[44px]'} overflow-hidden`}>
+            <div className={`flex items-center space-x-1 rounded-full transition-all duration-300 ease-in-out ${isHovered ? 'bg-bgsecondary' : ''} overflow-hidden`}>
                 {isHovered ? (
-                    orderedThemes.map((mode, index) => (
+                    orderedThemes.map((mode) => (
                         <Button
                             key={mode}
                             variant={theme === mode ? 'secondary' : 'primary'}
+                            size="fit"
                             onClick={() => handleThemeChange(mode)}
                             aria-label={`Change to ${mode} Mode`}
-                            className={`rounded-full transition-opacity duration-500 ease-in-out`}
-                            style={{ transitionDelay: `${index * 50}ms` }}
+                            className={`rounded-full `}
                         >
                             {themeIcons[mode]}
                         </Button>
                     ))
                 ) : (
-                    <Button variant="primary" aria-label={`Current theme: ${theme}`} className="rounded-full">
+                    <Button variant="secondary" size="fit" aria-label={`Current theme: ${theme}`} className="rounded-full">
                         {getCurrentIcon()}
                     </Button>
                 )}

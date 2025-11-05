@@ -42,7 +42,7 @@ function PostContent({ slug }: { slug: string }) {
                     {/* 文章标题和元信息 */}
                     <header className="max-w-none">
                         <h1 className='text-4xl font-bold'>{post.title}</h1>
-                        <div className="flex items-center text-lg text-gray-500 space-x-4">
+                        <div className="flex items-center text-lg text-primary space-x-4">
                             <span>{post.views} views</span>
                             <span>{new Date(post.created_at).toLocaleDateString('zh-CN')}</span>
                         </div>

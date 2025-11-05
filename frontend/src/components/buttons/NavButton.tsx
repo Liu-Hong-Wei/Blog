@@ -3,22 +3,31 @@ import { NavLink } from "react-router";
 import { NavButtonProps } from "../../types/types";
 import Button from "./Button";
 
-export default function NavButton({ onClick, className, to, ariaLabel, children }: NavButtonProps) {
-  let child = children
+export default function NavButton({ onClick, className = "", to, ariaLabel, ariaExpanded, ariaControls, children }: NavButtonProps) {
+  let child = children;
   if (to) {
-    child = <NavLink
-      to={to}
-      className={({ isActive }) => isActive ? "text-secondary font-bold no-underline" : "text-primary hover:underline hover:underline-offset-2"}
-    >
-      {children}
-    </NavLink>
+    child = (
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          isActive
+            ? "text-secondary font-bold no-underline"
+            : "text-primary hover:underline hover:underline-offset-2"
+        }
+      >
+        {children}
+      </NavLink>
+    );
   }
 
   return (
     <Button
-      className={`flex justify-center items-center ${className}`}
+      className={`flex items-center ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
+      aria-expanded={ariaExpanded}
+      aria-controls={ariaControls}
+      type="button"
     >
       {child}
     </Button>

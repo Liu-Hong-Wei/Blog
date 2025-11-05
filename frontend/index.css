@@ -15,7 +15,7 @@
   /* paper white background */
   --color-bgprimary: var(--color-zinc-50);
   /* secondary paper gray background */
-  --color-bgsecondary: var(--color-gray-100);
+  --color-bgsecondary: var(--color-gray-200);
 
   /* text colors nearly black */
   --color-primary: var(--color-zinc-800);
@@ -29,7 +29,7 @@
   /* dark mode background nearly black */
   --color-bgprimary: var(--color-neutral-900);
   /* secondary dark mode gray background */
-  --color-bgsecondary: var(--color-gray-200);
+  --color-bgsecondary: var(--color-gray-700);
 
   /* light text color nearly white */
   --color-primary: #fff;

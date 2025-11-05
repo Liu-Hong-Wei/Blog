@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode, lazy } from "react";
 
 import SuspenseErrorBoundary from "./components/SuspenseErrorBoundary.tsx";
-import NavbarLayout from "./layouts/NavbarLayout.tsx";
+import AppLayout from "./layouts/AppLayout.tsx";
 // import Test from "./tests/Test.tsx";
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
@@ -17,14 +17,14 @@ const NotFound = lazy(() => import("./pages/errors/NotFound.tsx"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavbarLayout />,
+    element: <AppLayout />,
     children: [
       {
         index: true,
         element: <Homepage />,
       },
       {
-        path: "Ideas",
+        path: "ideas",
         element: <Ideas />,
       },
       {
