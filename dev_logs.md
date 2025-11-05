@@ -59,3 +59,8 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
 - update design with a punch-hole-like navbar
 - fix POUC(Flash of Unstyled Content)
 - add copyright and move dark mode button within new-added footer
+
+## 7. rendering md article and gradually support mdx article
+
+- support code syntax highlight with [rehype and shiki tooling](https://shiki.matsu.io/packages/rehype)
+- 
