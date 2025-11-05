@@ -1,12 +1,12 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { PageLoadingSpinner } from '../components/Spinners';
+import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
 import markdownToHtml from '../utils/markdownToHtml';
 import usePost from '../hooks/usePost';
-import SuspenseErrorBoundary from '../components/SuspenseErrorBoundary';
+import { ErrorBoundary } from '../components/SuspenseErrorBoundary';
 
 function PostContent({ slug }: { slug: string }) {
     const post = usePost(slug);
@@ -34,11 +34,8 @@ function PostContent({ slug }: { slug: string }) {
 
     return (
         <>
-            {/* 加载中状态（仅 markdown 处理） */}
-            {isProcessing && (<PageLoadingSpinner />)}
-
             {/* 文章内容 */}
-            {!isProcessing && post && (
+            {post && (
                 <article className="space-y-6 w-full">
                     {/* 文章标题和元信息 */}
                     <header className="max-w-none">
@@ -71,7 +68,9 @@ function PostContent({ slug }: { slug: string }) {
 
                     {/* 文章内容 */}
                     <main className="max-w-full">
-                        {renderedContent}
+                        {isProcessing && (<ComponentLoadingSpinner />)}
+                        {!isProcessing && renderedContent}
+                        {/* 加载中状态（仅 markdown 处理） */}
                         {!isProcessing && post && !post.content && (
                             <Error emoji='🤔' content='This post is empty?!' />
                         )}
@@ -87,7 +86,7 @@ function Post() {
 
     return (
         <MainContentLayout>
-            <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
+            <ErrorBoundary >
                 {!slug ? (
                     <Error
                         emoji="⚠️"
@@ -97,7 +96,7 @@ function Post() {
                 ) : (
                     <PostContent slug={slug} />
                 )}
-            </SuspenseErrorBoundary>
+            </ErrorBoundary>
         </MainContentLayout>
     );
 }

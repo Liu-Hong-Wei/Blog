@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode, lazy } from "react";
 
-import SuspenseErrorBoundary from "./components/SuspenseErrorBoundary.tsx";
 import AppLayout from "./layouts/AppLayout.tsx";
+import SuspenseErrorBoundary from "./components/SuspenseErrorBoundary.tsx";
 // import Test from "./tests/Test.tsx";
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
@@ -54,9 +54,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <StrictMode>
-      <SuspenseErrorBoundary>
         <RouterProvider router={router} />
-      </SuspenseErrorBoundary>
     </StrictMode >
   );
 }

@@ -15,11 +15,7 @@ interface State {
   error?: Error;
 }
 
-/**
- * 统一的错误边界组件
- * 结合了 Suspense 和多种错误类型的处理
- */
-class ErrorBoundary extends Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };

@@ -1,10 +1,11 @@
 import { NavLink, Outlet } from "react-router";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { PageLoadingSpinner } from "../components/Spinners.tsx";
 import NavButton from "../components/buttons/NavButton";
 import ToggleDarkModeButton from "../components/buttons/ToggleDarkModeButton.tsx";
 import HamburgerIcon from "../components/icons/HamburgerIcon";
+import SuspenseErrorBoundary from "../components/SuspenseErrorBoundary.tsx";
+import { PageLoadingSpinner } from "../components/Spinners.tsx";
 
 const NAV_LINKS = [
   { to: "/posts", label: "Posts" },
@@ -226,9 +227,9 @@ function AppLayout() {
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
       <main className="flex grow flex-col bg-bgprimary transition-colors duration-300" role="main">
-        <Suspense fallback={<PageLoadingSpinner />}>
+        <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
-        </Suspense>
+        </SuspenseErrorBoundary>
       </main>
       <SiteFooter />
     </div>
