@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 
 import NavButton from "../components/buttons/NavButton";
 import HamburgerIcon from "../components/icons/HamburgerIcon";
+import useIsScrolling from "../utils/useIsScrolling";
 
 const NAV_LINKS = [
   { to: "/posts", label: "Posts" },
@@ -49,10 +50,12 @@ export function NavLinks({ orientation = "horizontal", onNavigate, className = "
 }
 
 function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
+  const { isAtTop } = useIsScrolling();
+  
   return (
     <header role="banner" className="sticky top-2 z-50 my-2 mx-4 flex justify-center md:mx-auto md:min-w-3xl">
       <nav
-        className="flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl shadow-sm shadow-bgsecondary ring-1 ring-bgsecondary transition-all duration-300"
+  className={`flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl ${isAtTop ? "" : "shadow-sm shadow-bgsecondary ring-1 ring-bgsecondary"} transition-all duration-300`}
         aria-label="Primary navigation"
       >
         <NavLink className="text-2xl font-bold" to="/">

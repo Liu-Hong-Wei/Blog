@@ -1,11 +1,12 @@
 import { Outlet } from "react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import SuspenseErrorBoundary from "../components/SuspenseErrorBoundary.tsx";
 import { PageLoadingSpinner } from "../components/Spinners.tsx";
 import SiteHeader from "../components/SiteHeader.tsx";
 import SiteFooter from "../components/SiteFooter.tsx";
 import MobileDrawer from "../components/MobileDrawer.tsx";
+import useBodyScrollLock from "../utils/useBodyScrollLock.ts";
 
 
 const DRAWER_DISMISS_DELAY = 300;
@@ -18,7 +19,7 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
-      const activationTimer = window.setTimeout(() => setActive(true), 16);
+      const activationTimer = window.setTimeout(() => setActive(true), delayMs);
       return () => window.clearTimeout(activationTimer);
     }
 
@@ -30,51 +31,6 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
   return { visible, active };
 }
 
-// Lock or unlock body scroll based on the `locked` parameter
-function useBodyScrollLock(locked: boolean) {
-  const scrollYRef = useRef(0);
-
-  useEffect(() => {
-    if (typeof document === "undefined") {
-      return;
-    }
-
-    const body = document.body as HTMLBodyElement;
-
-    if (locked) {
-      scrollYRef.current = window.scrollY;
-      body.style.position = "fixed";
-      body.style.top = `-${scrollYRef.current}px`;
-      body.style.left = "0";
-      body.style.right = "0";
-      body.style.width = "100%";
-      body.style.overflow = "hidden";
-
-      return () => {
-        const top = body.style.top;
-        body.style.position = "";
-        body.style.top = "";
-        body.style.left = "";
-        body.style.right = "";
-        body.style.width = "";
-        body.style.overflow = "";
-
-        if (top) {
-          const y = Math.abs(parseInt(top, 10)) || 0;
-          window.scrollTo(0, y);
-        }
-      };
-    }
-
-    body.style.position = "";
-    body.style.top = "";
-    body.style.left = "";
-    body.style.right = "";
-    body.style.width = "";
-    body.style.overflow = "";
-  }, [locked]);
-}
-
 function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen);
@@ -84,6 +40,7 @@ function AppLayout() {
   const openDrawer = useCallback(() => setDrawerOpen(true), []);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
+  // Close drawer on Escape key press
   useEffect(() => {
     if (!drawerOpen) {
       return undefined;
@@ -100,10 +57,10 @@ function AppLayout() {
   }, [drawerOpen, closeDrawer]);
 
   return (
-    <div className="flex min-h-screen max-w-screen flex-col bg-bgprimary p-[0.05px] text-primary transition-colors duration-300">
+    <div className="flex min-h-screen max-w-screen p-[0.05px] flex-col bg-bgprimary text-primary transition-colors duration-300">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
-      <main className="flex grow flex-col bg-bgprimary transition-colors duration-300" role="main">
+      <main className="flex grow flex-col transition-colors duration-300" role="main">
         <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
         </SuspenseErrorBoundary>
