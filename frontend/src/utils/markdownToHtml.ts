@@ -12,6 +12,7 @@ import { jsx, jsxs } from 'react/jsx-runtime'
 // Shiki in rehype for syntax highlighting
 import rehypeShiki from '@shikijs/rehype'
 import rehypeStringify from 'rehype-stringify'
+import { markdownComponents } from '../components/MarkdownComponents'
 
 // 定义返回类型，包含成功和错误状态
 export interface MarkdownResult {
@@ -45,22 +46,24 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
 
     // 处理 markdown 转换
     const file = await unified()
-      .use(remarkParse)          // 1. Parse Markdown to MDAST
+      .use(remarkParse)      // 1. Parse Markdown to MDAST
       .use(remarkRehype) 
-      .use(rehypeShiki, {    // 2. Syntax highlighting
+      .use(rehypeShiki, {           // 2. Syntax highlighting
         // or `theme` for a single theme
         themes: {
           light: 'github-light',
           dark: 'github-dark',
         }
-      })         // Transform MDAST to HAST
+      })         
+      // Transform MDAST to HAST
       .use(rehypeStringify)
-      // .use(rehypeSanitize)       // 3. Sanitize HTML to prevent XSS (attention: may remove some custom elements, MAYBE DON'T NEED IT)
+      // .use(rehypeSanitize)     // 3. Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
       .use(rehypeReact, {        // 4. Transform HAST to React elements
         createElement,
         Fragment,
         jsx,
         jsxs,
+        components: markdownComponents
       })
       .process(markdown);
 
