@@ -87,7 +87,7 @@ export default function ToggleDarkModeButton() {
                         </Button>
                     ))
                 ) : (
-                    <Button variant="secondary" size="fit" aria-label={`Current theme: ${theme}`} className="rounded-full bg-bgsecondary">
+                    <Button variant="primary" size="fit" aria-label={`Current theme: ${theme}`} className="rounded-full bg-bgsecondary">
                         {getCurrentIcon()}
                     </Button>
                 )}

@@ -58,3 +58,4 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
  - use basically only two background color like `bgprimary` and `bgsecondary`
 - update design with a punch-hole-like navbar
 - fix POUC(Flash of Unstyled Content)
+- add copyright and move dark mode button within new-added footer
