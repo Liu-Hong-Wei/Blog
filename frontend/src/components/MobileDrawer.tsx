@@ -15,7 +15,7 @@ function MobileDrawer({ visible, active, onClose }: MobileDrawerProps) {
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-bgprimary/10 backdrop-blur-3xl transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-bgprimary/10 backdrop-blur-3xl util-transition ${
           active ? "opacity-100 pointer-events-auto" : "pointer-events-none opacity-0"
         }`}
         onClick={onClose}
@@ -23,7 +23,7 @@ function MobileDrawer({ visible, active, onClose }: MobileDrawerProps) {
       />
       <aside
         id="mobile-navigation"
-        className={`fixed top-0 z-50 w-full rounded-b-xl bg-bgprimary/50 backdrop-blur-2xl shadow-md transition-transform duration-300 ${
+        className={`fixed top-0 z-50 w-full rounded-b-xl bg-bgprimary/50 backdrop-blur-2xl shadow-md util-transition ${
           active ? "translate-y-0" : "-translate-y-full"
         }`}
         role="dialog"

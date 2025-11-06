@@ -7,7 +7,7 @@ const PostsList = lazy(() => import('../components/PostsList'));
 const Posts: React.FC = () => {
   return (
     <MainContentLayout>
-        <PostsList />
+      <PostsList />
     </MainContentLayout>
   );
 };

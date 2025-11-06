@@ -27,7 +27,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <p {...props} className={mergeClassName('my-4 text-base leading-relaxed text-primary', className)} />
   ),
   a: ({ className, ...props }: ComponentProps<'a'>) => (
-    <a {...props} className={mergeClassName('text-secondary underline decoration-secondary/50 transition-colors hover:decoration-secondary dark:text-secondary', className)} />
+    <a {...props} className={mergeClassName('text-secondary underline decoration-secondary/50 util-transition hover:decoration-secondary dark:text-secondary', className)} />
   ),
   blockquote: ({ className, ...props }: ComponentProps<'blockquote'>) => (
     <blockquote
@@ -48,11 +48,11 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <img
       {...props}
       loading={loading}
-      className={mergeClassName('my-6 max-h-[480px] w-full rounded-2xl border border-bgsecondary object-cover shadow-md', className)}
+      className={mergeClassName('my-6 max-h-[480px] w-full rounded-xl border border-bgsecondary object-cover shadow-md', className)}
     />
   ),
   table: ({ className, ...props }: ComponentProps<'table'>) => (
-    <table {...props} className={mergeClassName('my-6 w-full table-auto overflow-hidden rounded-2xl border border-bgsecondary/60 text-left text-sm shadow-sm', className)} />
+    <table {...props} className={mergeClassName('my-6 w-full table-auto overflow-hidden rounded-xl border border-bgsecondary/60 text-left text-sm shadow-sm', className)} />
   ),
   thead: ({ className, ...props }: ComponentProps<'thead'>) => (
     <thead {...props} className={mergeClassName('bg-bgsecondary/40 uppercase tracking-wide text-xs text-primary/70', className)} />
@@ -61,7 +61,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <tbody {...props} className={mergeClassName('divide-y divide-bgsecondary/50', className)} />
   ),
   tr: ({ className, ...props }: ComponentProps<'tr'>) => (
-    <tr {...props} className={mergeClassName('odd:bg-bgsecondary/20 hover:bg-bgsecondary/30 transition-colors', className)} />
+    <tr {...props} className={mergeClassName('odd:bg-bgsecondary/20 hover:bg-bgsecondary/30 util-transition', className)} />
   ),
   th: ({ className, ...props }: ComponentProps<'th'>) => (
     <th {...props} className={mergeClassName('px-4 py-3 font-semibold text-primary', className)} />
@@ -70,17 +70,20 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <td {...props} className={mergeClassName('px-4 py-3 align-top text-primary', className)} />
   ),
   hr: ({ className, ...props }: ComponentProps<'hr'>) => (
-    <hr {...props} className={mergeClassName('my-8 border-0 border-t border-bgsecondary/80', className)} />
-  ),
-  strong: ({ className, ...props }: ComponentProps<'strong'>) => (
-    <strong {...props} className={mergeClassName('font-semibold text-primary', className)} />
+    <hr {...props} className={mergeClassName('my-8 rounded-xl border-none h-0.5 bg-linear-to-r from-bgprimary via-secondary/40 to-bgprimary', className)} />
   ),
   em: ({ className, ...props }: ComponentProps<'em'>) => (
     <em {...props} className={mergeClassName('italic text-secondary', className)} />
   ),
+  strong: ({ className, ...props }: ComponentProps<'strong'>) => (
+    <strong {...props} className={mergeClassName('font-bold text-secondary', className)} />
+  ),
   del: ({ className, ...props }: ComponentProps<'del'>) => (
     <del {...props} className={mergeClassName('text-secondary/70 line-through', className)} />
   ),
+  // TODO: strikethrough: ({ className, ...props }: ComponentProps<'s'>) => (
+  //   <s {...props} className={mergeClassName('text-secondary/70 line-through', className)} />
+  // ),
   small: ({ className, ...props }: ComponentProps<'small'>) => (
     <small {...props} className={mergeClassName('text-sm text-primary/70', className)} />
   ),
@@ -91,7 +94,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <sub {...props} className={mergeClassName('ml-0.5 text-xs align-sub', className)} />
   ),
   kbd: ({ className, ...props }: ComponentProps<'kbd'>) => (
-    <kbd {...props} className={mergeClassName('rounded-md border border-bgsecondary bg-bgsecondary/30 px-2 py-1 text-xs font-semibold text-primary shadow-inner', className)} />
+    <kbd {...props} className={mergeClassName('rounded-xl border border-bgsecondary bg-bgsecondary/30 px-2 py-1 text-xs font-semibold text-primary shadow-inner', className)} />
   ),
   figure: ({ className, ...props }: ComponentProps<'figure'>) => (
     <figure {...props} className={mergeClassName('my-6 flex flex-col items-center', className)} />
@@ -103,11 +106,13 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <details {...props} className={mergeClassName('my-4 overflow-hidden rounded-xl border border-bgsecondary/60 bg-bgsecondary/10', className)} />
   ),
   summary: ({ className, ...props }: ComponentProps<'summary'>) => (
-    <summary {...props} className={mergeClassName('cursor-pointer px-4 py-2 text-primary transition-colors hover:text-secondary', className)} />
+    <summary {...props} className={mergeClassName('cursor-pointer px-4 py-2 text-primary util-transition hover:text-secondary', className)} />
   ),
   mark: ({ className, ...props }: ComponentProps<'mark'>) => (
-    <mark {...props} className={mergeClassName('rounded bg-yellow-200 px-1 py-0.5 text-primary shadow-sm', className)} />
+    <mark {...props} className={mergeClassName('rounded-xl bg-yellow-200 px-1 py-0.5 text-primary shadow-sm', className)} />
   ),
+  // iframe: ResponsiveIframe, // 实现响应式视频
+
 
   // pre 和 code 标签由 rehype-pretty-code 处理，
   // 你可以通过 CSS Modules 或全局 CSS 来定制它的 class

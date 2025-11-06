@@ -27,7 +27,7 @@ export default function Button({
             size === "mid" ? "h-12 p-2 text-lg font-normal" :
                 "h-16 p-2 text-xl font-medium";
 
-    const classes = `rounded-md transition-colors duration-300 focus:outline-none hover:cursor-pointer inline-flex items-center justify-center ${variantClass} ${sizeClass} ${trimmedClassName}`.trim();
+    const classes = `rounded-xl util-transition focus:outline-none hover:cursor-pointer inline-flex items-center justify-center ${variantClass} ${sizeClass} ${trimmedClassName}`.trim();
 
     return (
         <button

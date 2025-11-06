@@ -37,25 +37,11 @@
   --color-secondary: var(--color-cyan-400);
 }
 
-/* Shiki syntax highlighting overrides for dark mode adaptations */
-@layer base {
-  :where(.shiki, .shiki span) {
-    transition: all;
-    transition-duration: 300ms;
-  }
-  .dark :where(.shiki, .shiki span) {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
-  }
-}
 
 @layer components {
   .card-hover-effect>* {
     /* 为所有直接子元素应用过渡 */
-    @apply transition-colors duration-300;
+    @apply util-transition-colors;
   }
 
   /* 或者更具体地指定 */
@@ -66,15 +52,31 @@
 }
 
 @layer utilities {
-  .text-transition {
-    @apply transition-colors duration-300 ease-in-out;
+  .util-transition {
+    @apply transition-all duration-300 ease-in-out;
   }
-
-  .icon-transition {
-    @apply transition-transform duration-200 ease-in-out;
+  .util-transition-colors {
+    @apply transition-colors duration-300 ease-in-out;
   }
 }
 
+/* Shiki syntax highlighting overrides for dark mode adaptations */
+@layer base {
+  pre code {
+    padding: 2rem !important;
+    overflow-y: auto !important;
+    @apply rounded-xl !important;
+    @apply var(--util-transition-colors) !important;
+  }
+
+  .dark :where(.shiki, .shiki span) {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
 
 /*
 // On page load or when changing themes, best to add inline in `head` to avoid FOUC

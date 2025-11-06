@@ -7,12 +7,12 @@ function SocialIcon({ platform, url, lightIcon, darkIcon }: SocialIconProps) {
         <img 
           src={lightIcon}
           alt={`${platform} light`}
-          className="absolute inset-0 w-full h-full transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 w-full h-full util-transition opacity-0 group-hover:opacity-100"
         />
         <img 
           src={darkIcon}
           alt={`${platform} dark`}
-          className="absolute inset-0 w-full h-full transition-opacity duration-300 ease-in-out opacity-100 group-hover:opacity-0"
+          className="absolute inset-0 w-full h-full util-transition opacity-100 group-hover:opacity-0"
         />
       </div>
     </a>

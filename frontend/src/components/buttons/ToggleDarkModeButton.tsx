@@ -72,7 +72,7 @@ export default function ToggleDarkModeButton() {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className={`flex items-center space-x-1 rounded-full transition-all duration-300 ease-in-out bg-bgsecondary overflow-hidden`}>
+            <div className={`flex items-center space-x-1 rounded-full util-transition bg-bgsecondary overflow-hidden`}>
                 {isHovered ? (
                     orderedThemes.map((mode) => (
                         <Button

@@ -13,8 +13,10 @@ import { jsx, jsxs } from 'react/jsx-runtime'
 import rehypeShiki from '@shikijs/rehype'
 import rehypeStringify from 'rehype-stringify'
 import { markdownComponents } from '../components/MarkdownComponents'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
-// 定义返回类型，包含成功和错误状态
+
 export interface MarkdownResult {
   success: boolean;
   content?: ReactElement;
@@ -47,18 +49,22 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     // 处理 markdown 转换
     const file = await unified()
       .use(remarkParse)      // 1. Parse Markdown to MDAST
-      .use(remarkRehype) 
-      .use(rehypeShiki, {           // 2. Syntax highlighting
+      .use(remarkRehype)     // 2. Transform MDAST to HAST
+      .use(rehypeSlug) // 3. 为标题添加 id
+      .use(rehypeAutolinkHeadings) // 4. 为标题添加锚点链接
+      .use(rehypeShiki, {           // 5. Syntax highlighting
         // or `theme` for a single theme
+        defaultLanguage: 'plaintext',
         themes: {
-          light: 'github-light',
-          dark: 'github-dark',
-        }
+          light: 'catppuccin-latte',
+          dark: 'catppuccin-mocha',
+        },
+        inline: 'tailing-curly-colon',
+        keepBackground: true,
       })         
-      // Transform MDAST to HAST
-      .use(rehypeStringify)
+      .use(rehypeStringify)      // 4. Stringify HAST to HTML
       // .use(rehypeSanitize)     // 3. Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
-      .use(rehypeReact, {        // 4. Transform HAST to React elements
+      .use(rehypeReact, {        // 4. Transform HTML to React elements
         createElement,
         Fragment,
         jsx,

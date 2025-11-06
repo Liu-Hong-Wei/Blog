@@ -19,7 +19,7 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
-      const activationTimer = window.setTimeout(() => setActive(true), delayMs);
+      const activationTimer = window.setTimeout(() => setActive(true), delayMs/6);
       return () => window.clearTimeout(activationTimer);
     }
 
@@ -57,10 +57,10 @@ function AppLayout() {
   }, [drawerOpen, closeDrawer]);
 
   return (
-    <div className="flex min-h-screen max-w-screen p-[0.05px] flex-col bg-bgprimary text-primary transition-colors duration-300">
+    <div className="flex min-h-screen max-w-screen p-[0.05px] flex-col bg-bgprimary text-primary util-transition-colors">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
-      <main className="flex grow flex-col transition-colors duration-300" role="main">
+      <main className="flex grow flex-col util-transition-colors" role="main">
         <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
         </SuspenseErrorBoundary>
