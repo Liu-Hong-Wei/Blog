@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet } from 'react-router';
 
-import MobileDrawer from "../components/MobileDrawer.tsx";
-import SiteFooter from "../components/SiteFooter.tsx";
-import SiteHeader from "../components/SiteHeader.tsx";
-import { PageLoadingSpinner } from "../components/Spinners.tsx";
-import SuspenseErrorBoundary from "../components/SuspenseErrorBoundary.tsx";
-import useBodyScrollLock from "../utils/useBodyScrollLock.ts";
-
+import MobileDrawer from '../components/MobileDrawer.tsx';
+import SiteFooter from '../components/SiteFooter.tsx';
+import SiteHeader from '../components/SiteHeader.tsx';
+import { PageLoadingSpinner } from '../components/Spinners.tsx';
+import SuspenseErrorBoundary from '../components/SuspenseErrorBoundary.tsx';
+import useScrollRestoration from '../hooks/useScrollRestoration.ts';
+import useBodyScrollLock from '../utils/useBodyScrollLock.ts';
 
 const DRAWER_DISMISS_DELAY = 300;
 
@@ -19,7 +19,7 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
-      const activationTimer = window.setTimeout(() => setActive(true), delayMs/6);
+      const activationTimer = window.setTimeout(() => setActive(true), delayMs / 6);
       return () => window.clearTimeout(activationTimer);
     }
 
@@ -36,6 +36,7 @@ function AppLayout() {
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen);
 
   useBodyScrollLock(drawerVisible);
+  useScrollRestoration();
 
   const openDrawer = useCallback(() => setDrawerOpen(true), []);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
@@ -47,17 +48,17 @@ function AppLayout() {
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         closeDrawer();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [drawerOpen, closeDrawer]);
 
   return (
-    <div className="flex min-h-screen max-w-screen p-[0.05px] flex-col bg-bgprimary text-primary util-transition-colors">
+    <div className="flex min-h-screen max-w-screen flex-col bg-bgprimary p-[0.05px] text-primary util-transition-colors">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
       <main className="flex grow flex-col util-transition-colors" role="main">
