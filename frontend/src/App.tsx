@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode, lazy } from "react";
 
 import AppLayout from "./layouts/AppLayout.tsx";
+import Test from "./pages/Test.tsx";
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
 const Homepage = lazy(() => import("./pages/Homepage.tsx"));
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <Homepage />,
       },
       {
-        path: "ideas",
+          path: "ideas",
         element: <Ideas />,
       },
       {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "posts/:slug",
         element: <Post />,
+      },
+      {
+        path: "test-page",
+        element: <Test />,
       },
       {
         path: "*",

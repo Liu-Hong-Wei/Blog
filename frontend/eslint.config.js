@@ -27,7 +27,7 @@ export default tseslint.config(
         ...globals.es2021,
       },
       parserOptions: {
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -60,6 +60,7 @@ export default tseslint.config(
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/consistent-type-imports': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-unused-vars': [

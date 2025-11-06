@@ -1,22 +1,17 @@
-import { unified } from 'unified'
-// remark-parse：解析 Markdown 文本。
-import remarkParse from 'remark-parse'
-// remark-rehype：将 Markdown 抽象语法树（MDAST）转换为 HTML 抽象语法树（HAST）。
-import remarkRehype from 'remark-rehype'
-// rehype-react：将 HAST 转换为 React 元素。
-import rehypeReact from 'rehype-react'
-import { createElement, ReactElement, Fragment } from 'react'
-// 仅导入生产环境需要的 jsx 和 Fragment
-import { jsx, jsxs } from 'react/jsx-runtime'
+import { createElement, Fragment } from 'react';
+import type { ReactElement } from 'react';
+import { jsx, jsxs } from 'react/jsx-runtime';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeReact from 'rehype-react';
+import rehypeSlug from 'rehype-slug';
+import rehypeStringify from 'rehype-stringify';
+import remarkGfm from 'remark-gfm';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import { unified } from 'unified';
 
-// Shiki in rehype for syntax highlighting
-import rehypeShiki from '@shikijs/rehype'
-import rehypeStringify from 'rehype-stringify'
-import { markdownComponents } from '../components/MarkdownComponents'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-
-
+import { markdownComponents } from '../components/MarkdownComponents';
 export interface MarkdownResult {
   success: boolean;
   content?: ReactElement;
@@ -25,11 +20,30 @@ export interface MarkdownResult {
 
 // 定义错误类型
 export class MarkdownError extends Error {
-  constructor(message: string, public cause?: Error) {
+  constructor(
+    message: string,
+    public cause?: Error
+  ) {
     super(message);
     this.name = 'MarkdownError';
   }
 }
+
+const prettyCodeOptions = {
+  theme: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' },
+  keepBackground: false,
+  onVisitLine(node: any) {
+    if (node.children.length === 0) node.children = [{ type: 'text', value: ' ' }];
+  },
+  onVisitHighlightedLine(node: any) {
+    node.properties ||= {};
+    node.properties['data-highlighted'] = true;
+  },
+  onVisitHighlightedWord(node: any) {
+    node.properties ||= {};
+    node.properties['data-highlighted-word'] = true;
+  },
+} as const;
 
 export default async function markdownToHtml(markdown: string): Promise<MarkdownResult> {
   try {
@@ -42,34 +56,37 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     if (markdown.trim() === '') {
       return {
         success: true,
-        content: createElement('div', { className: 'empty-content' }, 'No content available')
+        content: createElement('div', { className: 'empty-content' }, 'No content available'),
       };
     }
 
     // 处理 markdown 转换
     const file = await unified()
-      .use(remarkParse)      // 1. Parse Markdown to MDAST
-      .use(remarkRehype)     // 2. Transform MDAST to HAST
+      .use(remarkParse) // 1. Parse Markdown to MDAST
+      .use(remarkRehype) // 2. Transform MDAST to HAST
       .use(rehypeSlug) // 3. 为标题添加 id
-      .use(rehypeAutolinkHeadings) // 4. 为标题添加锚点链接
-      .use(rehypeShiki, {           // 5. Syntax highlighting
-        // or `theme` for a single theme
-        defaultLanguage: 'plaintext',
-        themes: {
-          light: 'catppuccin-latte',
-          dark: 'catppuccin-mocha',
-        },
-        inline: 'tailing-curly-colon',
-        keepBackground: true,
-      })         
-      .use(rehypeStringify)      // 4. Stringify HAST to HTML
+      .use(rehypeAutolinkHeadings, { behavior: 'append' }) // 4. 为标题添加锚点链接
+      .use(remarkGfm)
+      .use(rehypePrettyCode, prettyCodeOptions)
+      // .use(rehypeShiki, {           // 5. Syntax highlighting (SWITCHED TO rehype-pretty-code)
+      //   // or `theme` for a single theme
+      //   defaultLanguage: 'plaintext',
+      //   themes: {
+      //     light: 'catppuccin-latte',
+      //     dark: 'catppuccin-mocha',
+      //   },
+      //   inline: 'tailing-curly-colon',
+      //   keepBackground: false,
+      // })
+      .use(rehypeStringify) // 4. Stringify HAST to HTML
       // .use(rehypeSanitize)     // 3. Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
-      .use(rehypeReact, {        // 4. Transform HTML to React elements
+      .use(rehypeReact, {
+        // 4. Transform HTML to React elements
         createElement,
         Fragment,
         jsx,
         jsxs,
-        components: markdownComponents
+        components: markdownComponents,
       })
       .process(markdown);
 
@@ -82,9 +99,8 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
 
     return {
       success: true,
-      content: result
+      content: result,
     };
-
   } catch (error) {
     console.error('Markdown conversion error:', error);
 
@@ -92,7 +108,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     if (error instanceof MarkdownError) {
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
 
@@ -102,13 +118,13 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       if (errorMessage.includes('parse')) {
         return {
           success: false,
-          error: 'Markdown parsing error: Please check the syntax'
+          error: 'Markdown parsing error: Please check the syntax',
         };
       }
       if (errorMessage.includes('transform')) {
         return {
           success: false,
-          error: 'Markdown transformation error: Please check the content format'
+          error: 'Markdown transformation error: Please check the content format',
         };
       }
     }
@@ -116,7 +132,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
     // 默认错误处理
     return {
       success: false,
-      error: 'Markdown processing failed: Please try again later'
+      error: 'Markdown processing failed: Please try again later',
     };
   }
 }
