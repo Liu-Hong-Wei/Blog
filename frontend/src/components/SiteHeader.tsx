@@ -1,36 +1,38 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router';
 
-import NavButton from "../components/buttons/NavButton";
-import HamburgerIcon from "../components/icons/HamburgerIcon";
-import useIsScrolling from "../utils/useIsScrolling";
+import NavButton from '../components/buttons/NavButton';
+import HamburgerIcon from '../components/icons/HamburgerIcon';
+import useIsScrolling from '../utils/useIsScrolling';
 
 const NAV_LINKS = [
-  { to: "/posts", label: "Posts" },
-  { to: "/ideas", label: "Ideas" },
-  { to: "/projects", label: "Projects" },
-  { to: "/about", label: "About" }
+  { to: '/posts', label: 'Posts' },
+  { to: '/ideas', label: 'Ideas' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/about', label: 'About' },
 ] as const;
 
-type SiteHeaderProps = {
+interface SiteHeaderProps {
   onOpenDrawer: () => void;
   isDrawerOpen: boolean;
-};
+}
 
-type NavLinksProps = {
-  orientation?: "horizontal" | "vertical";
+interface NavLinksProps {
+  orientation?: 'horizontal' | 'vertical';
   onNavigate?: () => void;
   className?: string;
-};
+}
 
-export function NavLinks({ orientation = "horizontal", onNavigate, className = "" }: NavLinksProps) {
+export function NavLinks({
+  orientation = 'horizontal',
+  onNavigate,
+  className = '',
+}: NavLinksProps) {
   const layoutClasses =
-    orientation === "horizontal"
-      ? "flex-row items-center gap-4"
-      : "flex-col items-stretch gap-2";
+    orientation === 'horizontal' ? 'flex-row items-center gap-4' : 'flex-col items-stretch gap-2';
   const buttonClasses =
-    orientation === "horizontal"
-      ? "justify-center px-2 py-1"
-      : "w-full justify-start px-4 py-2 text-left";
+    orientation === 'horizontal'
+      ? 'justify-center px-2 py-1'
+      : 'w-full justify-start px-4 py-2 text-left';
 
   return (
     <ul
@@ -40,7 +42,12 @@ export function NavLinks({ orientation = "horizontal", onNavigate, className = "
     >
       {NAV_LINKS.map(({ to, label }) => (
         <li key={to} role="menuitem">
-          <NavButton to={to} onClick={onNavigate} ariaLabel={`${label} link`} className={buttonClasses}>
+          <NavButton
+            to={to}
+            onClick={onNavigate}
+            ariaLabel={`${label} link`}
+            className={buttonClasses}
+          >
             {label}
           </NavButton>
         </li>
@@ -51,11 +58,14 @@ export function NavLinks({ orientation = "horizontal", onNavigate, className = "
 
 function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
   const { isAtTop } = useIsScrolling();
-  
+
   return (
-    <header role="banner" className="sticky top-2 z-50 my-2 mx-4 flex justify-center md:mx-auto md:min-w-3xl">
+    <header
+      role="banner"
+      className="sticky top-2 z-50 mx-4 my-2 flex justify-center md:mx-auto md:min-w-3xl"
+    >
       <nav
-  className={`flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl ${isAtTop ? "" : "shadow-sm shadow-bgsecondary ring-1 ring-bgsecondary"} util-transition`}
+        className={`flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl ${isAtTop ? '' : 'shadow-sm ring-1 shadow-bgsecondary ring-bgsecondary'} util-transition`}
         aria-label="Primary navigation"
       >
         <NavLink className="text-2xl font-bold" to="/">

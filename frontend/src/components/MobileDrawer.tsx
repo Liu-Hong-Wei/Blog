@@ -1,11 +1,12 @@
 import { NavLink } from "react-router";
+
 import { NavLinks } from "./SiteHeader";
 
-type MobileDrawerProps = {
+interface MobileDrawerProps {
   visible: boolean;
   active: boolean;
   onClose: () => void;
-};
+}
 
 function MobileDrawer({ visible, active, onClose }: MobileDrawerProps) {
   if (!visible) {

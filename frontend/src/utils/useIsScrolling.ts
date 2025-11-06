@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-type ScrollState = {
+interface ScrollState {
   isScrolling: boolean;
   isAtTop: boolean;
   hasScrolled: boolean;
   scrollDirection: "up" | "down" | "idle";
   isScrollingUp: boolean;
   isScrollingDown: boolean;
-};
+}
 
 const SCROLL_IDLE_DELAY = 300;
 

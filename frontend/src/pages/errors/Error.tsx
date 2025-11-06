@@ -22,14 +22,18 @@ const Error = ({
             <div className="text-6xl mb-4">{emoji}</div>
             <h1 className="text-4xl font-bold mb-4">
                 {content}
-                {showRefresh && <span
-                    onClick={() => {
-                        window.location.reload();
-                    }}
-                    className="ml-4 text-secondary/60 hover:text-secondary hover:cursor-pointer"
-                >
-                    &#x27F3;
-                </span> }
+                {showRefresh && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            window.location.reload();
+                        }}
+                        aria-label="Refresh page"
+                        className="ml-4 text-secondary/60 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary rounded"
+                    >
+                        &#x27F3;
+                    </button>
+                )}
             </h1>
             {error && (
                 <p className="text-xl mb-4">

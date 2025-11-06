@@ -1,5 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode, lazy } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 import AppLayout from "./layouts/AppLayout.tsx";
 import Test from "./pages/Test.tsx";

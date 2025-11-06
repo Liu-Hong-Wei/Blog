@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
-import DarkModeIcon from "../icons/DarkModeIcon";
-import LightModeIcon from "../icons/LightModeIcon";
+
 import Button from "./Button";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import DarkModeIcon from "../icons/DarkModeIcon";
+import LightModeIcon from "../icons/LightModeIcon";
 import MonitorModeIcon from "../icons/MonitorModeIcon";
 
 type Theme = "dark" | "light" | "system";

@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+
 import usePosts from '../hooks/usePosts';
 
 function PostsList() {

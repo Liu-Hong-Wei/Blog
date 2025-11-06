@@ -1,4 +1,4 @@
-import { About, Post, Tag } from '../types/types';
+import type { About, Post, Tag } from '../types/types';
 import { NotFoundError, APIError } from '../utils/errors';
 
 // API URL is determined by the environment (production or development)

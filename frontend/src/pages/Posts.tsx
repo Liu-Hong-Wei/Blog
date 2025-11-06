@@ -1,5 +1,6 @@
-import MainContentLayout from '../layouts/MainContentLayout';
 import { lazy } from 'react';
+
+import MainContentLayout from '../layouts/MainContentLayout';
 
 // 懒加载 PostsList 组件
 const PostsList = lazy(() => import('../components/PostsList'));

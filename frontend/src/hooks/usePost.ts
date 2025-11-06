@@ -1,5 +1,5 @@
 import { PostsAPI } from '../services/api'; 
-import { Post } from '../types/types';
+import type { Post } from '../types/types';
 import createResource from '../utils/resource';
 
 // 单个文章资源缓存 - 使用 Map 按 slug 缓存不同的文章

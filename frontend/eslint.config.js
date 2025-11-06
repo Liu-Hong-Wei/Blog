@@ -13,7 +13,7 @@ export default tseslint.config(
   { name: 'ignores', ignores: IGNORE_PATTERNS },
   {
     name: 'typescript-react',
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
@@ -70,8 +70,36 @@ export default tseslint.config(
     },
   },
   {
+    name: 'node-typescript-config',
+    files: ['*.config.{ts,cts,mts}', 'vite.config.ts'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: globals.node,
+      parserOptions: {
+        project: ['./tsconfig.node.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    plugins: {
+      import: importPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        node: true,
+        typescript: {
+          project: ['./tsconfig.node.json'],
+        },
+      },
+    },
+    rules: {
+      'import/no-unresolved': 'error',
+    },
+  },
+  {
     name: 'javascript-react',
-    files: ['**/*.{js,jsx}'],
+    files: ['src/**/*.{js,jsx}'],
     extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: 'latest',

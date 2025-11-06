@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 
-import { NavButtonProps } from "../../types/types";
 import Button from "./Button";
+import type { NavButtonProps } from "../../types/types";
 
 export default function ravButton({ onClick, className = "", to, ariaLabel, ariaExpanded, ariaControls, children }: NavButtonProps) {
   let child = children;

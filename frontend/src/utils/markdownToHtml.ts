@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeRaw from 'rehype-raw';
 import rehypeReact from 'rehype-react';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
@@ -60,13 +61,16 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       };
     }
 
-    // 处理 markdown 转换
+    // 处理 markdown 转换 remarkParse → remarkGfm → 
+    // remarkRehype({ allowDangerousHtml: true }) → rehypeRaw
+    // → rehypeSlug → rehypeAutolinkHeadings → rehypePrettyCode → rehypeReact
     const file = await unified()
-      .use(remarkParse) // 1. Parse Markdown to MDAST
-      .use(remarkRehype) // 2. Transform MDAST to HAST
-      .use(rehypeSlug) // 3. 为标题添加 id
-      .use(rehypeAutolinkHeadings, { behavior: 'append' }) // 4. 为标题添加锚点链接
-      .use(remarkGfm)
+      .use(remarkParse) // Parse markdown to AST
+      .use(remarkGfm) // Support GitHub Flavored Markdown
+      .use(rehypeRaw) // Allow raw HTML in markdown
+      .use(remarkRehype) // Transform AST to HAST
+      .use(rehypeSlug) // Add IDs to headings
+      .use(rehypeAutolinkHeadings, { behavior: 'append' }) // Add anchor links to headings
       .use(rehypePrettyCode, prettyCodeOptions)
       // .use(rehypeShiki, {           // 5. Syntax highlighting (SWITCHED TO rehype-pretty-code)
       //   // or `theme` for a single theme
@@ -78,10 +82,9 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       //   inline: 'tailing-curly-colon',
       //   keepBackground: false,
       // })
-      .use(rehypeStringify) // 4. Stringify HAST to HTML
-      // .use(rehypeSanitize)     // 3. Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
-      .use(rehypeReact, {
-        // 4. Transform HTML to React elements
+      .use(rehypeStringify) // 
+      // .use(rehypeSanitize)  // Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
+      .use(rehypeReact, { // Transform HTML to React elements
         createElement,
         Fragment,
         jsx,

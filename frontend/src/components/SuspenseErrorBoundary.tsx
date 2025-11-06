@@ -1,9 +1,11 @@
-import React, { Component, ErrorInfo, ReactNode, Suspense } from 'react';
+import type { ErrorInfo, ReactNode} from 'react';
+import React, { Component, Suspense } from 'react';
+
+import Button from './buttons/Button';
 import { PageLoadingSpinner } from './Spinners';
 import Error from '../pages/errors/Error';
-import { NotFoundError, APIError } from '../utils/errors';
 import NotFound from '../pages/errors/NotFound';
-import Button from './buttons/Button';
+import { NotFoundError, APIError } from '../utils/errors';
 
 interface Props {
   children: ReactNode;

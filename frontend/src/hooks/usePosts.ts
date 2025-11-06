@@ -1,5 +1,5 @@
 import { PostsAPI } from '../services/api'; 
-import { Post } from '../types/types';
+import type { Post } from '../types/types';
 import createResource from '../utils/resource';
 
 // 全局资源缓存 - 确保整个应用只有一个 posts 资源实例

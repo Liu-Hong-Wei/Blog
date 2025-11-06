@@ -1,4 +1,6 @@
-import { ReactElement, useEffect, useState } from "react";
+import type { ReactElement} from "react";
+import { useEffect, useState } from "react";
+
 import { ComponentLoadingSpinner } from "../components/Spinners";
 import Error from "./errors/Error";
 import markdownToHtml from "../utils/markdownToHtml";

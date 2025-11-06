@@ -1,5 +1,5 @@
-import MeInTheForbiddenPalace from "../assets/images/Me-in-the-Forbidden-Palace.png";
 import SocialIcon from "./icons/SocialIcon";
+import MeInTheForbiddenPalace from "../assets/images/Me-in-the-Forbidden-Palace.png";
 import { socialIcons } from "../constants/socialIcons";
 
 function ProfileCard({className}: { className?: string; }) {
@@ -25,7 +25,7 @@ function ProfileCard({className}: { className?: string; }) {
         ))}
       </ul>
     </div>
-        <h1 className="text-center text-xl mb-2">👋 Hi there! I'm Liu Hongwei</h1>
+        <h1 className="text-center text-xl mb-2">👋 Hi there! I&apos;m Liu Hongwei</h1>
         <h1 className="text-center text-xl mb-2">🎓 Currently studying at CUC</h1>
         <h1 className="text-center text-xl mb-2">📚 Passionate about learning</h1>
         <h1 className="text-center text-xl mb-2">💻 Self-taught developer</h1>

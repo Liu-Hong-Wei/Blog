@@ -1,12 +1,13 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
 import { useParams } from 'react-router';
 
 import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
-import markdownToHtml from '../utils/markdownToHtml';
-import usePost from '../hooks/usePost';
 import { ErrorBoundary } from '../components/SuspenseErrorBoundary';
+import usePost from '../hooks/usePost';
+import markdownToHtml from '../utils/markdownToHtml';
 
 export function PostContent({ slug }: { slug: string }) {
   const post = usePost(slug);

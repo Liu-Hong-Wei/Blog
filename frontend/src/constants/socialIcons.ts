@@ -1,19 +1,19 @@
+import dark_douban_icon from "../assets/images/icons/dark_douban_icon.svg";
+import dark_instagram_icon from "../assets/images/icons/dark_instagram_icon.svg";
+import dark_linkedin_icon from "../assets/images/icons/dark_linkedin_icon.svg";
+import dark_telegram_icon from "../assets/images/icons/dark_telegram_icon.svg";
+import dark_twitter_icon from "../assets/images/icons/dark_twitter_icon.svg";
+import dark_wechat_icon from "../assets/images/icons/dark_wechat_icon.svg";
+import dark_youtube_icon from "../assets/images/icons/dark_youtube_icon.svg";
 import github_icon from "../assets/images/icons/github_icon.svg";
 import light_douban_icon from "../assets/images/icons/light_douban_icon.svg";
-import light_linkedin_icon from "../assets/images/icons/light_linkedin_icon.svg";
-import light_twitter_icon from "../assets/images/icons/light_twitter_icon.svg";
-import light_youtube_icon from "../assets/images/icons/light_youtube_icon.svg";
-import light_wechat_icon from "../assets/images/icons/light_wechat_icon.svg";
 import light_instagram_icon from "../assets/images/icons/light_instagram_icon.svg";
+import light_linkedin_icon from "../assets/images/icons/light_linkedin_icon.svg";
 import light_telegram_icon from "../assets/images/icons/light_telegram_icon.svg";
-import dark_douban_icon from "../assets/images/icons/dark_douban_icon.svg";
-import dark_linkedin_icon from "../assets/images/icons/dark_linkedin_icon.svg";
-import dark_twitter_icon from "../assets/images/icons/dark_twitter_icon.svg";
-import dark_youtube_icon from "../assets/images/icons/dark_youtube_icon.svg";
-import dark_wechat_icon from "../assets/images/icons/dark_wechat_icon.svg";
-import dark_instagram_icon from "../assets/images/icons/dark_instagram_icon.svg";
-import dark_telegram_icon from "../assets/images/icons/dark_telegram_icon.svg";
-import { SocialIconProps } from "../types/types";
+import light_twitter_icon from "../assets/images/icons/light_twitter_icon.svg";
+import light_wechat_icon from "../assets/images/icons/light_wechat_icon.svg";
+import light_youtube_icon from "../assets/images/icons/light_youtube_icon.svg";
+import type { SocialIconProps } from "../types/types";
 
 export const socialIcons: SocialIconProps[] = [
     {
