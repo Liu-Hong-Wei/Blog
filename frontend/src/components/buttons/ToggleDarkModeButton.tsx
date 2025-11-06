@@ -33,6 +33,7 @@ export default function ToggleDarkModeButton() {
             } else {
                 root.classList.remove("dark");
             }
+            root.setAttribute('data-theme', currentTheme);
         };
 
         applyTheme();

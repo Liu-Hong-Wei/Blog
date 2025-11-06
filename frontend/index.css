@@ -1,14 +1,18 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* TODO: lots of customizations to be done later */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
 
-  --default-font-family: "Noto Serif SC", serif;
+  --default-font-family: 'Noto Serif SC', serif;
   --line-height: 1.7;
   /* for readability */
 
@@ -23,6 +27,13 @@
   --color-secondary: var(--color-violet-800);
 }
 
+/* Light mode code block colors */
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
 /* Dark mode overrides */
 .dark {
   /* dark mode background nearly black */
@@ -31,9 +42,16 @@
   --color-bgsecondary: var(--color-gray-700);
 
   /* light text color nearly white */
-  --color-primary: #fff;
+  --color-primary: var(--color-zinc-200);
   /* theme color cyan */
   --color-secondary: var(--color-cyan-400);
+
+  /* Override code block colors of dark mode */
+  code[data-theme*=' '],
+  code[data-theme*=' '] span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
 }
 
 @utility util-transition {
@@ -45,7 +63,7 @@
 }
 
 @layer components {
-  .card-hover-effect>* {
+  .card-hover-effect > * {
     /* 为所有直接子元素应用过渡 */
     @apply util-transition-colors;
   }
@@ -57,6 +75,42 @@
   }
 }
 
+/* Customized styles for code blocks */
+pre {
+  @apply w-full overflow-x-auto rounded-xl py-2;
+  @apply bg-bgsecondary/50;
+}
+
+pre [data-line] {
+  @apply px-2;
+}
+
+/* Dedicated code block scrollbar using theme tokens */
+pre {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--color-primary) var(--color-bgsecondary);
+}
+
+pre::-webkit-scrollbar {
+  height: 10px; /* For horizontal scrollbar */
+  width: 10px; /* For vertical scrollbar */
+}
+
+pre::-webkit-scrollbar-track {
+  background-color: var(--color-bgsecondary);
+  border-radius: 10px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  border: 2px solid var(--color-bgsecondary);
+  transition: background-color 0.3s ease-in-out;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
 
 /*
 // On page load or when changing themes, best to add inline in `head` to avoid FOUC

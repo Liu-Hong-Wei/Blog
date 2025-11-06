@@ -31,19 +31,24 @@ export class MarkdownError extends Error {
 }
 
 const prettyCodeOptions = {
+  grid: true,
   theme: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' },
   keepBackground: false,
-  onVisitLine(node: any) {
-    if (node.children.length === 0) node.children = [{ type: 'text', value: ' ' }];
+  defaultLang: {
+    block: 'plaintext',
+    inline: 'plaintext',
   },
-  onVisitHighlightedLine(node: any) {
-    node.properties ||= {};
-    node.properties['data-highlighted'] = true;
-  },
-  onVisitHighlightedWord(node: any) {
-    node.properties ||= {};
-    node.properties['data-highlighted-word'] = true;
-  },
+  // onVisitLine(node: any) {
+  //   if (node.children.length === 0) node.children = [{ type: 'text', value: ' ' }];
+  // },
+  // onVisitHighlightedLine(node: any) {
+  //   node.properties ||= {};
+  //   node.properties['data-highlighted'] = true;
+  // },
+  // onVisitHighlightedWord(node: any) {
+  //   node.properties ||= {};
+  //   node.properties['data-highlighted-word'] = true;
+  // },
 } as const;
 
 export default async function markdownToHtml(markdown: string): Promise<MarkdownResult> {
@@ -61,13 +66,13 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       };
     }
 
-    // 处理 markdown 转换 remarkParse → remarkGfm → 
+    // 处理 markdown 转换 remarkParse → remarkGfm →
     // remarkRehype({ allowDangerousHtml: true }) → rehypeRaw
     // → rehypeSlug → rehypeAutolinkHeadings → rehypePrettyCode → rehypeReact
     const file = await unified()
       .use(remarkParse) // Parse markdown to AST
       .use(remarkGfm) // Support GitHub Flavored Markdown
-      .use(rehypeRaw) // Allow raw HTML in markdown
+      // .use(rehypeRaw) // Allow raw HTML in markdown
       .use(remarkRehype) // Transform AST to HAST
       .use(rehypeSlug) // Add IDs to headings
       .use(rehypeAutolinkHeadings, { behavior: 'append' }) // Add anchor links to headings
@@ -82,7 +87,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       //   inline: 'tailing-curly-colon',
       //   keepBackground: false,
       // })
-      .use(rehypeStringify) // 
+      .use(rehypeStringify) // Serialize HAST to HTML
       // .use(rehypeSanitize)  // Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
       .use(rehypeReact, { // Transform HTML to React elements
         createElement,
