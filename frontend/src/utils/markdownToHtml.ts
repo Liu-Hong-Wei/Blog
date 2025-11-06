@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
-import rehypeRaw from 'rehype-raw';
+// import rehypeRaw from 'rehype-raw';
 import rehypeReact from 'rehype-react';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
