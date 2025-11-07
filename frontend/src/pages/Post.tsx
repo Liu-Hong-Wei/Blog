@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import { useParams } from 'react-router';
 
+import BackToTopButton from '../components/BackToTopButton';
 import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
@@ -86,7 +87,7 @@ function Post() {
   const { slug } = useParams<{ slug: string }>();
 
   return (
-    <MainContentLayout>
+    <MainContentLayout asideContent={<BackToTopButton />}>
       <ErrorBoundary>
         {!slug ? (
           <Error
