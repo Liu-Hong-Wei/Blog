@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 import NavButton from '../components/buttons/NavButton';
 import HamburgerIcon from '../components/icons/HamburgerIcon';
-import useIsScrolling from '../utils/useIsScrolling';
+import useIsScrolling from '../hooks/useIsScrolling';
 
 const NAV_LINKS = [
   { to: '/posts', label: 'Posts' },
