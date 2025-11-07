@@ -11,11 +11,11 @@ export default function useLocalStorage<T>(key: string, initialValue: T): [T, (x
     }
   });
 
-  const setValue = (value: T): void => {
+  const setValue = (newValue: T): void => {
     try {
       // make sure work the same way as useState
       const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+        newValue instanceof Function ? newValue(storedValue) : newValue;
 
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));

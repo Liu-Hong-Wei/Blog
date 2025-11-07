@@ -1,13 +1,14 @@
 function MainContentLayout({
   children,
-  className
+  className,
 }: {
   children: React.ReactNode;
   className?: string;
 }) {
+
   return (
-    <div className={`w-full h-full md:p-2 p-4 pb-4 ${className || ''} max-w-4xl mx-auto`}>
-        {children}
+    <div className={`h-full w-full p-4 pb-4 md:p-2 ${className || ''} mx-auto max-w-4xl`}>
+      {children}
     </div>
   );
 }
