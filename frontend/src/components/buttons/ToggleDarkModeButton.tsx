@@ -28,13 +28,12 @@ export default function ToggleDarkModeButton() {
             const systemPrefersDark = isSystemDarkMode();
             const currentTheme = theme === "system" ? (systemPrefersDark ? "dark" : "light") : theme;
 
-            if (currentTheme === "dark") {
-                root.classList.add("dark");
-            } else {
-                root.classList.remove("dark");
-            }
-            root.setAttribute('data-theme', currentTheme);
-        };
+      if (currentTheme === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    };
 
         applyTheme();
 

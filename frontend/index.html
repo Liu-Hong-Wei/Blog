@@ -5,14 +5,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
+    // Set initial theme before rendering to prevent FOUC
     (function () {
-      const theme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      function getInitialTheme() {
+        const storedTheme = localStorage.getItem('theme');
+        if (typeof storedTheme === 'string') {
+          return storedTheme;
+        }
 
-      if (theme === 'dark' || (!theme && prefersDark)) {
-        document.documentElement.classList.add('dark');
+        const userMedia = window.matchMedia('(prefers-color-scheme: dark)');
+        if (userMedia.matches) {
+          return 'dark';
+        }
+
+        return 'light';
+      }
+
+      const theme = getInitialTheme();
+      const root = document.documentElement;
+
+      if (theme === 'dark') {
+        root.classList.add('dark');
       } else {
-        document.documentElement.classList.remove('dark');
+        root.classList.remove('dark');
       }
     })();
   </script>
