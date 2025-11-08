@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 
 function getStorageKey(pathname: string, search: string, hash: string) {
@@ -20,6 +20,8 @@ function readStoredPosition(key: string) {
  */
 function useScrollRestoration() {
   const location = useLocation();
+  const isRestoringRef = useRef(false);
+  const restorationRafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -47,26 +49,129 @@ function useScrollRestoration() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
       return undefined;
     }
 
     const key = getStorageKey(location.pathname, location.search, location.hash);
     const handleScroll = () => {
+      if (isRestoringRef.current) {
+        return;
+      }
+
       sessionStorage.setItem(key, window.scrollY.toString());
     };
 
-    const frameId = window.requestAnimationFrame(() => {
-      const position = readStoredPosition(key);
-      if (position !== null) {
-        window.scrollTo({ top: position, behavior: 'auto' });
+    const scrollElement = () =>
+      document.scrollingElement ?? document.documentElement ?? document.body;
+
+    const scheduleRestorationCheck = (targetTop: number) => {
+      const monitor = () => {
+        const currentTop = window.scrollY || window.pageYOffset;
+        if (Math.abs(currentTop - targetTop) <= 1) {
+          isRestoringRef.current = false;
+          if (restorationRafRef.current !== null) {
+            window.cancelAnimationFrame(restorationRafRef.current);
+            restorationRafRef.current = null;
+          }
+          return;
+        }
+
+        restorationRafRef.current = window.requestAnimationFrame(monitor);
+      };
+
+      if (restorationRafRef.current !== null) {
+        window.cancelAnimationFrame(restorationRafRef.current);
       }
-    });
+
+      restorationRafRef.current = window.requestAnimationFrame(monitor);
+    };
+
+    let rafId = 0;
+    let restored = false;
+    let attempts = 0;
+    const maxAttempts = 240; // ~4s at 60fps
+
+    const restoreIfReady = () => {
+      if (restored) {
+        return;
+      }
+
+      const position = readStoredPosition(key);
+      if (position === null) {
+        restored = true;
+        return;
+      }
+
+      const target = scrollElement();
+      if (!target) {
+        rafId = window.requestAnimationFrame(restoreIfReady);
+        return;
+      }
+
+      const viewportHeight = window.innerHeight || target.clientHeight || 0;
+      const maxScrollable = Math.max(0, (target.scrollHeight || 0) - viewportHeight);
+
+      if (maxScrollable === 0 && attempts < maxAttempts) {
+        attempts += 1;
+        rafId = window.requestAnimationFrame(restoreIfReady);
+        return;
+      }
+
+      if (position > maxScrollable && attempts < maxAttempts) {
+        attempts += 1;
+        rafId = window.requestAnimationFrame(restoreIfReady);
+        return;
+      }
+
+      restored = true;
+      const prefersReducedMotion =
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+      const targetTop = Math.min(position, maxScrollable);
+
+      if (behavior === 'smooth') {
+        isRestoringRef.current = true;
+        scheduleRestorationCheck(targetTop);
+      }
+
+      window.scrollTo({ top: targetTop, behavior });
+
+      if (behavior !== 'smooth') {
+        isRestoringRef.current = false;
+      }
+    };
+
+    rafId = window.requestAnimationFrame(restoreIfReady);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('load', restoreIfReady);
+
+    let observer: MutationObserver | undefined;
+    if (typeof MutationObserver !== 'undefined' && document.body) {
+      observer = new MutationObserver(restoreIfReady);
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    const fallbackTimeout = window.setTimeout(() => {
+      if (!restored) {
+        restoreIfReady();
+      }
+    }, 3000);
+
     return () => {
-      window.cancelAnimationFrame(frameId);
+      restored = true;
+      window.cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('load', restoreIfReady);
+      observer?.disconnect();
+      window.clearTimeout(fallbackTimeout);
+      if (restorationRafRef.current !== null) {
+        window.cancelAnimationFrame(restorationRafRef.current);
+        restorationRafRef.current = null;
+      }
+      isRestoringRef.current = false;
     };
   }, [location.pathname, location.search, location.hash]);
 }
