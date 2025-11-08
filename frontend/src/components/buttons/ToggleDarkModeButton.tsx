@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo, useLayoutEffect } from 'react';
 
 import Button from './Button';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -22,7 +22,7 @@ export default function ToggleDarkModeButton() {
   const [theme, setTheme] = useLocalStorage<Theme>('theme', 'system');
   const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     const applyTheme = () => {
       const systemPrefersDark = isSystemDarkMode();
