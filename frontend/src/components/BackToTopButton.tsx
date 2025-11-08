@@ -1,39 +1,15 @@
-import { animate, easeOut, type AnimationPlaybackControls } from 'motion';
+import { type AnimationPlaybackControls } from 'motion';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ArrowUpIcon from './icons/ArrowUpIcon';
 import useIsScrolling from '../hooks/useIsScrolling';
+import { usePrefersReducedMotion } from '../utils/prefersReducedMotion';
+import { animateScrollTo } from '../utils/scrollAnimation';
+import { addScrollInterruptionListeners } from '../utils/scrollInterruption';
 
 // Pixels scrolled before the control fades in; tuned so it only shows up on longer reads.
 const SCROLL_TRIGGER_Y = 480;
-
-// Hook to detect if the user has requested reduced motion in their OS settings.
-function usePrefersReducedMotion() {
-  // Mirror the reader's operating system setting so we can gracefully fall back to instant jumps.
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    // We track changes so toggling the OS setting updates the component without a reload.
-    const handleChange = () => {
-      setPrefersReducedMotion(mediaQuery.matches);
-    };
-
-    handleChange();
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
-
-  return prefersReducedMotion;
-}
 
 export default function BackToTopButton() {
   // Button visibility state.
@@ -91,29 +67,7 @@ export default function BackToTopButton() {
   }, [isScrollingUp, isScrollingDown]);
 
   // Set up event listeners to cancel the scroll animation on user interaction.
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return undefined;
-    }
-
-    // Any manual scroll or keyboard navigation should cancel the automated scroll.
-    const cancelOnKeyDown = (event: KeyboardEvent) => {
-      const interruptKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
-      if (interruptKeys.includes(event.key)) {
-        cancelScrollAnimation();
-      }
-    };
-
-    window.addEventListener('wheel', cancelScrollAnimation, { passive: true });
-    window.addEventListener('touchstart', cancelScrollAnimation, { passive: true });
-    window.addEventListener('keydown', cancelOnKeyDown);
-
-    return () => {
-      window.removeEventListener('wheel', cancelScrollAnimation);
-      window.removeEventListener('touchstart', cancelScrollAnimation);
-      window.removeEventListener('keydown', cancelOnKeyDown);
-    };
-  }, [cancelScrollAnimation]);
+  useEffect(() => addScrollInterruptionListeners(cancelScrollAnimation), [cancelScrollAnimation]);
 
   useEffect(() => () => cancelScrollAnimation(), [cancelScrollAnimation]);
 
@@ -134,16 +88,9 @@ export default function BackToTopButton() {
       return;
     }
 
-    // Derive a natural-feeling duration based on how far the reader has scrolled.
-    const duration = Math.min(1.2, Math.max(0.2, currentY / 3000));
-
-    // Drive the scroll position with Motion so we get springy easing and cancellation support.
-    scrollAnimationRef.current = animate(currentY, 0, {
-      duration,
-      ease: easeOut,
-      onUpdate(latest) {
-        window.scrollTo({ top: latest });
-      },
+    // Drive the scroll position with the shared Motion helper so duration scales with distance and
+    // cancellation stays consistent across features.
+    scrollAnimationRef.current = animateScrollTo(0, {
       onComplete() {
         scrollAnimationRef.current = null;
       },
