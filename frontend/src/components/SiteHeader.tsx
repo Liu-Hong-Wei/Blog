@@ -62,7 +62,7 @@ function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
   return (
     <header
       role="banner"
-      className="sticky top-2 z-50 mx-4 my-2 flex justify-center bg-primary md:mx-auto md:min-w-3xl"
+      className="sticky top-2 z-50 mx-4 my-2 flex justify-center md:mx-auto md:min-w-3xl"
     >
       <nav
         className={`flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl ${isAtTop ? '' : 'shadow-sm ring-1 shadow-bgsecondary ring-bgsecondary'} util-transition`}
