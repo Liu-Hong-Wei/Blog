@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
-// import rehypeRaw from 'rehype-raw';
+import rehypeRaw from 'rehype-raw';
 import rehypeReact from 'rehype-react';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
@@ -66,14 +66,13 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       };
     }
 
-    // 处理 markdown 转换 remarkParse → remarkGfm →
-    // remarkRehype({ allowDangerousHtml: true }) → rehypeRaw
-    // → rehypeSlug → rehypeAutolinkHeadings → rehypePrettyCode → rehypeReact
+    // 处理 markdown 转换 remarkParse → remarkGfm → remarkRehype({ allowDangerousHtml: true })
+    // → rehypeRaw → rehypeSlug → rehypeAutolinkHeadings → rehypePrettyCode → rehypeReact
     const file = await unified()
       .use(remarkParse) // Parse markdown to AST
       .use(remarkGfm) // Support GitHub Flavored Markdown
-      // .use(rehypeRaw) // Allow raw HTML in markdown
-      .use(remarkRehype) // Transform AST to HAST
+      .use(remarkRehype, { allowDangerousHtml: true }) // Transform AST to HAST with raw HTML preserved
+      .use(rehypeRaw) // Parse and merge raw HTML nodes into HAST
       .use(rehypeSlug) // Add IDs to headings
       .use(rehypeAutolinkHeadings, { behavior: 'append' }) // Add anchor links to headings
       .use(rehypePrettyCode, prettyCodeOptions)
@@ -89,7 +88,8 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
       // })
       .use(rehypeStringify) // Serialize HAST to HTML
       // .use(rehypeSanitize)  // Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
-      .use(rehypeReact, { // Transform HTML to React elements
+      .use(rehypeReact, {
+        // Transform HTML to React elements
         createElement,
         Fragment,
         jsx,

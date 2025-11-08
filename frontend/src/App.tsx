@@ -1,21 +1,21 @@
-import { StrictMode, lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { StrictMode, lazy } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 
-import AppLayout from "./layouts/AppLayout.tsx";
-import Test from "./pages/Test.tsx";
+import AppLayout from './layouts/AppLayout.tsx';
+import Test from './pages/Test.tsx';
 
 // 懒加载页面组件 - 使用 React.lazy 的标准方式
-const Homepage = lazy(() => import("./pages/Homepage.tsx"));
-const About = lazy(() => import("./pages/About.tsx"));
-const Posts = lazy(() => import("./pages/Posts.tsx"));
-const Ideas = lazy(() => import("./pages/Ideas.tsx"));
-const Projects = lazy(() => import("./pages/Projects.tsx"));
-const Post = lazy(() => import("./pages/Post.tsx"));
-const NotFound = lazy(() => import("./pages/errors/NotFound.tsx"));
+const Homepage = lazy(() => import('./pages/Homepage.tsx'));
+const About = lazy(() => import('./pages/About.tsx'));
+const Posts = lazy(() => import('./pages/Posts.tsx'));
+const Ideas = lazy(() => import('./pages/Ideas.tsx'));
+const Projects = lazy(() => import('./pages/Projects.tsx'));
+const Post = lazy(() => import('./pages/Post.tsx'));
+const NotFound = lazy(() => import('./pages/errors/NotFound.tsx'));
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <AppLayout />,
     children: [
       {
@@ -23,31 +23,31 @@ const router = createBrowserRouter([
         element: <Homepage />,
       },
       {
-          path: "ideas",
+        path: 'ideas',
         element: <Ideas />,
       },
       {
-        path: "projects",
+        path: 'projects',
         element: <Projects />,
       },
       {
-        path: "about",
+        path: 'about',
         element: <About />,
       },
       {
-        path: "posts",
+        path: 'posts',
         element: <Posts />,
       },
       {
-        path: "posts/:slug",
+        path: 'posts/:slug',
         element: <Post />,
       },
       {
-        path: "test-page",
+        path: 'test-page',
         element: <Test />,
       },
       {
-        path: "*",
+        path: '*',
         element: <NotFound />,
       },
     ],
@@ -58,7 +58,7 @@ function App() {
   return (
     <StrictMode>
       <RouterProvider router={router} />
-    </StrictMode >
+    </StrictMode>
   );
 }
 

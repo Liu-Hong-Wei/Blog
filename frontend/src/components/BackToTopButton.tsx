@@ -135,7 +135,7 @@ export default function BackToTopButton() {
     }
 
     // Derive a natural-feeling duration based on how far the reader has scrolled.
-    const duration = Math.min(2, Math.max(0.5, currentY /3000));
+    const duration = Math.min(1.2, Math.max(0.2, currentY / 3000));
 
     // Drive the scroll position with Motion so we get springy easing and cancellation support.
     scrollAnimationRef.current = animate(currentY, 0, {
@@ -159,7 +159,7 @@ export default function BackToTopButton() {
             key="back-to-top"
             type="button"
             aria-label="Back to top"
-            className="cursor-pointer pointer-events-auto z-50 flex h-12 w-12 items-center justify-center rounded-full bg-bgsecondary text-secondary shadow-lg backdrop-blur-md util-transition hover:shadow-xl focus-visible:ring-2 focus-visible:ring-secondary/80 focus-visible:ring-offset-2 focus-visible:ring-offset-bgprimary focus-visible:outline-none"
+            className="pointer-events-auto z-50 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-bgsecondary text-secondary shadow-lg backdrop-blur-md util-transition hover:shadow-xl focus-visible:ring-2 focus-visible:ring-secondary/80 focus-visible:ring-offset-2 focus-visible:ring-offset-bgprimary focus-visible:outline-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
