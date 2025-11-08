@@ -7,7 +7,7 @@ import SiteHeader from '../components/SiteHeader.tsx';
 import { PageLoadingSpinner } from '../components/Spinners.tsx';
 import SuspenseErrorBoundary from '../components/SuspenseErrorBoundary.tsx';
 import useScrollRestoration from '../hooks/useScrollRestoration.ts';
-import useBodyScrollLock from '../utils/useBodyScrollLock.ts';
+import useBodyScrollLock from '../hooks/useBodyScrollLock.ts';
 
 const DRAWER_DISMISS_DELAY = 300;
 
