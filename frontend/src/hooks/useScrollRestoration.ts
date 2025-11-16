@@ -125,7 +125,7 @@ function useScrollRestoration() {
     let rafId = 0;
     let restored = false;
     let attempts = 0;
-    const maxAttempts = 120; // ~2s at 60fps
+    const maxAttempts = 240; // ~4s at 60fps
 
     // Attempt to restore the scroll position once the DOM is stable enough to scroll. We delay
     // restoring until the document height is sufficient, retrying while the page renders.
