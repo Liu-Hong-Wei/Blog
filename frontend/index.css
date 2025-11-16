@@ -63,16 +63,6 @@ code[data-theme*=' '] span {
 }
 
 @layer components {
-  .card-hover-effect > * {
-    /* 为所有直接子元素应用过渡 */
-    @apply util-transition-colors;
-  }
-
-  /* 或者更具体地指定 */
-  .card-hover-effect h3,
-  .card-hover-effect p {
-    @apply transition-colors duration-300;
-  }
 }
 
 /* Customized styles for code blocks */

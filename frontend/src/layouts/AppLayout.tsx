@@ -6,8 +6,8 @@ import SiteFooter from '../components/SiteFooter.tsx';
 import SiteHeader from '../components/SiteHeader.tsx';
 import { PageLoadingSpinner } from '../components/Spinners.tsx';
 import SuspenseErrorBoundary from '../components/SuspenseErrorBoundary.tsx';
-import useScrollRestoration from '../hooks/useScrollRestoration.ts';
 import useBodyScrollLock from '../hooks/useBodyScrollLock.ts';
+import useScrollRestoration from '../hooks/useScrollRestoration.ts';
 
 const DRAWER_DISMISS_DELAY = 300;
 
@@ -61,7 +61,7 @@ function AppLayout() {
     <div className="flex min-h-screen max-w-screen flex-col bg-bgprimary p-[0.05px] text-primary util-transition-colors">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
-      <main className="flex grow flex-col util-transition-colors" role="main">
+      <main className="flex grow flex-col" role="main">
         <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
         </SuspenseErrorBoundary>

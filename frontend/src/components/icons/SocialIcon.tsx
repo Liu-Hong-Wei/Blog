@@ -1,18 +1,13 @@
 import type { SocialIconProps } from "../../types/types";
 
-function SocialIcon({ platform, url, lightIcon, darkIcon }: SocialIconProps) {
+function SocialIcon({ platform, url, icon }: SocialIconProps) {
   return (
     <a href={url} target="_blank" rel="noreferrer">
-      <div className="rounded-full relative md:w-8 md:h-8 w-6 h-6 group">
+      <div className="rounded-full bg-transparent flex items-center justify-center size-12 m-1">
         <img 
-          src={lightIcon}
-          alt={`${platform} light`}
-          className="absolute inset-0 w-full h-full util-transition opacity-0 group-hover:opacity-100"
-        />
-        <img 
-          src={darkIcon}
-          alt={`${platform} dark`}
-          className="absolute inset-0 w-full h-full util-transition opacity-100 group-hover:opacity-0"
+          src={icon}
+          alt={`${platform} icon`}
+          className="size-12"
         />
       </div>
     </a>

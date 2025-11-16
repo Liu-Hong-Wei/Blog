@@ -1,9 +1,12 @@
-import UnderConstruction from "./errors/UnderConstruction";
+import ProfileCard from '../components/ProfileCard';
+import MainContentLayout from '../layouts/MainContentLayout';
 
 function Homepage() {
   return (
     <>
-      <UnderConstruction name="Homepage" />
+      <MainContentLayout widthSize="wide">
+        <ProfileCard />
+      </MainContentLayout>
     </>
   );
 }

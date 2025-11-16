@@ -38,8 +38,7 @@ export interface User {
 export interface SocialIconProps {
   platform: string;
   url: string;
-  lightIcon: string;
-  darkIcon: string;
+  icon: string;
 }
 
 

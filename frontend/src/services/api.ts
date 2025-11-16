@@ -50,5 +50,5 @@ export const TagsAPI = {
 
 // 关于页面API
 export const AboutAPI = {
-  get: () => fetchAPI<About[]>('about/').then(data => data[0]),
+  get: () => fetchAPI<PaginatedResponse<About>>('about/').then(data => data.results[0]),
 };

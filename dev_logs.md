@@ -66,3 +66,62 @@ Choosing to use docker to set up Chevereto, then dockerized frontend and backend
 - Rendering markdown using [customized styles](https://github.com/syntax-tree/hast-util-to-jsx-runtime#components) with [rehype-react](https://github.com/rehypejs/rehype-react#components)
 - https://github.com/rehypejs/rehype-autolink-headings and https://github.com/rehypejs/rehype-slug
 - implement back to top button while adding side bar
+- solved FOUC by useLayoutEffect, shout out to the goat on stackoverflow
+
+
+---
+
+现代化响应式SPA博客网站的特点(TODO)
+1. 极致的性能体验
+快速初始加载：通过代码分割、懒加载减少首屏资源
+
+流畅的页面切换：路由切换无刷新，添加加载状态和过渡动画
+
+智能预加载：预测用户行为，提前加载可能访问的页面资源
+
+PWA支持：支持离线访问、添加到主屏幕等特性
+
+2. 优秀的响应式设计
+移动优先：从小屏幕开始设计，逐步增强到大屏幕
+
+自适应布局：使用CSS Grid、Flexbox实现灵活的布局系统
+
+响应式图片：根据设备尺寸和分辨率加载合适的图片版本
+
+触摸友好：按钮和交互元素大小适合手指操作
+
+3. 现代化的用户界面
+简洁直观的导航：清晰的菜单结构和面包屑导航
+
+深色/浅色主题：支持系统主题检测和手动切换
+
+微交互反馈：悬停效果、加载动画、操作确认等细节
+
+无障碍访问：支持键盘导航、屏幕阅读器，符合WCAG标准
+
+4. 丰富的内容展示
+代码高亮：为技术博客提供美观的代码展示
+
+数学公式支持：使用MathJax或KaTeX渲染公式
+
+图片灯箱：点击图片放大查看，支持画廊模式
+
+目录导航：长文章自动生成目录，方便跳转
+
+5. 强大的内容管理
+标签和分类系统：多维度的内容组织方式
+
+全文搜索：客户端或服务端搜索，快速定位内容
+
+文章推荐：基于标签、分类的相关文章推荐
+
+阅读进度：显示当前阅读进度和预估阅读时间
+
+6. 社交和互动功能
+评论系统：集成第三方（如Gitalk、Utterances）或自建评论
+
+社交分享：一键分享到各大社交平台
+
+订阅功能：RSS订阅和邮件 Newsletter
+
+访客统计：文章阅读量、点赞收藏功能
