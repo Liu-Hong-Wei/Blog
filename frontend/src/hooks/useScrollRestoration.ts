@@ -65,6 +65,7 @@ function useScrollRestoration() {
     };
   }, []);
 
+  // Restore scroll position on location change
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
       return undefined;

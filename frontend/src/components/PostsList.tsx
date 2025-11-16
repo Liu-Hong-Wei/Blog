@@ -12,12 +12,12 @@ function PostsList() {
             ) : (
                 <ul className="space-y-4 w-full">
                     {posts.map((post) => (
-                        <li className='w-full p-4 rounded-xl hover:bg-bgsecondary util-transition group hover:text-secondary' key={post.id}>
+                        <li className='w-full p-4 rounded-xl hover:bg-bgsecondary group hover:text-secondary util-transition-colors' key={post.id}>
                             <NavLink
                                 to={`/posts/${post.slug}`}
                             >
-                                <h2 className="text-xl util-transition">{post.title}</h2>
-                                <p className="text-md util-transition">{new Date(post.created_at).toLocaleDateString()}</p>
+                                <h2 className="text-xl">{post.title}</h2>
+                                <p className="text-md">{new Date(post.created_at).toLocaleDateString()}</p>
                                 {/* TODO: add preivew of the article */}
                             </NavLink>
                         </li>
