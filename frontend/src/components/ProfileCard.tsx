@@ -19,7 +19,7 @@ function ProfileCardContent({
           <img
             src={Selfie}
             alt="me in the forbidden palace"
-            className="h-full w-full rounded-2xl object-cover util-transition"
+            className="h-full w-full rounded-full object-cover util-transition"
             loading="lazy"
             onContextMenu={e => e.preventDefault()}
             draggable="false"
