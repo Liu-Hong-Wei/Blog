@@ -81,7 +81,7 @@ function ProfileCard({ className }: { className?: string; profileSize?: string }
 
   return (
     <div
-      className={`m-8 flex min-h-[calc(50vh-200px)] w-full items-center justify-center util-transition-colors ${className}`}
+      className={`m-2 flex min-h-[calc(50vh-200px)] w-full items-center justify-center util-transition-colors ${className}`}
     >
       <div
         className="perspective-800 relative w-full max-w-xl [transform:perspective(800px)_rotateY(var(--rotate-y,0deg))_rotateX(var(--rotate-x,0deg))] cursor-pointer rounded-2xl util-transition ease-out transform--3d"

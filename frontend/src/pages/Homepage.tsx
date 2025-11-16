@@ -1,14 +1,8 @@
-import ProfileCard from '../components/ProfileCard';
-import MainContentLayout from '../layouts/MainContentLayout';
+import About from './About';
 
 function Homepage() {
-  return (
-    <>
-      <MainContentLayout widthSize="wide">
-        <ProfileCard />
-      </MainContentLayout>
-    </>
-  );
+  // For now, redirect Homepage to About page
+  return <About />;
 }
 
 export default Homepage;

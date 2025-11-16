@@ -31,6 +31,7 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
   return { visible, active };
 }
 
+// TODO: 使用 Header 里的 React Router的路由切换后，而React Router 路由上的代码分割的懒加载，会有一小段时间没有反应，这一段没有反应的时间将Outlet的内容添加blur
 function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen);
