@@ -83,7 +83,7 @@ const MarkdownImage = ({
         loading={loading}
         onLoad={handleImageLoad}
         className={mergeClassName(
-          'max-h-[480px] w-full rounded-sm object-contain util-transition hover:opacity-90 hover:shadow-md',
+          'max-h-[480px] mx-auto w-fit rounded-sm object-contain util-transition hover:opacity-90 hover:shadow-md',
           className
         )}
       />
