@@ -21,7 +21,7 @@ function MainContentLayout({
       : widthSize === 'wide'
         ? 'w-3/5'
         : widthSize === 'screen'
-          ? 'w-screen'
+          ? 'w-[99vw]'
           : 'w-7xl'
     : (asideContent ? 'w-7xl' : 'w-5xl');
 

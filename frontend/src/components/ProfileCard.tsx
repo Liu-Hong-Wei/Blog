@@ -13,7 +13,7 @@ function ProfileCardContent({
 
   return (
     <div className={className}>
-      <div className="flex w-full flex-col items-center justify-center rounded-2xl bg-bgsecondary/50 p-8 backdrop-blur-md util-transition">
+      <div className="flex w-full flex-col items-center justify-center rounded-2xl bg-bgsecondary/90 p-8 backdrop-blur-md util-transition">
         {/* profile image */}
         <div className={`mx-auto my-6 aspect-square w-full ${imgSize} select-none`}>
           <img

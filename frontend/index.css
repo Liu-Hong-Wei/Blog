@@ -102,6 +102,57 @@ pre::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-primary);
 }
 
+/* ========================================
+   Lightbox 自定义样式
+   ======================================== */
+
+/* 背景遮罩 */
+.yarl__root {
+  --yarl__color_backdrop: rgba(0, 0, 0, 0.92);
+}
+
+/* 图片容器 - 点击图片也可以关闭 */
+.yarl__slide {
+  cursor: pointer;
+}
+
+/* 图片本身 */
+.yarl__slide_image {
+  max-height: 99vh;
+  max-width: 99vw;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* 导航按钮样式优化 */
+.yarl__button {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  transition: all 0.2s ease;
+}
+
+.yarl__button:hover {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  transform: scale(1.1);
+}
+
+/* 工具栏按钮 */
+.yarl__toolbar {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+  padding: 16px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .yarl__slide_image {
+    max-height: 90vh;
+  }
+
+  .yarl__button {
+    transform: scale(0.9);
+  }
+}
+
 /*
 // On page load or when changing themes, best to add inline in `head` to avoid FOUC
 document.documentElement.classList.toggle(

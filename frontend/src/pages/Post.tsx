@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { useParams } from 'react-router';
 
 import BackToTopButton from '../components/BackToTopButton';
+import { LightboxProvider } from '../components/Lightbox';
 import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
@@ -52,7 +53,7 @@ export function PostContent({ slug }: { slug: string }) {
                 {post.tags.map(tag => (
                   <span
                     key={tag.id}
-                    className="text-md rounded-full bg-blue-100 px-2 py-1 text-blue-800"
+                    className="text-md rounded-full bg-bgsecondary px-2 py-1 text-secondary"
                   >
                     {tag.name}
                   </span>
@@ -70,11 +71,13 @@ export function PostContent({ slug }: { slug: string }) {
 
           {/* 文章内容 */}
           <main className="max-w-full">
+            {/* 加载中状态（仅 markdown 异步渲染） */}
             {isProcessing && <ComponentLoadingSpinner loading="Sit back and relax..." />}
-            {!isProcessing && renderedContent}
-            {/* 加载中状态（仅 markdown 处理） */}
             {!isProcessing && post && !post.content && (
               <Error emoji="🤔" content="This post is empty?!" />
+            )}
+            {!isProcessing && renderedContent && (
+              <LightboxProvider>{renderedContent}</LightboxProvider>
             )}
           </main>
         </article>

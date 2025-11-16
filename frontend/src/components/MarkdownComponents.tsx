@@ -2,6 +2,8 @@
 // components/MarkdownComponents.tsx
 import type { ComponentProps, ElementType } from 'react';
 
+import MarkdownImage from './MarkdownImage';
+
 const mergeClassName = (base: string, className?: string) =>
   className ? `${base} ${className}` : base;
 
@@ -91,17 +93,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
   li: ({ className, ...props }: ComponentProps<'li'>) => (
     <li {...props} className={mergeClassName('pl-1 leading-relaxed', className)} />
   ),
-  img: ({ className, loading = 'lazy', ...props }: ComponentProps<'img'>) => (
-    // eslint-disable-next-line jsx-a11y/alt-text
-    <img
-      {...props}
-      loading={loading}
-      className={mergeClassName(
-        'my-6 max-h-[480px] w-full rounded-xl border border-bgsecondary object-cover shadow-md',
-        className
-      )}
-    />
-  ),
+  img: MarkdownImage,
   table: ({ className, ...props }: ComponentProps<'table'>) => (
     <table
       {...props}
