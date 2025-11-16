@@ -41,7 +41,7 @@ export function LightboxProvider({ children }: LightboxProviderProps) {
   // 注册图片到 slides 数组中
   const registerImage = useCallback(
     (src: string, alt?: string, width?: number, height?: number) => {
-      const existingIndex = slidesRef.current.findIndex(slide => slide.src === src);
+      // const existingIndex = slidesRef.current.findIndex(slide => slide.src === src);
 
       const newSlide: ImageSlide = {
         src,
@@ -49,21 +49,25 @@ export function LightboxProvider({ children }: LightboxProviderProps) {
         ...(width && height ? { width, height } : {}),
       };
 
-      if (existingIndex === -1) {
-        // 新图片，添加到数组
-        slidesRef.current = [...slidesRef.current, newSlide];
-        setSlides([...slidesRef.current]);
-      } else {
-        // 已存在的图片，更新信息（比如尺寸信息）
-        const needsUpdate =
-          slidesRef.current[existingIndex].width !== newSlide.width ||
-          slidesRef.current[existingIndex].height !== newSlide.height;
+      // 新图片，添加到数组
+      slidesRef.current = [...slidesRef.current, newSlide];
+      setSlides([...slidesRef.current]);
 
-        if (needsUpdate && width && height) {
-          slidesRef.current[existingIndex] = newSlide;
-          setSlides([...slidesRef.current]);
-        }
-      }
+      // if (existingIndex === -1) {
+      //   // 新图片，添加到数组
+      //   slidesRef.current = [...slidesRef.current, newSlide];
+      //   setSlides([...slidesRef.current]);
+      // } else {
+      //   // 已存在的图片，更新信息（比如尺寸信息）
+      //   const needsUpdate =
+      //     slidesRef.current[existingIndex].width !== newSlide.width ||
+      //     slidesRef.current[existingIndex].height !== newSlide.height;
+
+      //   if (needsUpdate && width && height) {
+      //     slidesRef.current[existingIndex] = newSlide;
+      //     setSlides([...slidesRef.current]);
+      //   }
+      // }
     },
     []
   );
