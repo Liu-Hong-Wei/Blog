@@ -53,7 +53,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
   p: ({ className, ...props }: ComponentProps<'p'>) => (
     <p
       {...props}
-      className={mergeClassName('my-4 text-base leading-relaxed text-primary', className)}
+      className={mergeClassName('my-4 text-lg leading-relaxed text-primary', className)}
     />
   ),
   a: ({ className, ...props }: ComponentProps<'a'>) => (
