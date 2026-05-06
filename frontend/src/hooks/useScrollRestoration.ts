@@ -1,6 +1,6 @@
 import { type AnimationPlaybackControls } from 'motion';
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigationType } from 'react-router';
 
 import { prefersReducedMotion } from '../utils/prefersReducedMotion';
 import { animateScrollTo } from '../utils/scrollAnimation';
@@ -31,6 +31,7 @@ function readStoredPosition(key: string) {
 function useScrollRestoration() {
   // Get the current location
   const location = useLocation();
+  const navigationType = useNavigationType();
   // Ref to track if we are currently restoring scroll position
   const isRestoringRef = useRef(false);
   // Ref to track the current animation frame ID for scroll restoration
@@ -128,6 +129,12 @@ function useScrollRestoration() {
     let attempts = 0;
     const maxAttempts = 240; // ~4s at 60fps
 
+    // Determine the intended scroll target: restore cached position on POP (back/forward),
+    // otherwise always scroll to top for fresh navigations.
+    const cached = readStoredPosition(key);
+    const isPop = navigationType === 'POP';
+    const desiredTop = isPop && cached !== null ? cached : 0;
+
     // Attempt to restore the scroll position once the DOM is stable enough to scroll. We delay
     // restoring until the document height is sufficient, retrying while the page renders.
     const restoreIfReady = () => {
@@ -135,8 +142,8 @@ function useScrollRestoration() {
         return;
       }
 
-      const position = readStoredPosition(key);
-      if (position === null) {
+      // Already at the target — nothing to do.
+      if (Math.abs(window.scrollY - desiredTop) <= 1) {
         restored = true;
         return;
       }
@@ -150,24 +157,27 @@ function useScrollRestoration() {
       const viewportHeight = window.innerHeight || target.clientHeight || 0;
       const maxScrollable = Math.max(0, (target.scrollHeight || 0) - viewportHeight);
 
-      if (maxScrollable === 0 && attempts < maxAttempts) {
-        attempts += 1;
-        rafId = window.requestAnimationFrame(restoreIfReady);
-        return;
-      }
+      // When restoring a saved position, wait until the page is tall enough.
+      if (isPop && cached !== null) {
+        if (maxScrollable === 0 && attempts < maxAttempts) {
+          attempts += 1;
+          rafId = window.requestAnimationFrame(restoreIfReady);
+          return;
+        }
 
-      if (position > maxScrollable && attempts < maxAttempts) {
-        attempts += 1;
-        rafId = window.requestAnimationFrame(restoreIfReady);
-        return;
+        if (cached > maxScrollable && attempts < maxAttempts) {
+          attempts += 1;
+          rafId = window.requestAnimationFrame(restoreIfReady);
+          return;
+        }
       }
 
       restored = true;
       const shouldReduceMotion = prefersReducedMotion();
       const behavior: ScrollBehavior = shouldReduceMotion ? 'auto' : 'smooth';
-      const targetTop = Math.min(position, maxScrollable);
+      const targetTop = Math.min(desiredTop, maxScrollable);
 
-      if (behavior === 'smooth') {
+      if (behavior === 'smooth' && targetTop > 0) {
         cancelScrollAnimation();
         isRestoringRef.current = true;
         const controls = animateScrollTo(targetTop, {
@@ -188,7 +198,7 @@ function useScrollRestoration() {
         return;
       }
 
-      // Fallback for reduced motion: jump directly to the cached offset.
+      // Fallback for reduced motion or top-of-page: jump directly.
       window.scrollTo({ top: targetTop, behavior });
       isRestoringRef.current = false;
     };
@@ -228,7 +238,7 @@ function useScrollRestoration() {
       isRestoringRef.current = false;
       removeInterruptionListeners();
     };
-  }, [location.pathname, location.search, location.hash]);
+  }, [location.pathname, location.search, location.hash, navigationType]);
 }
 
 export default useScrollRestoration;
