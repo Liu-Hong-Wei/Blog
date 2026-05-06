@@ -26,10 +26,13 @@ function SiteFooter() {
             to="/"
             className="text-xl font-bold text-primary transition-colors hover:text-secondary"
           >
-            Ethan&apos;s Blog
+            HongWei&apos;s Blog
           </NavLink>
-          {/* TODO: 用户自定义描述 */}
-          <p className="max-w-xs text-sm leading-relaxed text-primary/60">Your description here.</p>
+          <p className="max-w-xs text-sm leading-relaxed text-primary/60">
+            是谁来自山川湖海
+            <br />
+            却囿于昼夜厨房与爱
+          </p>
         </div>
 
         {/* 快速导航 */}
@@ -66,9 +69,8 @@ function SiteFooter() {
 
       {/* 版权栏 */}
       <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-bgsecondary/30 pt-6 text-xs text-primary/40 md:flex-row">
-        <p>© {year} Ethan&apos;s Blog. All rights reserved.</p>
-        {/* TODO: 用户自定义签名 */}
-        <p>Your signature here.</p>
+        <p>© {year} HongWei&apos;s Blog. All rights reserved.</p>
+        <p></p>
       </div>
     </footer>
   );

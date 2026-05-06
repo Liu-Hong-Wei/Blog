@@ -69,7 +69,7 @@ function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
         aria-label="Primary navigation"
       >
         <NavLink className="text-lg font-bold" to="/">
-          Ethan&apos;s Blog
+          HongWei&apos;s Blog
         </NavLink>
         <div className="flex items-center">
           <NavLinks className="hidden md:flex" />

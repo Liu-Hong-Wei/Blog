@@ -33,7 +33,7 @@ function MobileDrawer({ visible, active, onClose }: MobileDrawerProps) {
       >
         <div className="flex h-12 items-center justify-center text-secondary">
           <NavLink to="/" className="text-2xl font-bold" onClick={onClose}>
-            Ethan&apos;s Blog
+            HongWei&apos;s Blog
           </NavLink>
         </div>
         <NavLinks orientation="vertical" className="px-6 pb-6" onNavigate={onClose} />
