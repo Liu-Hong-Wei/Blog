@@ -1,4 +1,4 @@
-import type { ErrorInfo, ReactNode} from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import React, { Component, Suspense } from 'react';
 
 import Button from './buttons/Button';
@@ -38,23 +38,17 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       const { error } = this.state;
-      
+
       // 404 Not Found Error
       if (error instanceof NotFoundError) {
         return <NotFound />;
       }
-      
+
       // API Error
       if (error instanceof APIError) {
-        return (
-          <Error 
-            emoji="🚫" 
-            content="API Error" 
-            error={`${error.status}: ${error.message}`}
-          />
-        );
+        return <Error emoji="🚫" content="API Error" error={`${error.status}: ${error.message}`} />;
       }
-      
+
       // 自定义 fallback
       if (this.props.fallback) {
         return this.props.fallback;
@@ -62,7 +56,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // 通用错误处理
       return (
-        <div className="flex flex-col justify-center items-center space-y-4">
+        <div className="flex flex-col items-center justify-center space-y-4">
           <Error emoji="⚠️" content={`Oops, Something went wrong`} />
           <Button onClick={this.handleRetry}>
             Please Try Again;0 btw this is a general error boundary
@@ -78,15 +72,13 @@ export class ErrorBoundary extends Component<Props, State> {
 /**
  * Suspense 和 ErrorBoundary 的包装器
  */
-export const SuspenseErrorBoundary: React.FC<{ children: ReactNode; fallback?: ReactNode }> = ({ 
-  children, 
-  fallback = <PageLoadingSpinner /> 
+export const SuspenseErrorBoundary: React.FC<{ children: ReactNode; fallback?: ReactNode }> = ({
+  children,
+  fallback = <PageLoadingSpinner />,
 }) => {
   return (
     <ErrorBoundary>
-      <Suspense fallback={fallback}>
-        {children}
-      </Suspense>
+      <Suspense fallback={fallback}>{children}</Suspense>
     </ErrorBoundary>
   );
 };

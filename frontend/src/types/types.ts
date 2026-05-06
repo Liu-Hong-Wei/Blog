@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 export interface Post {
   id: number;
@@ -41,7 +41,6 @@ export interface SocialIconProps {
   icon: string;
 }
 
-
 export interface NavButtonProps {
   onClick?: () => void;
   className?: string;
@@ -50,5 +49,4 @@ export interface NavButtonProps {
   ariaExpanded?: boolean;
   ariaControls?: string;
   children: ReactNode;
-};
-
+}

@@ -7,7 +7,7 @@ const PostsList = lazy(() => import('../components/PostsList'));
 
 const Posts: React.FC = () => {
   return (
-    <MainContentLayout widthSize='narrow'>
+    <MainContentLayout widthSize="narrow">
       <PostsList />
     </MainContentLayout>
   );

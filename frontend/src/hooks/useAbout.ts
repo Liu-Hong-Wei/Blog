@@ -1,4 +1,3 @@
-
 import { AboutAPI } from '../services/api';
 import type { About } from '../types/types';
 import createResource from '../utils/resource';

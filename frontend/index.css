@@ -2,6 +2,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Base font size adjustment for better proportions */
+html {
+  font-size: 15px;
+  overscroll-behavior: none;
+}
+
 /* TODO: lots of customizations to be done later */
 @theme {
   --font-sans:

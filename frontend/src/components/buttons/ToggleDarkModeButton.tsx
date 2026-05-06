@@ -1,6 +1,6 @@
-import { useState, useMemo, useLayoutEffect } from 'react';
+import { motion } from 'motion/react';
+import { useLayoutEffect, useState } from 'react';
 
-import Button from './Button';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import DarkModeIcon from '../icons/DarkModeIcon';
 import LightModeIcon from '../icons/LightModeIcon';
@@ -12,15 +12,25 @@ function isSystemDarkMode() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
-const themeIcons: Record<Theme, React.ReactNode> = {
-  light: <LightModeIcon />,
-  dark: <DarkModeIcon />,
-  system: <MonitorModeIcon />,
-};
+interface ThemeOption {
+  value: Theme;
+  label: string;
+  icon: React.ReactNode;
+}
+
+const themes: ThemeOption[] = [
+  { value: 'light', label: 'Light', icon: <LightModeIcon /> },
+  { value: 'system', label: 'System', icon: <MonitorModeIcon /> },
+  { value: 'dark', label: 'Dark', icon: <DarkModeIcon /> },
+];
 
 export default function ToggleDarkModeButton() {
   const [theme, setTheme] = useLocalStorage<Theme>('theme', 'system');
-  const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useLayoutEffect(() => {
+    setMounted(true);
+  }, []);
 
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -45,61 +55,48 @@ export default function ToggleDarkModeButton() {
     };
 
     mediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
   };
 
-  const orderedThemes = useMemo<Theme[]>(() => {
-    const theOtherTheme: Theme = theme === 'system' ? 'dark' : theme === 'light' ? 'dark' : 'light';
-    const firstTheme: Theme = theme === 'system' ? 'light' : theme === 'light' ? 'light' : 'dark';
-    return [firstTheme, 'system', theOtherTheme];
-  }, [theme]);
-
-  const getCurrentIcon = () => {
-    if (theme === 'dark') return <DarkModeIcon />;
-    if (theme === 'light') return <LightModeIcon />;
-    return <MonitorModeIcon />;
-  };
+  const activeIndex = themes.findIndex(t => t.value === theme);
 
   return (
-    <div
-      className="relative flex items-center"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div
-        className={`flex items-center space-x-1 overflow-hidden rounded-full bg-bgsecondary util-transition`}
-      >
-        {isHovered ? (
-          orderedThemes.map(mode => (
-            <Button
-              key={mode}
-              variant={theme === mode ? 'secondary' : 'primary'}
-              size="fit"
-              onClick={() => handleThemeChange(mode)}
-              aria-label={`Change to ${mode} Mode`}
-              className={`rounded-full`}
-            >
-              {themeIcons[mode]}
-            </Button>
-          ))
-        ) : (
-          <Button
-            variant="primary"
-            size="fit"
-            aria-label={`Current theme: ${theme}`}
-            className="rounded-full bg-bgsecondary"
+    <div className="relative inline-flex items-center rounded-full bg-bgsecondary/70 p-[2px] ring-1 ring-bgsecondary/50">
+      {/* Sliding active background */}
+      <motion.div
+        className="absolute size-8 rounded-full bg-bgprimary shadow-sm"
+        style={{ top: 2, left: 2 }}
+        initial={false}
+        animate={{ x: activeIndex * 30 }}
+        transition={{
+          type: 'spring',
+          stiffness: 350,
+          damping: 30,
+        }}
+      />
+
+      {themes.map(({ value, label, icon }) => {
+        const isActive = theme === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            onClick={() => handleThemeChange(value)}
+            title={label}
+            aria-label={`Switch to ${label} mode`}
+            aria-pressed={isActive}
+            className={`relative z-10 flex size-8 items-center justify-center rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 focus-visible:ring-offset-bgsecondary ${
+              isActive ? 'text-secondary' : 'text-primary/50 hover:text-primary/80'
+            } ${!mounted ? 'opacity-0' : 'opacity-100'}`}
           >
-            {getCurrentIcon()}
-          </Button>
-        )}
-      </div>
+            {icon}
+          </button>
+        );
+      })}
     </div>
   );
 }

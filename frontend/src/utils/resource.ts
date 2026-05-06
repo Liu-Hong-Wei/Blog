@@ -10,11 +10,11 @@ function createResource<T>(promise: Promise<T>) {
   let error: Error;
 
   const suspender = promise.then(
-    (data) => {
+    data => {
       status = 'success';
       result = data;
     },
-    (err) => {
+    err => {
       status = 'error';
       error = err;
     }
@@ -37,9 +37,8 @@ function createResource<T>(promise: Promise<T>) {
       }
       // 理论上不会执行到这里
       throw new Error('Invalid resource status');
-    }
+    },
   };
 }
-
 
 export default createResource;

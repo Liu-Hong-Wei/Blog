@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 interface ScrollState {
   isScrolling: boolean;
   isAtTop: boolean;
   hasScrolled: boolean;
-  scrollDirection: "up" | "down" | "idle";
+  scrollDirection: 'up' | 'down' | 'idle';
   isScrollingUp: boolean;
   isScrollingDown: boolean;
 }
@@ -14,12 +14,12 @@ const SCROLL_IDLE_DELAY = 300;
 const useIsScrolling = (): ScrollState => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [scrollDirection, setScrollDirection] = useState<"up" | "down" | "idle">("idle");
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'idle'>('idle');
   const timeoutRef = useRef<number | null>(null);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return;
     }
 
@@ -32,9 +32,9 @@ const useIsScrolling = (): ScrollState => {
       setIsScrolling(delta !== 0);
 
       if (delta < 0) {
-        setScrollDirection("up");
+        setScrollDirection('up');
       } else if (delta > 0) {
-        setScrollDirection("down");
+        setScrollDirection('down');
       }
 
       if (timeoutRef.current !== null) {
@@ -43,17 +43,17 @@ const useIsScrolling = (): ScrollState => {
 
       timeoutRef.current = window.setTimeout(() => {
         setIsScrolling(false);
-        setScrollDirection("idle");
+        setScrollDirection('idle');
       }, SCROLL_IDLE_DELAY);
 
       lastScrollYRef.current = currentScrollY;
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       if (timeoutRef.current !== null) {
         window.clearTimeout(timeoutRef.current);
       }
@@ -65,8 +65,8 @@ const useIsScrolling = (): ScrollState => {
     isAtTop,
     hasScrolled: !isAtTop,
     scrollDirection,
-    isScrollingUp: scrollDirection === "up",
-    isScrollingDown: scrollDirection === "down"
+    isScrollingUp: scrollDirection === 'up',
+    isScrollingDown: scrollDirection === 'down',
   };
 };
 

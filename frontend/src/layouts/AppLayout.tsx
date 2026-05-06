@@ -62,7 +62,7 @@ function AppLayout() {
     <div className="flex min-h-screen max-w-screen flex-col bg-bgprimary p-[0.05px] text-primary util-transition-colors">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
-      <main className="flex grow flex-col" role="main">
+      <main className="flex min-h-[calc(100vh-8rem)] grow flex-col" role="main">
         <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
         </SuspenseErrorBoundary>

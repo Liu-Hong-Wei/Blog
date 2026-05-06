@@ -29,7 +29,11 @@ export function animateScrollTo(
 
   const distance = Math.abs(targetTop - currentTop);
   const duration =
-    options.duration ?? Math.min(options.max_duration ?? 1.2, Math.max(options.min_duration ?? 0.2, distance / (options.duration_divisor ?? 3000)));
+    options.duration ??
+    Math.min(
+      options.max_duration ?? 1.2,
+      Math.max(options.min_duration ?? 0.2, distance / (options.duration_divisor ?? 3000))
+    );
 
   return animate(currentTop, targetTop, {
     duration,

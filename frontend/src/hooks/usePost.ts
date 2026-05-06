@@ -1,4 +1,4 @@
-import { PostsAPI } from '../services/api'; 
+import { PostsAPI } from '../services/api';
 import type { Post } from '../types/types';
 import createResource from '../utils/resource';
 
@@ -14,7 +14,7 @@ const postResourcesCache = new Map<string, ReturnType<typeof createResource<Post
 export default function usePost(slug: string) {
   // 检查缓存中是否已有该文章的资源
   let postResource = postResourcesCache.get(slug);
-  
+
   // 如果没有缓存的资源，创建一个新的
   if (!postResource) {
     const promise = PostsAPI.getBySlug(slug);

@@ -12,7 +12,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <h1
       {...props}
       className={mergeClassName(
-        'mt-8 mb-4 border-b-2 border-bgsecondary pb-2 text-4xl font-bold',
+        'mt-6 mb-3 border-b-2 border-bgsecondary pb-2 text-3xl font-bold',
         className
       )}
     />
@@ -21,22 +21,22 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <h2
       {...props}
       className={mergeClassName(
-        'border-gsecondary mt-6 mb-3 border-b-2 pb-2 text-3xl font-semibold',
+        'border-gsecondary mt-5 mb-2.5 border-b-2 pb-2 text-2xl font-semibold',
         className
       )}
     />
   ),
   h3: ({ className, ...props }: ComponentProps<'h3'>) => (
-    <h3 {...props} className={mergeClassName('mt-6 mb-3 text-2xl font-medium', className)} />
+    <h3 {...props} className={mergeClassName('mt-5 mb-2 text-xl font-medium', className)} />
   ),
   h4: ({ className, ...props }: ComponentProps<'h4'>) => (
-    <h4 {...props} className={mergeClassName('mt-5 mb-3 text-xl font-semibold', className)} />
+    <h4 {...props} className={mergeClassName('mt-4 mb-2 text-lg font-semibold', className)} />
   ),
   h5: ({ className, ...props }: ComponentProps<'h5'>) => (
     <h5
       {...props}
       className={mergeClassName(
-        'mt-5 mb-3 text-lg font-semibold tracking-wide text-secondary uppercase',
+        'mt-4 mb-2 text-base font-semibold tracking-wide text-secondary uppercase',
         className
       )}
     />
@@ -45,7 +45,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <h6
       {...props}
       className={mergeClassName(
-        'mt-4 mb-2 text-base font-semibold tracking-widest text-secondary/80 uppercase',
+        'mt-3 mb-1.5 text-sm font-semibold tracking-widest text-secondary/80 uppercase',
         className
       )}
     />
@@ -53,7 +53,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
   p: ({ className, ...props }: ComponentProps<'p'>) => (
     <p
       {...props}
-      className={mergeClassName('my-4 text-lg leading-relaxed text-primary', className)}
+      className={mergeClassName('my-3 text-base leading-relaxed text-primary', className)}
     />
   ),
   a: ({ className, ...props }: ComponentProps<'a'>) => (
@@ -70,7 +70,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <blockquote
       {...props}
       className={mergeClassName(
-        'my-6 rounded-xl border-l-4 border-secondary/40 bg-bgsecondary/20 px-4 py-3 text-lg text-primary italic shadow-sm',
+        'my-5 rounded-lg border-l-4 border-secondary/40 bg-bgsecondary/20 px-3 py-2.5 text-base text-primary italic shadow-sm',
         className
       )}
     />
@@ -78,14 +78,14 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
   ul: ({ className, ...props }: ComponentProps<'ul'>) => (
     <ul
       {...props}
-      className={mergeClassName('my-4 list-disc space-y-2 pl-6 marker:text-secondary', className)}
+      className={mergeClassName('my-3 list-disc space-y-1.5 pl-5 marker:text-secondary', className)}
     />
   ),
   ol: ({ className, ...props }: ComponentProps<'ol'>) => (
     <ol
       {...props}
       className={mergeClassName(
-        'my-4 list-decimal space-y-2 pl-6 marker:font-semibold marker:text-secondary',
+        'my-3 list-decimal space-y-1.5 pl-5 marker:font-semibold marker:text-secondary',
         className
       )}
     />
@@ -98,7 +98,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <table
       {...props}
       className={mergeClassName(
-        'my-6 w-full table-auto overflow-hidden rounded-xl border border-bgsecondary/60 text-left text-sm shadow-sm',
+        'my-5 w-full table-auto overflow-hidden rounded-lg border border-bgsecondary/60 text-left text-sm shadow-sm',
         className
       )}
     />
@@ -125,16 +125,19 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     />
   ),
   th: ({ className, ...props }: ComponentProps<'th'>) => (
-    <th {...props} className={mergeClassName('px-4 py-3 font-semibold text-primary', className)} />
+    <th
+      {...props}
+      className={mergeClassName('px-3 py-2.5 font-semibold text-primary', className)}
+    />
   ),
   td: ({ className, ...props }: ComponentProps<'td'>) => (
-    <td {...props} className={mergeClassName('px-4 py-3 align-top text-primary', className)} />
+    <td {...props} className={mergeClassName('px-3 py-2.5 align-top text-primary', className)} />
   ),
   hr: ({ className, ...props }: ComponentProps<'hr'>) => (
     <hr
       {...props}
       className={mergeClassName(
-        'my-8 h-0.5 rounded-xl border-none bg-linear-to-r from-bgprimary via-secondary/40 to-bgprimary',
+        'my-6 h-0.5 rounded-lg border-none bg-linear-to-r from-bgprimary via-secondary/40 to-bgprimary',
         className
       )}
     />
@@ -152,7 +155,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
   //   <s {...props} className={mergeClassName('text-secondary/70 line-through', className)} />
   // ),
   small: ({ className, ...props }: ComponentProps<'small'>) => (
-    <small {...props} className={mergeClassName('text-sm text-primary/70', className)} />
+    <small {...props} className={mergeClassName('text-xs text-primary/70', className)} />
   ),
   sup: ({ className, ...props }: ComponentProps<'sup'>) => (
     <sup {...props} className={mergeClassName('ml-0.5 align-super text-xs', className)} />
@@ -164,25 +167,25 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <kbd
       {...props}
       className={mergeClassName(
-        'rounded-xl border border-bgsecondary bg-bgsecondary/30 px-2 py-1 text-xs font-semibold text-primary shadow-inner',
+        'rounded-lg border border-bgsecondary bg-bgsecondary/30 px-1.5 py-0.5 text-xs font-semibold text-primary shadow-inner',
         className
       )}
     />
   ),
   figure: ({ className, ...props }: ComponentProps<'figure'>) => (
-    <figure {...props} className={mergeClassName('my-6 flex flex-col items-center', className)} />
+    <figure {...props} className={mergeClassName('my-5 flex flex-col items-center', className)} />
   ),
   figcaption: ({ className, ...props }: ComponentProps<'figcaption'>) => (
     <figcaption
       {...props}
-      className={mergeClassName('mt-2 text-sm text-primary/70 italic', className)}
+      className={mergeClassName('mt-1.5 text-xs text-primary/70 italic', className)}
     />
   ),
   details: ({ className, ...props }: ComponentProps<'details'>) => (
     <details
       {...props}
       className={mergeClassName(
-        'my-4 overflow-hidden rounded-xl border border-bgsecondary/60 bg-bgsecondary/10',
+        'my-3 overflow-hidden rounded-lg border border-bgsecondary/60 bg-bgsecondary/10',
         className
       )}
     />
@@ -191,7 +194,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <summary
       {...props}
       className={mergeClassName(
-        'cursor-pointer px-4 py-2 text-primary util-transition hover:text-secondary',
+        'cursor-pointer px-3 py-1.5 text-primary util-transition hover:text-secondary',
         className
       )}
     />
@@ -200,7 +203,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
     <mark
       {...props}
       className={mergeClassName(
-        'rounded-xl bg-yellow-200 px-1 py-0.5 text-primary shadow-sm',
+        'rounded-lg bg-yellow-200 px-1 py-0.5 text-primary shadow-sm',
         className
       )}
     />

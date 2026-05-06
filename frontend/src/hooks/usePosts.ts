@@ -1,4 +1,4 @@
-import { PostsAPI } from '../services/api'; 
+import { PostsAPI } from '../services/api';
 import type { Post } from '../types/types';
 import createResource from '../utils/resource';
 

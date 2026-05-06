@@ -1,13 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
   // 添加base配置，确保资源路径正确
   base: '/',
   build: {
@@ -21,14 +18,14 @@ export default defineConfig({
           // React 相关依赖
           'react-vendor': ['react', 'react-dom'],
           // 路由相关依赖
-          'router': ['react-router'],
+          router: ['react-router'],
           // Markdown 处理相关依赖
-          'markdown': ['unified', 'remark-parse', 'remark-rehype', 'rehype-react'],
+          markdown: ['unified', 'remark-parse', 'remark-rehype', 'rehype-react'],
           // Tailwind CSS（如果需要的话）
-          'styles': [],
+          styles: [],
         },
         // 为动态导入的模块定义命名策略
-        chunkFileNames: (chunkInfo) => {
+        chunkFileNames: chunkInfo => {
           // 为页面组件使用 'pages' 前缀
           if (chunkInfo.name && chunkInfo.name.includes('pages')) {
             return 'assets/pages/[name]-[hash].js';
@@ -53,4 +50,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

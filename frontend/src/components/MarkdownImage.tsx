@@ -70,7 +70,7 @@ const MarkdownImage = ({
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      className="my-6 cursor-pointer outline-none util-transition-colors"
+      className="my-6 cursor-pointer util-transition-colors outline-none"
       aria-label={`View full size: ${alt || 'image'}`}
     >
       <img
@@ -83,7 +83,7 @@ const MarkdownImage = ({
         loading={loading}
         onLoad={handleImageLoad}
         className={mergeClassName(
-          'max-h-[480px] mx-auto w-fit rounded-sm object-contain util-transition-colors dark:brightness-80 hover:opacity-90 hover:shadow-md',
+          'mx-auto max-h-[480px] w-fit rounded-sm object-contain util-transition-colors hover:opacity-90 hover:shadow-md dark:brightness-80',
           className
         )}
       />

@@ -33,13 +33,13 @@ interface PaginatedResponse<T> {
 
 // 博客文章API
 export const PostsAPI = {
-  getAll: (): Promise<Post[]> => 
-    fetchAPI<PaginatedResponse<Post>>('posts/')
-      .then(response => response.results),
+  getAll: (): Promise<Post[]> =>
+    fetchAPI<PaginatedResponse<Post>>('posts/').then(response => response.results),
   getBySlug: (slug: string): Promise<Post> => fetchAPI<Post>(`posts/${slug}/`),
-  getByTag: (tagSlug: string): Promise<Post[]> => 
-    fetchAPI<PaginatedResponse<Post>>(`posts/by_tag/?tag=${tagSlug}`)
-      .then(response => response.results),
+  getByTag: (tagSlug: string): Promise<Post[]> =>
+    fetchAPI<PaginatedResponse<Post>>(`posts/by_tag/?tag=${tagSlug}`).then(
+      response => response.results
+    ),
 };
 
 // 标签API

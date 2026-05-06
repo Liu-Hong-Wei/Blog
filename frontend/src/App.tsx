@@ -1,5 +1,6 @@
+import { AnimatePresence, motion } from 'motion/react';
 import { StrictMode, lazy } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider, useLocation, Outlet } from 'react-router';
 
 import AppLayout from './layouts/AppLayout.tsx';
 import Test from './pages/Test.tsx';
@@ -13,42 +14,68 @@ const Projects = lazy(() => import('./pages/Projects.tsx'));
 const Post = lazy(() => import('./pages/Post.tsx'));
 const NotFound = lazy(() => import('./pages/errors/NotFound.tsx'));
 
+function AnimatedOutlet() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12 }}
+        transition={{
+          duration: 0.28,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+      >
+        <Outlet />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
     children: [
       {
-        index: true,
-        element: <Homepage />,
-      },
-      {
-        path: 'ideas',
-        element: <Ideas />,
-      },
-      {
-        path: 'projects',
-        element: <Projects />,
-      },
-      {
-        path: 'about',
-        element: <About />,
-      },
-      {
-        path: 'posts',
-        element: <Posts />,
-      },
-      {
-        path: 'posts/:slug',
-        element: <Post />,
-      },
-      {
-        path: 'test-page',
-        element: <Test />,
-      },
-      {
-        path: '*',
-        element: <NotFound />,
+        element: <AnimatedOutlet />,
+        children: [
+          {
+            index: true,
+            element: <Homepage />,
+          },
+          {
+            path: 'ideas',
+            element: <Ideas />,
+          },
+          {
+            path: 'projects',
+            element: <Projects />,
+          },
+          {
+            path: 'about',
+            element: <About />,
+          },
+          {
+            path: 'posts',
+            element: <Posts />,
+          },
+          {
+            path: 'posts/:slug',
+            element: <Post />,
+          },
+          {
+            path: 'test-page',
+            element: <Test />,
+          },
+          {
+            path: '*',
+            element: <NotFound />,
+          },
+        ],
       },
     ],
   },

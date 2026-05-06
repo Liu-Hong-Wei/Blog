@@ -1,9 +1,17 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router';
 
-import Button from "./Button";
-import type { NavButtonProps } from "../../types/types";
+import Button from './Button';
+import type { NavButtonProps } from '../../types/types';
 
-export default function ravButton({ onClick, className = "", to, ariaLabel, ariaExpanded, ariaControls, children }: NavButtonProps) {
+export default function NavButton({
+  onClick,
+  className = '',
+  to,
+  ariaLabel,
+  ariaExpanded,
+  ariaControls,
+  children,
+}: NavButtonProps) {
   let child = children;
   if (to) {
     child = (
@@ -11,8 +19,8 @@ export default function ravButton({ onClick, className = "", to, ariaLabel, aria
         to={to}
         className={({ isActive }) =>
           isActive
-            ? "text-secondary font-bold no-underline"
-            : "text-primary hover:underline hover:underline-offset-2"
+            ? 'font-bold text-secondary no-underline'
+            : 'text-primary hover:underline hover:underline-offset-2'
         }
       >
         {children}
@@ -22,7 +30,7 @@ export default function ravButton({ onClick, className = "", to, ariaLabel, aria
 
   return (
     <Button
-      className={`flex justify-center items-center ${className}`}
+      className={`flex items-center justify-center ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
       aria-expanded={ariaExpanded}
