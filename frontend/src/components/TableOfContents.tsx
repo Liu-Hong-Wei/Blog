@@ -53,7 +53,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="hidden w-48 flex-none lg:block" aria-label="Table of contents">
+    <nav className="w-full flex-none" aria-label="Table of contents">
       <div className="sticky top-20 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-lg border border-bgsecondary/30 bg-bgprimary/50 p-3 backdrop-blur-sm">
         <h3 className="mb-2 text-xs font-bold tracking-wider text-primary/60 uppercase">
           On this page

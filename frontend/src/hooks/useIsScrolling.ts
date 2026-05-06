@@ -10,6 +10,7 @@ interface ScrollState {
 }
 
 const SCROLL_IDLE_DELAY = 300;
+const DIRECTION_THRESHOLD = 5;
 
 const useIsScrolling = (): ScrollState => {
   const [isScrolling, setIsScrolling] = useState(false);
@@ -17,6 +18,7 @@ const useIsScrolling = (): ScrollState => {
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'idle'>('idle');
   const timeoutRef = useRef<number | null>(null);
   const lastScrollYRef = useRef(0);
+  const directionDeltaRef = useRef(0);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -25,16 +27,17 @@ const useIsScrolling = (): ScrollState => {
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY || window.pageYOffset;
-      const previousScrollY = lastScrollYRef.current;
-      const delta = currentScrollY - previousScrollY;
+      const delta = currentScrollY - lastScrollYRef.current;
 
       setIsAtTop(currentScrollY <= 0);
-      setIsScrolling(delta !== 0);
+      setIsScrolling(Math.abs(delta) > 0);
 
-      if (delta < 0) {
-        setScrollDirection('up');
-      } else if (delta > 0) {
-        setScrollDirection('down');
+      // Accumulate scroll delta and only flip direction when threshold is crossed
+      directionDeltaRef.current += delta;
+      const absAccumulated = Math.abs(directionDeltaRef.current);
+      if (absAccumulated >= DIRECTION_THRESHOLD) {
+        setScrollDirection(directionDeltaRef.current < 0 ? 'up' : 'down');
+        directionDeltaRef.current = 0;
       }
 
       if (timeoutRef.current !== null) {
@@ -44,6 +47,7 @@ const useIsScrolling = (): ScrollState => {
       timeoutRef.current = window.setTimeout(() => {
         setIsScrolling(false);
         setScrollDirection('idle');
+        directionDeltaRef.current = 0;
       }, SCROLL_IDLE_DELAY);
 
       lastScrollYRef.current = currentScrollY;

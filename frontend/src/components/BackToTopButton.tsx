@@ -19,6 +19,8 @@ export default function BackToTopButton() {
   // Reference to any in-flight scroll animation.
   const scrollAnimationRef = useRef<AnimationPlaybackControls | null>(null);
   const { isScrollingUp, isScrollingDown } = useIsScrolling();
+  const lastToggleAtRef = useRef(0);
+  const TOGGLE_COOLDOWN_MS = 150;
 
   // Stop any in-flight Motion animation so user interactions always win.
   const cancelScrollAnimation = useCallback(() => {
@@ -47,11 +49,17 @@ export default function BackToTopButton() {
       ticking = true;
       // Use requestAnimationFrame to throttle updates and improve performance.
       window.requestAnimationFrame(() => {
+        const now = performance.now();
         // Update visibility state based on scroll position.
+        let nextVisible = isVisible;
         if (isScrollingUp) {
-          setIsVisible(window.scrollY > SCROLL_TRIGGER_Y);
+          nextVisible = window.scrollY > SCROLL_TRIGGER_Y;
         } else if (isScrollingDown) {
-          setIsVisible(false);
+          nextVisible = false;
+        }
+        if (nextVisible !== isVisible && now - lastToggleAtRef.current >= TOGGLE_COOLDOWN_MS) {
+          setIsVisible(nextVisible);
+          lastToggleAtRef.current = now;
         }
         // Reset the ticking flag for the next scroll event.
         ticking = false;

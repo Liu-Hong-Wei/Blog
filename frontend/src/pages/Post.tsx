@@ -44,9 +44,9 @@ export function PostContent({ slug }: { slug: string }) {
   return (
     <>
       <ReadingProgress />
-      <div className="mx-auto flex w-full max-w-6xl gap-6 px-4 md:px-6">
+      <div className="mx-auto flex w-full max-w-7xl gap-8">
         {/* 主内容区 */}
-        <article className="min-w-0 flex-1 space-y-5">
+        <article className="mx-auto min-w-0 w-full max-w-3xl space-y-5">
           {/* 文章标题和元信息 */}
           <header className="max-w-none border-b border-bgsecondary/40 pb-5">
             <h1 className="mb-3 text-2xl leading-tight font-bold md:text-3xl">{post.title}</h1>
@@ -100,9 +100,9 @@ export function PostContent({ slug }: { slug: string }) {
         </article>
 
         {/* 侧边栏：TOC + BackToTop */}
-        <aside className="hidden flex-none flex-col items-end gap-6 lg:flex lg:w-48">
+        <aside className="hidden flex-none flex-col gap-6 lg:flex lg:w-56">
           <TableOfContents headings={headings} />
-          <div className="sticky top-[calc(100vh-5rem)]">
+          <div className="sticky top-[calc(100vh-6rem)]">
             <BackToTopButton />
           </div>
         </aside>
@@ -120,7 +120,7 @@ function Post() {
   const { slug } = useParams<{ slug: string }>();
 
   return (
-    <MainContentLayout widthSize="screen">
+    <MainContentLayout widthSize="wide">
       <ErrorBoundary>
         {!slug ? (
           <Error

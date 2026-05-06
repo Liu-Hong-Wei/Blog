@@ -2,7 +2,6 @@ import { motion } from 'motion/react';
 import { Suspense, lazy } from 'react';
 import { NavLink } from 'react-router';
 
-import ProfileCard from '../components/ProfileCard';
 import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 
@@ -11,13 +10,6 @@ const LatestPosts = lazy(() => import('../components/LatestPosts'));
 function Homepage() {
   return (
     <div className="space-y-12">
-      {/* Hero Section */}
-      <section>
-        <MainContentLayout widthSize="screen">
-          <ProfileCard compact />
-        </MainContentLayout>
-      </section>
-
       {/* Latest Posts Section */}
       <section className="pb-8">
         <MainContentLayout widthSize="narrow">
