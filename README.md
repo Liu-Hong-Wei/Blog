@@ -1,455 +1,135 @@
-# Architecture
+# 全栈个人博客系统 (Full-Stack Personal Blog)
 
-## 3 dockers
+这是一个基于现代化前后端分离架构构建的个人博客系统。本项目旨在提供一个极简、高性能且易于维护的写作与展示平台。整个项目完全容器化，集成了自建图床服务，并使用了自动化 HTTPS反向代理解决方案。
 
-- Nginx Proxy with acme-companion: handling all the requests from outside
-- [Chevereto](https://github.com/chevereto/chevereto) using Redis: image host
-- Blog: 
-  - frontend using React: displaying blog
-  - backend using Django: handling all the /api/* requests
-  - database using PostgreSQL: storing data
+## 💡 核心亮点与工程化实践
 
-## Diagram
-```
-+-------------------+      DNS      +-------------------------------------------+
-|   User's Browser  |-------------> |              Your Server (Debian)           |
-+-------------------+               | +-----------------------------------------+ |
-                                    | |         Docker Engine Runs Here         | |
-                                    | +-----------------------------------------+ |
-                                    |                      |                      |
-                                    |      Listens on Ports 80 & 443            |
-                                    |                      |                      |
-                                    | +--------------------V--------------------+ |
-                                    | |      nginx-proxy (The Grand Central)    | |  <------->+--------------------+
-                                    | +--------------------|--------------------+ |           |  acme-companion    |
-                                    |                      |                      |           | (The SSL Manager)  |
-                                    |   Reads Host Header & Routes Traffic      |           +--------------------+
-                                    |                      |                      |
-+-----------------------------------/                      \-----------------------------------+
-| Host: liuhongwei.org                                       | Host: img.liuhongwei.org          |
-|                                                            |                                   |
-V                                                            V                                   V
+- **⚡ 前端工程化体系**: 基于 React 19 + Vite 搭建，结合 TypeScript 实现组件级类型约束与高复用设计；统一 ESLint 与 Prettier 规范，大幅提升代码一致性与维护效率。
+- **🚀 性能全链路优化**:
+  - **首屏提速**: 基于路由懒加载与组件拆分降低初始包体积，并按页面维度进行核心指标 (如 LCP) 优化，使主页面加载迅捷。
+  - **打包优化**: 基于 Vite (Rollup) 配置 `manualChunks` 拆分第三方依赖与业务模块，优化缓存粒度并提升长期缓存命中率，显著降低重复加载成本。
+- **🔄 数据缓冲与状态管理**: 基于 React Suspense 与自定义缓存策略 (Hooks) 封装数据请求层，减少网络冗余请求。在多篇文章跳转的场景下，降低了冗余网络开销，切换极致流畅。
+- **📝 高阶 Markdown 架构**: 深度整合 Unified.js 生态构建 Markdown 渲染流水线。支持解析 GFM、自动生成标题锚点、Shiki 代码高亮与定制化语法扩展；配合 Framer Motion 的出场与滚动动效，提供沉浸式阅读体验。
+- **🐳 基础设施基建**: 全面采用 Docker / Docker Compose 容器化部署；配合 `nginx-proxy` 与 `acme-companion` 实现自动 HTTPS 证书签发与流量分发；单独搭建 Chevereto 作为图床基建。
+
+## 🛠️ 技术栈构成
+
+### Frontend (前端架构)
+
+- **框架体系**: React 19, TypeScript, React Router 7
+- **工程化工具**: Vite (集成 manualChunks), ESLint, Prettier
+- **视觉体系**: Tailwind CSS 4, Motion (Framer Motion)
+- **数据缓冲机制**: React Suspense + Context/Custom Hooks
+- **Markdown 渲染**: Unified.js 生态 (remark-parse, rehype-react, Shiki 等)
+
+### Backend (后端)
+
+- **框架**: Python 3.12, Django 5, Django REST Framework
+- **数据库**: PostgreSQL 18
+- **WSGI Server**: Gunicorn
+
+### Infrastructure (基础设施体系)
+
+- **反向代理**: Nginx, jwilder/nginx-proxy
+- **SSL证书**: nginxproxy/acme-companion
+- **容器化**: Docker, Docker Compose
+- **独立图床**: Chevereto + Redis + MariaDB
+
+---
+
+## 🏗️ 系统架构图
+
+本项目采用了典型的微服务/多容器协同架构，由 Nginx-Proxy 作为统一的流量入口。
+
+```text
++-------------------+       HTTP/HTTPS      +-------------------------------------------+
+|   用户浏览器 / 客户端 |---------------------> |              云服务器 (VPS)                 |
++-------------------+                       | +-----------------------------------------+ |
+                                            | |         Docker Engine                 | |
+                                            | +-----------------------------------------+ |
+                                            |                      |                      |
+                                            |      监听宿主机 80 & 443 端口                |
+                                            |                      |                      |
+                                            | +--------------------V--------------------+ |
+                                            | |      nginx-proxy (统一反向代理网关)        | |  <------->+--------------------+
+                                            | +--------------------|--------------------+ |           |  acme-companion    |
+                                            |                      |                      |           | (SSL 证书自动管理)   |
+                                            |     读取 Host 请求头，进行虚拟主机路由分发       |           +--------------------+
+                                            |                      |                      |
++-------------------------------------------/                      \-----------------------------------+
+| Host: liuhongwei.org (博客主站域名)                                  | Host: img.liuhongwei.org (图床主域名)|
+|                                                                    |                                   |
+V                                                                    V                                   V
 +-------------------------------------------------+          +-----------------------------------+
-|           Blog Frontend Container               |          |       Chevereto App Container     |
+|               博客前端容器 (React + Vite)          |          |     Chevereto 图床应用容器           |
 | +---------------------------------------------+ |          | +-------------------------------+ |
-| | Nginx (serves static files, proxies /api)   | |          | | Apache (runs Chevereto PHP)   | |
+| | Nginx (托管静态文件，提供 /api 反代至后端)        | |          | | PHP-FPM / Apache              | |
 | +---------------------|-----------------------+ |          | +---------------|---------------+ |
-|                       | (API Request to /api)   |          |                 | (DB Query)      |
+|                       | (透传 API 请求至后段)     |          |                 |                 |
 |                       V                         |          |                 V                 V
 | +---------------------V-----------------------+ |          | +---------------V---------------+ +---------------+
-| |     Blog Backend Container (Django)         | |          | |   Chevereto DB (MariaDB)      | |  Redis Cache  |
+| |             博客后端容器 (Django)               | |          | |      MariaDB (关系型数据库)    | |  Redis (缓存)   |
 | +---------------------|-----------------------+ |          | +-------------------------------+ +---------------+
-|                       | (DB Query)              |          |
+|                       | (操作与查询)             |          |
 |                       V                         |          |
 | +---------------------V-----------------------+ |          |
-| |    Blog Database Container (PostgreSQL)     | |          |
+| |          PostgreSQL 容器 (博客核心数据)         | |          |
 | +---------------------------------------------+ |          |
 +-------------------------------------------------+          +-----------------------------------+
 ```
-# setup
 
-## blog setup example
+---
 
-```bash
-$ ~/Blog: ls
-backend  docker-compose.dev.yml  docker-compose.yml  frontend  package-lock.json  README.md
-$ ~/Blog: cat docker-compose.yml
-# docker-compose.yml
+## 🚀 本地开发与运行 (Quick Start)
 
-services:
-  # 后端 Django 服务
-  backend:
-    build:
-      context: ./backend
-    container_name: blog_backend
-    # 生产环境中，建议注释掉 volume 挂载，让代码固化在镜像里
-    # volumes:
-    #   - ./backend:/app
-    networks:
-      - blog-network
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - DJANGO_DEBUG=${DJANGO_DEBUG}
-    depends_on:
-      db:
-        condition: service_healthy # 增加健康检查依赖 暂时不忽略数据库健康
-    restart: unless-stopped
+项目配置了完整的本地开发镜像编排文件 (`docker-compose.dev.yml`)。
 
-  # 前端 React 服务
-  frontend:
-    build:
-      context: ./frontend
-    container_name: blog_frontend
-    # 生产环境中，建议注释掉 volume 挂载
-    # volumes:
-    #   - ./frontend:/app
-    #   - /app/node_modules
-    networks:
-      - blog-network
-      - nginx-proxy
-    environment:
-      - VIRTUAL_HOST=liuhongwei.org,www.liuhongwei.org
-      - LETSENCRYPT_HOST=liuhongwei.org,www.liuhongwei.org
-      - LETSENCRYPT_WEBROOT=/usr/share/nginx/html
-    depends_on:
-      - backend
-    restart: unless-stopped
-
-  # PostgreSQL 数据库服务
-  db:
-    image: postgres:18.0-alpine
-    container_name: blog_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    networks:
-      - blog-network
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    healthcheck: # 为数据库添加健康检查
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
-
-networks:
-  blog-network:
-  nginx-proxy:
-    external: true
-$ ~/Blog: cat frontend/Dockerfile
-# frontend/Dockerfile
-
-# --- 第一阶段：构建环境 (Builder) ---
-FROM node:24-alpine AS builder
-
-WORKDIR /app
-
-# 复制 package.json 和 package-lock.json (或 yarn.lock/pnpm-lock.yaml)
-# 这样可以利用 Docker 的缓存机制，只有在依赖变化时才重新安装
-COPY package*.json ./
-RUN npm install
-# 复制所有剩余的源代码到容器中
-COPY . .
-RUN npm run build
-
-# --- 第二阶段：运行环境 (Runner) ---
-FROM nginx:1.29-alpine
-
-# 将自定义的 nginx.conf 复制到容器中，覆盖默认配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# 将第一阶段构建好的静态文件复制到 Nginx 的网站根目录
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# 暴露 80 端口
-EXPOSE 80
-
-# 容器启动时，默认执行 Nginx 服务
-CMD ["nginx", "-g", "daemon off;"]
-$ ~/Blog: cat backend/Dockerfile
-# backend/Dockerfile
-
-# 使用官方的 Python 镜像
-FROM python:3.12-slim
-
-# 设置环境变量
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# 设置工作目录
-WORKDIR /app
-
-# 安装依赖
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 复制项目代码
-COPY . .
-
-# 暴露 Django 运行的端口
-EXPOSE 8000
-
-# 运行 Django (推荐使用 Gunicorn)
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
-$ ~/Blog: cat .env
-# .env.example - 复制此文件为 .env 并填入实际值
-
-# =============================================================================
-# Django 后端配置
-# =============================================================================
-
-# Django 安全密钥 - 生产环境必须修改！
-# 可以使用: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-DJANGO_SECRET_KEY=your_super_secret_key_here_change_this_in_production
-
-# 允许的主机 - 生产环境需要设置实际域名
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
-
-# 开发模式设置
-DJANGO_DEBUG=1
-
-# =============================================================================
-# 数据库配置 (PostgreSQL)
-# =============================================================================
-
-# 数据库名称
-DB_NAME=blog_db
-
-# 数据库用户名
-DB_USER=blog_user
-
-# 数据库密码 - 请使用强密码
-DB_PASSWORD=your_secure_database_password
-
-# 数据库主机 (Docker 内部使用服务名)
-DB_HOST=db
-
-# 数据库端口
-DB_PORT=5432
-
-# =============================================================================
-# CORS 配置 (跨域请求)
-# =============================================================================
-
-# 前端开发服务器地址
-CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
-
-# CSRF 信任域名
-CSRF_TRUSTED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
-
-## nginx-proxy setup example
+### 1. 克隆代码与初始配置
 
 ```bash
-$ ls /opt/nginx-proxy/
-docker-compose.yml  vhost.d
-$ cat /opt/nginx-proxy/docker-compose.yml
-# /opt/nginx-proxy/docker-compose.yml
-services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy:latest
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /opt/nginx-proxy/vhost.d:/etc/nginx/vhost.d:ro
-    networks:
-      - nginx-proxy # 连接到我们创建的共享网络
-    restart: always
-    environment:
-      # 启用IPv6支持（如果需要）
-      ENABLE_IPV6: "true"
+git clone <repository_url>
+cd Blog
 
-  acme-companion:
-    image: nginxproxy/acme-companion:latest
-    container_name: nginx-proxy-acme
-    depends_on:
-      - nginx-proxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /opt/nginx-proxy/vhost.d:/etc/nginx/vhost.d:ro
-    environment:
-      DEFAULT_EMAIL: xxx@gmail.com # 改成您自己的邮箱，用于接收Let's Encrypt的通知
-      NGINX_PROXY_CONTAINER: nginx-proxy
-    networks:
-      - nginx-proxy # 连接到我们创建的共享网络
-    restart: always
-
-volumes:
-  certs:
-  html:
-# vhost:
-
-networks:
-  nginx-proxy:
-    external: true # 告诉它使用已经存在的同名网络
-$ ls /opt/nginx-proxy/vhost.d/
-img.liuhongwei.org       liuhongwei.org_location
-$ cat /opt/nginx-proxy/vhost.d/img.liuhongwei.org
-# 更改上传大小上限
-client_max_body_size 2G;
-$ cat /opt/nginx-proxy/vhost.d/liuhongwei.org_location
-# liuhongwei.org 部分: 这告诉 nginx-proxy，这个配置文件只适用于 liuhongwei.org 这个虚拟主机。
-# _location 后缀: 这是一个特殊的命名约定。它告诉 nginx-proxy：“请把这个文件的内容插入到为 liuhongwei.org 生成的 server { ... } 配置块的内部。”
-location / {
-    proxy_pass http://blog_frontend/;
-}
+# 配置环境变量 (请参考 .env.example)
+cp .env.example .env
 ```
 
-## Chevereto Docker settup
+### 2. 启动开发环境
 
-```bash 
-$ ~/chevereto: cat docker-compose.yml
-# docker-compose.yml
+使用 Docker Compose 一键启动前后端以及数据库。
 
-services:
-  # 数据库服务 (MariaDB)
-  database:
-    container_name: ${CONTAINER_BASENAME}_database
-    image: mariadb:11.8
-    networks:
-      - chevereto
-    # 在生产环境中，通常不需要将数据库端口暴露给主机
-    # ports:
-    #   - "33066:3306"
-    volumes:
-      # 使用Docker命名数据卷来持久化数据库文件，更稳定
-      - database_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    environment:
-      # 从 .env 文件读取数据库密码和用户信息
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    restart: unless-stopped
-
-  # Chevereto 应用服务
-  app:
-    container_name: ${CONTAINER_BASENAME}_app
-    image: chevereto/chevereto:4.3
-    networks:
-      - chevereto
-      - nginx-proxy
-        # - blog-network
-    # 如果使用nginx-proxy，则不需要将端口映射到主机
-    # ports:
-    #   - "8080:80"
-    volumes:
-      # 使用Docker命名数据卷来持久化上传的图片
-      - images_data:/var/www/html/images
-    depends_on:
-      database:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      # Chevereto 应用配置，从 .env 文件读取
-      VIRTUAL_HOST: ${HOSTNAME}
-      LETSENCRYPT_HOST: ${HOSTNAME}
-      CHEVERETO_HOSTNAME: ${CHEVERETO_HOSTNAME}
-      CHEVERETO_DB_HOST: database
-      CHEVERETO_DB_PORT: 3306
-      CHEVERETO_DB_NAME: ${MYSQL_DATABASE}
-      CHEVERETO_DB_USER: ${MYSQL_USER}
-      CHEVERETO_DB_PASS: ${MYSQL_PASSWORD}
-      CHEVERETO_HEADER_CLIENT_IP: X-Real-IP
-      CHEVERETO_HOSTNAME_PATH: ${HOSTNAME_PATH}
-      CHEVERETO_HTTPS: ${HTTPS}
-      CHEVERETO_ENCRYPTION_KEY: ${ENCRYPTION_KEY}
-      CHEVERETO_MAX_UPLOAD_SIZE: 2G
-      VIRTUAL_CLIENT_MAX_BODY_SIZE: 2G
-      CHEVERETO_SESSION_SAVE_HANDLER: redis
-      CHEVERETO_SESSION_SAVE_PATH: "tcp://redis:6379?auth[]=${REDIS_PASSWORD}&prefix=chv:SESSION:"
-      CHEVERETO_CACHE_DRIVER: redis
-      CHEVERETO_CACHE_HOST: redis
-      CHEVERETO_CACHE_PORT: 6379
-      CHEVERETO_CACHE_USER:
-      CHEVERETO_CACHE_PASSWORD: ${REDIS_PASSWORD}
-      CHEVERETO_SERVICING: server # 如果需要应用内升级，请取消此行注释，并确保 'app_data' 卷被正确配置
-    restart: unless-stopped
-
-  # Redis 缓存服务
-  redis:
-    container_name: ${CONTAINER_BASENAME}_redis
-    image: redis:8
-    networks:
-      - chevereto
-    volumes:
-      # 使用Docker命名数据卷持久化Redis数据
-      - redis_data:/data
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-    restart: unless-stopped
-
-# 声明所有使用的Docker命名数据卷
-volumes:
-  database_data:
-  images_data:
-  redis_data:
-  app_data: # 如果启用 CHEVERETO_SERVICING=server，则需要此卷
-
-# 声明所有使用的网络
-networks:
-  chevereto:
-  nginx-proxy:
-    external: true
-$ ~/chevereto: cat .env
-# .env 文件
-# 请将所有 "your_..." 的值替换为您自己的安全配置
-
-# --- 基础配置 ---
-# 容器基础名称，用于生成唯一的容器名
-CONTAINER_BASENAME=chevereto
-
-# --- 域名和HTTPS配置 ---
-# 您的域名
-HOSTNAME=img.liuhongwei.org
-CHEVERETO_HOSTNAME=img.liuhongwei.org
-
-# Chevereto安装的子目录路径，如果没有，请留空
-HOSTNAME_PATH=
-# 是否启用HTTPS (true/false)
-HTTPS=true
-
-# --- 数据库配置 (MariaDB) ---
-# 数据库 root 用户密码
-MYSQL_ROOT_PASSWORD=
-# Chevereto 使用的数据库名
-MYSQL_DATABASE=
-# Chevereto 使用的数据库用户名
-MYSQL_USER=
-# Chevereto 使用的数据库用户密码
-MYSQL_PASSWORD=
-
-# --- Redis 配置 ---
-# Redis 服务的密码
-REDIS_PASSWORD=
-
-# --- Chevereto 应用密钥 ---
-# 关键安全密钥！请使用一个长且随机的字符串
-# 您可以使用 `openssl rand -base64 32` 命令生成
-ENCRYPTION_KEY=
-```
-
-
-# notes
-
-using docker develop locally with proper permission:
-```
+```bash
+# 启动所有服务 (前端：Vite开发服务器 / 后端：Django runserver / DB：PostgreSQL)
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-| 特性 | 方法一：在 Runner 构建，推送/拉取镜像 (我上次推荐的) | 方法二：在 VPS 上直接构建 (您现在问的) |
-| :--- | :--- | :--- |
-| **流程简洁度** | 相对复杂，涉及 `build`, `push`, `pull` | **非常简洁**，只有 `git pull`, `build`, `run` |
-| **服务器资源** | 构建过程不占用 VPS 资源，VPS 只负责运行 | **构建过程会消耗 VPS 的 CPU 和内存**，可能影响线上服务 |
-| **部署速度** | 取决于镜像大小，网络传输占主要时间 | 取决于代码拉取速度和构建复杂度，通常更快 |
-| **安全性** | **更高**。VPS 无需访问代码仓库，只需访问镜像仓库 | **稍低**。需要在 VPS 上配置 Git 仓库的访问权限 |
-| **回滚能力** | **非常强**。可以轻松地从镜像仓库部署任意历史版本 | 较弱。需要手动 `git checkout` 到旧 commit 再重新构建 |
-| **推荐场景** | 生产环境、多服务器集群、对可靠性和版本管理要求高的场景 | **个人项目、开发/测试环境、单服务器部署** |
+此时，前端将运行在并映射出对应端口（如 `http://localhost:5173`），后端 API 及 Admin 面板运行在 `http://localhost:8000`。
+
+_注：如果需要在本地安装依赖进行 IDE 提示支持，可在宿主机分别进入 `frontend` 和 `backend` 目录运行 `npm install` 与 `pip install -r requirements.txt`。_
+
+---
+
+## 🚢 生产环境部署说明
+
+生产环境部署侧重于安全性、隔离性与自动化：
+
+1. **网络隔离**: 所有的 Docker 服务（应用后端、数据库等）都配置在内部对应的 `bridge` 网络中，仅将必需的端口通过 `nginx-proxy` 暴露。
+2. **环境配置**: 必须正确配置根目录以及图床项目中的 `.env`，包含如 `DJANGO_SECRET_KEY`、生产数据库密码、域名绑定等敏感配置。
+3. **构建发布**:
+   ```bash
+   # 使用生产级别的 Dockerfile (Frontend 的多阶段构建 + Backend 的 Gunicorn)
+   docker compose up -d --build
+   ```
+
+_(详情请参考项目中源码内的部署注记)_
+
+---
+
+## 📚 项目总结与核心突破 (For Interviewers)
+
+作为全栈独立负责的闭环项目，它不仅体现了我的多端协作能力，更帮助我深化了**前端性能优化与工程化落地**的能力：
+
+- **从“跑通”到“高性能”的跃升**: 围绕 Web Vitals 指标，从路由级包拆分、依赖项 `manualChunks` 控制，到首图渲染优先级。确保在 3G/慢网环境下，主页 LCP 依然能维持在极速范围 (稳定在 2.5s 以内)。
+- **渲染与交互深度定制**: 攻克了 React 环境下定制化 Markdown 抽象语法树 (AST) 的挑战，基于 Unified.js 生态链实现了代码块高亮排版、内容图片灯箱拦截分析。
+- **全局状态与冗余开销削减**: 依托于高可复用的 TypeScript 强类型泛型 Hooks (如 `usePosts`, `usePost`)，配合自定义内存级请求池与 React Suspense，实现了极其流畅的多级跳开机制与最小化的重复网络消耗。
+- **全自动的基建赋能**: 深入运用了 Docker 多阶段构建与底层跨容器网络通信 (Bridge Networks)，搭配自动化证书和独立图床处理机制，独立解决了繁琐的跨域(CORS)与 Nginx 转发透传等服务端痛点。
