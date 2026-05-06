@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
-from .models import Post, Tag, About
-from .serializers import PostSerializer, TagSerializer, AboutSerializer
+from .models import Post, Tag, About, Idea
+from .serializers import PostSerializer, TagSerializer, AboutSerializer, IdeaSerializer
 from rest_framework.response import Response
 from django.db.models import F
 
@@ -33,6 +33,13 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     lookup_field = 'slug'
+
+class IdeaViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Idea.objects.filter(is_published=True)
+    serializer_class = IdeaSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['created_at']
+
 
 class AboutViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = About.objects.all()

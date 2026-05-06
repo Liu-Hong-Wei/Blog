@@ -20,6 +20,14 @@ export interface Tag {
   slug: string;
 }
 
+export interface Idea {
+  id: number;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  is_published: boolean;
+}
+
 export interface About {
   id: number;
   title: string;

@@ -1,4 +1,4 @@
-import type { About, Post, Tag } from '../types/types';
+import type { About, Idea, Post, Tag } from '../types/types';
 import { NotFoundError, APIError } from '../utils/errors';
 
 // API URL is determined by the environment (production or development)
@@ -46,6 +46,12 @@ export const PostsAPI = {
 export const TagsAPI = {
   getAll: () => fetchAPI<Tag[]>('tags/'),
   getBySlug: (slug: string) => fetchAPI<Tag>(`tags/${slug}/`),
+};
+
+// Ideas API
+export const IdeasAPI = {
+  getAll: (): Promise<Idea[]> =>
+    fetchAPI<PaginatedResponse<Idea>>('ideas/').then(response => response.results),
 };
 
 // 关于页面API

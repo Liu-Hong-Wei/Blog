@@ -46,7 +46,7 @@ export function PostContent({ slug }: { slug: string }) {
       <ReadingProgress />
       <div className="mx-auto flex w-full max-w-7xl gap-8">
         {/* 主内容区 */}
-        <article className="mx-auto min-w-0 w-full max-w-3xl space-y-5">
+        <article className="mx-auto w-full max-w-3xl min-w-0 space-y-5">
           {/* 文章标题和元信息 */}
           <header className="max-w-none border-b border-bgsecondary/40 pb-5">
             <h1 className="mb-3 text-2xl leading-tight font-bold md:text-3xl">{post.title}</h1>
