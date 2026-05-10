@@ -7,7 +7,7 @@ import { socialIcons } from '../constants/socialIcons';
 const FOOTER_LINKS = [
   { to: '/posts', label: 'Posts' },
   { to: '/ideas', label: 'Ideas' },
-  { to: '/projects', label: 'Projects' },
+  // { to: '/projects', label: 'Projects' },
   { to: '/about', label: 'About' },
 ] as const;
 
