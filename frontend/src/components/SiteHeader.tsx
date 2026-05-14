@@ -11,6 +11,26 @@ const NAV_LINKS = [
   { to: '/about', label: 'About' },
 ] as const;
 
+const prefetchRoute = (path: string) => {
+  switch (path) {
+    case '/':
+      void import('../pages/Homepage');
+      break;
+    case '/posts':
+      void import('../pages/Posts');
+      break;
+    case '/ideas':
+      void import('../pages/Ideas');
+      break;
+    case '/projects':
+      void import('../pages/Projects');
+      break;
+    case '/about':
+      void import('../pages/About');
+      break;
+  }
+};
+
 interface SiteHeaderProps {
   onOpenDrawer: () => void;
   isDrawerOpen: boolean;
@@ -45,6 +65,8 @@ export function NavLinks({
           <NavButton
             to={to}
             onClick={onNavigate}
+            onMouseEnter={() => prefetchRoute(to)}
+            onFocus={() => prefetchRoute(to)}
             ariaLabel={`${label} link`}
             className={buttonClasses}
           >
@@ -68,7 +90,12 @@ function SiteHeader({ onOpenDrawer, isDrawerOpen }: SiteHeaderProps) {
         className={`flex h-12 w-full max-w-full items-center justify-between rounded-xl bg-bgprimary/70 px-4 backdrop-blur-xl ${isAtTop ? '' : 'shadow-sm ring-1 shadow-bgsecondary ring-bgsecondary'} util-transition`}
         aria-label="Primary navigation"
       >
-        <NavLink className="text-lg font-bold" to="/">
+        <NavLink
+          className="text-lg font-bold"
+          to="/"
+          onMouseEnter={() => prefetchRoute('/')}
+          onFocus={() => prefetchRoute('/')}
+        >
           HongWei&apos;s Blog
         </NavLink>
         <div className="flex items-center">

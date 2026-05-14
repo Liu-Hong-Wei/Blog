@@ -1,18 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { StrictMode, lazy, Suspense } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, useLocation, Outlet } from 'react-router';
 
 import AppLayout from './layouts/AppLayout.tsx';
 import Test from './pages/Test.tsx';
-
-// 懒加载页面组件 - 使用 React.lazy 的标准方式
-const Homepage = lazy(() => import('./pages/Homepage.tsx'));
-const About = lazy(() => import('./pages/About.tsx'));
-const Posts = lazy(() => import('./pages/Posts.tsx'));
-const Ideas = lazy(() => import('./pages/Ideas.tsx'));
-const Projects = lazy(() => import('./pages/Projects.tsx'));
-const Post = lazy(() => import('./pages/Post.tsx'));
-const NotFound = lazy(() => import('./pages/errors/NotFound.tsx'));
 
 function AnimatedOutlet() {
   const location = useLocation();
@@ -47,27 +38,27 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Homepage />,
+            lazy: () => import('./pages/Homepage.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'ideas',
-            element: <Ideas />,
+            lazy: () => import('./pages/Ideas.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'projects',
-            element: <Projects />,
+            lazy: () => import('./pages/Projects.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'about',
-            element: <About />,
+            lazy: () => import('./pages/About.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'posts',
-            element: <Posts />,
+            lazy: () => import('./pages/Posts.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'posts/:slug',
-            element: <Post />,
+            lazy: () => import('./pages/Post.tsx').then(m => ({ Component: m.default })),
           },
           {
             path: 'test-page',
@@ -75,7 +66,7 @@ const router = createBrowserRouter([
           },
           {
             path: '*',
-            element: <NotFound />,
+            lazy: () => import('./pages/errors/NotFound.tsx').then(m => ({ Component: m.default })),
           },
         ],
       },

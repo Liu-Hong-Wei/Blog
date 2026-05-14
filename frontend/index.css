@@ -8,7 +8,6 @@ html {
   overscroll-behavior: none;
 }
 
-/* TODO: lots of customizations to be done later */
 @theme {
   --font-sans:
     ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',

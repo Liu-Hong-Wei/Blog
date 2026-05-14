@@ -5,6 +5,8 @@ import type { NavButtonProps } from '../../types/types';
 
 export default function NavButton({
   onClick,
+  onMouseEnter,
+  onFocus,
   className = '',
   to,
   ariaLabel,
@@ -32,6 +34,8 @@ export default function NavButton({
     <Button
       className={`flex items-center justify-center ${className}`}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onFocus={onFocus}
       aria-label={ariaLabel}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}

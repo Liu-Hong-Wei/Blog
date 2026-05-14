@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigation } from 'react-router';
 
 import MobileDrawer from '../components/MobileDrawer.tsx';
 import SiteFooter from '../components/SiteFooter.tsx';
@@ -35,7 +35,8 @@ function useDrawerTransition(isOpen: boolean, delayMs = DRAWER_DISMISS_DELAY) {
 function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { visible: drawerVisible, active: drawerActive } = useDrawerTransition(drawerOpen);
-
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'loading';
   useBodyScrollLock(drawerVisible);
   useScrollRestoration();
 
@@ -62,7 +63,12 @@ function AppLayout() {
     <div className="flex min-h-screen max-w-screen flex-col bg-bgprimary p-[0.05px] text-primary util-transition-colors">
       <SiteHeader onOpenDrawer={openDrawer} isDrawerOpen={drawerOpen} />
       <MobileDrawer visible={drawerVisible} active={drawerActive} onClose={closeDrawer} />
-      <main className="flex min-h-[calc(100vh-8rem)] grow flex-col" role="main">
+      <main
+        className={`flex min-h-[calc(100vh-8rem)] grow flex-col transition-all duration-300 ${
+          isLoading ? 'pointer-events-none opacity-60 blur-sm' : ''
+        }`}
+        role="main"
+      >
         <SuspenseErrorBoundary fallback={<PageLoadingSpinner />}>
           <Outlet />
         </SuspenseErrorBoundary>

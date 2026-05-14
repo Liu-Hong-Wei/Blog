@@ -51,6 +51,8 @@ export interface SocialIconProps {
 
 export interface NavButtonProps {
   onClick?: () => void;
+  onMouseEnter?: () => void;
+  onFocus?: () => void;
   className?: string;
   to?: string;
   ariaLabel: string;
