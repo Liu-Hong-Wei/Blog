@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
-import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 
-import { LightboxProvider } from '../components/Lightbox';
+import { LightboxProvider, useLightbox } from '../components/Lightbox';
 import useIdeas from '../hooks/useIdeas';
 import MainContentLayout from '../layouts/MainContentLayout';
 import type { Idea } from '../types/types';
-import markdownToHtml from '../utils/markdownToHtml';
 
 function formatIdeaDate(dateString: string): string {
   const date = new Date(dateString);
@@ -44,29 +42,76 @@ function formatIdeaDate(dateString: string): string {
   );
 }
 
-function IdeaCard({ idea }: { idea: Idea }) {
-  const [content, setContent] = useState<ReactElement | null>(null);
+function IdeaImageGrid({ images }: { images: string[] }) {
+  const { registerImage, openLightbox } = useLightbox();
 
   useEffect(() => {
-    let cancelled = false;
+    images.forEach(img => registerImage(img));
+  }, [images, registerImage]);
 
-    markdownToHtml(idea.content)
-      .then(result => {
-        if (!cancelled && result.success && result.content) {
-          setContent(result.content);
-        }
-      })
-      .catch(error => {
-        if (!cancelled) {
-          console.error('Markdown rendering failed:', error);
-        }
-      });
+  if (!images || images.length === 0) return null;
 
-    return () => {
-      cancelled = true;
-    };
-  }, [idea.content]);
+  const count = images.length;
 
+  if (count === 1) {
+    return (
+      <div
+        className="mt-3 inline-block max-w-[80%] cursor-zoom-in overflow-hidden rounded-lg"
+        onClick={() => openLightbox(images[0])}
+        onKeyDown={e => {
+          if (e.key === 'Enter') openLightbox(images[0]);
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        <img
+          src={images[0]}
+          alt="附图 1"
+          className="h-auto max-h-80 w-auto object-contain transition-transform hover:scale-[1.02]"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
+  let gridClass = 'grid gap-1.5 mt-3';
+  let imageItems = images;
+
+  if (count === 2 || count === 4) {
+    gridClass += ' grid-cols-2 max-w-[60%]';
+  } else {
+    gridClass += ' grid-cols-3 max-w-[90%]';
+    if (count > 9) {
+      imageItems = images.slice(0, 9);
+    }
+  }
+
+  return (
+    <div className={gridClass}>
+      {imageItems.map((img, index) => (
+        <div
+          key={index}
+          className="relative aspect-square cursor-zoom-in overflow-hidden rounded-md"
+          onClick={() => openLightbox(img)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') openLightbox(img);
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          <img
+            src={img}
+            alt={`附图 ${index + 1}`}
+            className="h-full w-full object-cover transition-transform hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IdeaCard({ idea }: { idea: Idea }) {
   return (
     <article className="group relative">
       {/* 时间线节点 */}
@@ -82,14 +127,11 @@ function IdeaCard({ idea }: { idea: Idea }) {
 
       {/* 内容卡片 */}
       <div className="mt-2 overflow-hidden rounded-xl border border-bgsecondary/30 bg-bgprimary p-5 transition-all duration-300 hover:border-bgsecondary/60 hover:shadow-sm">
-        {content ? (
-          <div className="max-w-none text-sm leading-relaxed text-primary/85">{content}</div>
-        ) : (
-          <div className="space-y-2">
-            <div className="h-4 w-3/4 animate-pulse rounded bg-bgsecondary/50" />
-            <div className="h-4 w-1/2 animate-pulse rounded bg-bgsecondary/50" />
-          </div>
-        )}
+        <div className="max-w-none text-sm leading-relaxed break-words whitespace-pre-wrap text-primary/85">
+          {idea.content}
+        </div>
+
+        {idea.images && idea.images.length > 0 && <IdeaImageGrid images={idea.images} />}
       </div>
     </article>
   );

@@ -23,6 +23,7 @@ export interface Tag {
 export interface Idea {
   id: number;
   content: string;
+  images: string[];
   created_at: string;
   updated_at: string;
   is_published: boolean;

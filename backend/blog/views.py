@@ -35,7 +35,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'slug'
 
 class IdeaViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Idea.objects.filter(is_published=True)
+    queryset = Idea.objects.filter(is_published=True).prefetch_related('images')
     serializer_class = IdeaSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at']

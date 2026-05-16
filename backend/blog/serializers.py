@@ -16,9 +16,11 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at', 'views']
 
 class IdeaSerializer(serializers.ModelSerializer):
+    images = serializers.SlugRelatedField(many=True, read_only=True, slug_field='url')
+
     class Meta:
         model = Idea
-        fields = ['id', 'content', 'created_at', 'updated_at', 'is_published']
+        fields = ['id', 'content', 'images', 'created_at', 'updated_at', 'is_published']
 
 
 class AboutSerializer(serializers.ModelSerializer):

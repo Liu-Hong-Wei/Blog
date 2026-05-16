@@ -39,7 +39,7 @@ class Tag(models.Model):
         super().save(*args, **kwargs)
 
 class Idea(models.Model):
-    content = models.TextField(help_text="支持 Markdown，可嵌入图片链接")
+    content = models.TextField(help_text="仅支持纯文本，不支持 Markdown")
     created_at = models.DateTimeField(default=timezone.now, help_text="可手动修改")
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
@@ -53,6 +53,16 @@ class Idea(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Idea'
         verbose_name_plural = 'Ideas'
+
+class IdeaImage(models.Model):
+    idea = models.ForeignKey(Idea, related_name='images', on_delete=models.CASCADE)
+    url = models.URLField(max_length=1000)
+
+    def __str__(self):
+        return self.url
+
+    class Meta:
+        ordering = ['id']
 
 
 class About(models.Model):
