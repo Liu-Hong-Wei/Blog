@@ -3,8 +3,8 @@ import type { ComponentProps } from 'react';
 
 import { useLightbox } from './Lightbox';
 
-const mergeClassName = (base: string, className?: string) =>
-  className ? `${base} ${className}` : base;
+const mergeClassName = (...classes: Array<string | undefined | false | null>) =>
+  classes.filter(Boolean).join(' ');
 
 // 图片组件，支持灯箱功能
 const MarkdownImage = ({

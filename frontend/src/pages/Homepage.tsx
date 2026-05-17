@@ -1,41 +1,89 @@
-import { motion } from 'motion/react';
 import { Suspense, lazy } from 'react';
 import { NavLink } from 'react-router';
 
+import HeroSection from '../components/HeroSection';
 import { ComponentLoadingSpinner } from '../components/Spinners';
-import MainContentLayout from '../layouts/MainContentLayout';
 
+const SiteStats = lazy(() => import('../components/SiteStats'));
 const LatestPosts = lazy(() => import('../components/LatestPosts'));
+const LatestIdeas = lazy(() => import('../components/LatestIdeas'));
+
+function SectionHeading({
+  eyebrow,
+  title,
+  to,
+  cta,
+}: {
+  eyebrow: string;
+  title: string;
+  to?: string;
+  cta?: string;
+}) {
+  return (
+    <div className="mb-10 flex items-end justify-between gap-4">
+      <div>
+        <div className="mb-3 flex items-center gap-3 text-xs tracking-[0.2em] text-primary/50 uppercase">
+          <span className="h-px w-8 bg-primary/30" />
+          <span>{eyebrow}</span>
+        </div>
+        <h2 className="font-serif text-3xl leading-tight font-bold tracking-tight text-primary md:text-4xl">
+          {title}
+        </h2>
+      </div>
+      {to && cta && (
+        <NavLink
+          to={to}
+          className="group hidden shrink-0 items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-secondary/80 md:inline-flex"
+        >
+          {cta}
+          <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">
+            →
+          </span>
+        </NavLink>
+      )}
+    </div>
+  );
+}
 
 function Homepage() {
   return (
-    <div className="space-y-12">
-      {/* Latest Posts Section */}
-      <section className="pb-8">
-        <MainContentLayout widthSize="narrow">
-          <div className="mb-8 flex items-center justify-between">
-            <motion.h2
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-2xl font-bold text-primary md:text-3xl"
-            >
-              Latest Posts
-            </motion.h2>
-            <NavLink
-              to="/posts"
-              className="group flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-secondary/80"
-            >
-              View all
-              <span className="transition-transform duration-200 group-hover:translate-x-0.5">
-                →
-              </span>
-            </NavLink>
+    <div>
+      <HeroSection />
+
+      <Suspense fallback={<ComponentLoadingSpinner loading="Loading..." />}>
+        <SiteStats />
+      </Suspense>
+
+      {/* 主体区：左侧 Latest Posts (主)，右侧 Latest Ideas (辅) */}
+      <section className="px-4 py-16 md:py-24">
+        <div className="mx-auto grid max-w-6xl gap-x-16 gap-y-16 md:grid-cols-[2fr_1fr]">
+          {/* Latest Posts */}
+          <div>
+            <SectionHeading eyebrow="recent writing" title="最新文章" to="/posts" cta="所有文章" />
+            <Suspense fallback={<ComponentLoadingSpinner loading="Loading posts..." />}>
+              <LatestPosts limit={5} />
+            </Suspense>
+            <div className="mt-8 md:hidden">
+              <NavLink
+                to="/posts"
+                className="group inline-flex items-center gap-1 text-sm font-medium text-secondary"
+              >
+                所有文章
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </NavLink>
+            </div>
           </div>
-          <Suspense fallback={<ComponentLoadingSpinner loading="Loading posts..." />}>
-            <LatestPosts limit={5} />
-          </Suspense>
-        </MainContentLayout>
+
+          {/* Latest Ideas */}
+          <aside>
+            <SectionHeading eyebrow="recent thoughts" title="最近想法" />
+            <Suspense fallback={<ComponentLoadingSpinner loading="Loading..." />}>
+              <LatestIdeas />
+            </Suspense>
+          </aside>
+        </div>
       </section>
     </div>
   );

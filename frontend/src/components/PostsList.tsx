@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { NavLink } from 'react-router';
 
 import usePosts from '../hooks/usePosts';
@@ -5,21 +6,23 @@ import type { Post } from '../types/types';
 import { extractExcerpt } from '../utils/excerpt';
 import { estimateReadingTime } from '../utils/readingTime';
 
-function PostCard({ post }: { post: Post }) {
-  const excerpt = post.tldr || extractExcerpt(post.content, 140);
+function PostRow({ post, index }: { post: Post; index: number }) {
+  const excerpt = post.tldr || extractExcerpt(post.content, 160);
   const readingTime = estimateReadingTime(post.content);
 
   return (
-    <article className="group w-full rounded-xl border border-bgsecondary/30 bg-bgprimary p-5 transition-all duration-300 hover:border-bgsecondary/60 hover:bg-bgsecondary/10 hover:shadow-sm">
+    <motion.article
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-5%' }}
+      transition={{ duration: 0.45, ease: 'easeOut', delay: Math.min(index * 0.04, 0.25) }}
+      className="group border-b border-bgsecondary/40 py-8 last:border-b-0 md:py-10"
+    >
       <NavLink
         to={`/posts/${post.slug}`}
-        className="block rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bgprimary"
+        className="block rounded-md outline-none focus-visible:ring-2 focus-visible:ring-secondary/60"
       >
-        <h2 className="mb-1.5 text-lg font-bold text-primary transition-colors duration-300 group-hover:text-secondary">
-          {post.title}
-        </h2>
-
-        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-primary/60">
+        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-primary/50">
           <time dateTime={post.created_at}>
             {new Date(post.created_at).toLocaleDateString('zh-CN', {
               year: 'numeric',
@@ -27,39 +30,47 @@ function PostCard({ post }: { post: Post }) {
               day: 'numeric',
             })}
           </time>
-          <span>·</span>
+          <span className="text-primary/25">·</span>
           <span>{readingTime}</span>
           {post.views > 0 && (
             <>
-              <span>·</span>
+              <span className="text-primary/25">·</span>
               <span>{post.views} views</span>
             </>
           )}
         </div>
 
+        <h2 className="font-serif text-2xl leading-snug font-bold text-primary transition-colors duration-300 group-hover:text-secondary md:text-3xl">
+          {post.title}
+          <span
+            aria-hidden
+            className="ml-2 inline-block opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+          >
+            →
+          </span>
+        </h2>
+
         {excerpt && (
-          <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-primary/70">{excerpt}</p>
+          <p className="mt-3 line-clamp-2 text-base leading-relaxed text-primary/70">{excerpt}</p>
         )}
 
         {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {post.tags.slice(0, 3).map(tag => (
+          <div className="mt-4 flex flex-wrap gap-2 text-xs">
+            {post.tags.slice(0, 4).map(tag => (
               <span
                 key={tag.id}
-                className="rounded-full bg-bgsecondary/60 px-2.5 py-0.5 text-xs font-medium text-secondary transition-colors duration-200 hover:bg-bgsecondary"
+                className="text-secondary/80 transition-colors duration-200 group-hover:text-secondary"
               >
-                {tag.name}
+                #{tag.name}
               </span>
             ))}
-            {post.tags.length > 3 && (
-              <span className="rounded-full bg-bgsecondary/40 px-2.5 py-0.5 text-xs text-primary/50">
-                +{post.tags.length - 3}
-              </span>
+            {post.tags.length > 4 && (
+              <span className="text-primary/40">+{post.tags.length - 4}</span>
             )}
           </div>
         )}
       </NavLink>
-    </article>
+    </motion.article>
   );
 }
 
@@ -77,9 +88,9 @@ function PostsList() {
   }
 
   return (
-    <div className="w-full space-y-4">
-      {posts.map(post => (
-        <PostCard key={post.id} post={post} />
+    <div className="w-full border-t border-bgsecondary/40">
+      {posts.map((post, idx) => (
+        <PostRow key={post.id} post={post} index={idx} />
       ))}
     </div>
   );
