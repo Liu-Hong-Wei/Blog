@@ -56,7 +56,7 @@ function IdeaImageGrid({ images }: { images: string[] }) {
   if (count === 1) {
     return (
       <div
-        className="mt-3 inline-block max-w-[80%] cursor-zoom-in overflow-hidden rounded-lg"
+        className="mt-3 inline-block max-w-[80%] cursor-zoom-in overflow-hidden rounded-lg bg-bgsecondary/20"
         onClick={() => openLightbox(images[0])}
         onKeyDown={e => {
           if (e.key === 'Enter') openLightbox(images[0]);
@@ -67,7 +67,7 @@ function IdeaImageGrid({ images }: { images: string[] }) {
         <img
           src={images[0]}
           alt="附图 1"
-          className="h-auto max-h-80 w-auto object-contain transition-transform hover:scale-[1.02]"
+          className="h-auto max-h-80 min-h-[200px] w-auto min-w-[200px] object-contain transition-transform hover:scale-[1.02]"
           loading="lazy"
         />
       </div>
@@ -78,9 +78,9 @@ function IdeaImageGrid({ images }: { images: string[] }) {
   let imageItems = images;
 
   if (count === 2 || count === 4) {
-    gridClass += ' grid-cols-2 max-w-[60%]';
+    gridClass += ' grid-cols-2 max-w-[70%] sm:max-w-[60%]';
   } else {
-    gridClass += ' grid-cols-3 max-w-[90%]';
+    gridClass += ' grid-cols-3 max-w-[100%] sm:max-w-[90%]';
     if (count > 9) {
       imageItems = images.slice(0, 9);
     }
@@ -91,7 +91,7 @@ function IdeaImageGrid({ images }: { images: string[] }) {
       {imageItems.map((img, index) => (
         <div
           key={index}
-          className="relative aspect-square cursor-zoom-in overflow-hidden rounded-md"
+          className="relative aspect-square cursor-zoom-in overflow-hidden rounded-md bg-bgsecondary/20"
           onClick={() => openLightbox(img)}
           onKeyDown={e => {
             if (e.key === 'Enter') openLightbox(img);
@@ -102,7 +102,7 @@ function IdeaImageGrid({ images }: { images: string[] }) {
           <img
             src={img}
             alt={`附图 ${index + 1}`}
-            className="h-full w-full object-cover transition-transform hover:scale-105"
+            className="absolute inset-0 h-full w-full object-cover transition-transform hover:scale-105"
             loading="lazy"
           />
         </div>

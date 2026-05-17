@@ -21,6 +21,7 @@ const MarkdownImage = ({
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   // 注册图片到灯箱（仅在图片首次加载或尺寸变化时注册）
   useEffect(() => {
@@ -45,6 +46,7 @@ const MarkdownImage = ({
 
   // 图片加载完成后获取实际尺寸
   const handleImageLoad = () => {
+    setIsLoading(false);
     if (imgRef.current && !width && !height) {
       setImageDimensions({
         width: imgRef.current.naturalWidth,
@@ -70,23 +72,34 @@ const MarkdownImage = ({
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      className="my-6 cursor-pointer util-transition-colors outline-none"
-      aria-label={`View full size: ${alt || 'image'}`}
+      className="my-8 flex w-full cursor-zoom-in justify-center outline-none"
+      aria-label={`查看大图: ${alt || 'image'}`}
     >
-      <img
-        {...props}
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={loading}
-        onLoad={handleImageLoad}
+      <div
         className={mergeClassName(
-          'mx-auto max-h-[480px] w-fit rounded-sm object-contain util-transition-colors hover:opacity-90 hover:shadow-md dark:brightness-80',
-          className
+          'relative flex items-center justify-center overflow-hidden rounded-md',
+          isLoading
+            ? 'min-h-[250px] w-full max-w-[800px] animate-pulse bg-bgsecondary/20'
+            : 'bg-transparent'
         )}
-      />
+      >
+        <img
+          {...props}
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={loading}
+          onLoad={handleImageLoad}
+          onError={() => setIsLoading(false)}
+          className={mergeClassName(
+            'max-h-[600px] w-fit rounded-md object-contain util-transition-colors hover:opacity-90 hover:shadow-md dark:brightness-80',
+            isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-300',
+            className
+          )}
+        />
+      </div>
     </div>
   );
 };
