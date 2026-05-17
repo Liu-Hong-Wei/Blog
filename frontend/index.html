@@ -7,26 +7,31 @@
       content="initial-scale=1.0,maximum-scale=1,minimum-scale=1.0,user-scalable=no,width=device-width,viewport-fit=cover"
     />
     <script>
-      // Set initial theme before rendering to prevent FOUC
+      // Set initial theme before rendering to prevent FOUC.
+      // Mirrors useLocalStorage (JSON.stringify) + ToggleDarkModeButton's system resolution.
       (function () {
-        function getInitialTheme() {
-          const storedTheme = localStorage.getItem('theme');
-          if (typeof storedTheme === 'string') {
-            return storedTheme;
+        function readStored() {
+          try {
+            var raw = localStorage.getItem('theme');
+            if (raw === null) return null;
+            try {
+              return JSON.parse(raw);
+            } catch (_) {
+              return raw;
+            }
+          } catch (_) {
+            return null;
           }
-
-          const userMedia = window.matchMedia('(prefers-color-scheme: dark)');
-          if (userMedia.matches) {
-            return 'dark';
-          }
-
-          return 'light';
         }
 
-        const theme = getInitialTheme();
-        const root = document.documentElement;
+        function getInitialTheme() {
+          var stored = readStored();
+          if (stored === 'light' || stored === 'dark') return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
 
-        if (theme === 'dark') {
+        var root = document.documentElement;
+        if (getInitialTheme() === 'dark') {
           root.classList.add('dark');
         } else {
           root.classList.remove('dark');

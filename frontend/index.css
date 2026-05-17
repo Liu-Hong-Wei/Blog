@@ -8,6 +8,15 @@ html {
   overscroll-behavior: none;
 }
 
+body {
+  font-family: var(--font-serif);
+}
+
+/* Prevent the sticky header from covering anchor targets on hash navigation. */
+:where(h1, h2, h3, h4, h5, h6, [id]) {
+  scroll-margin-top: 5rem;
+}
+
 @theme {
   --font-sans:
     'Source Sans 3', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -17,7 +26,6 @@ html {
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
 
-  --default-font-family: 'Noto Serif SC', serif;
   --line-height: 1.7;
   /* for readability */
 

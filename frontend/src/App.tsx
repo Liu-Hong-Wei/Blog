@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { StrictMode, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, useLocation, Outlet } from 'react-router';
 
+import { PageLoadingSpinner } from './components/Spinners.tsx';
 import AppLayout from './layouts/AppLayout.tsx';
 import Test from './pages/Test.tsx';
 
@@ -20,7 +21,7 @@ function AnimatedOutlet() {
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<PageLoadingSpinner />}>
           <Outlet />
         </Suspense>
       </motion.div>

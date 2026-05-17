@@ -57,10 +57,9 @@ function useScrollRestoration() {
       sessionStorage.setItem(key, window.scrollY.toString());
     };
 
-    window.addEventListener('beforeunload', storePosition);
+    // Only listen on `pagehide` — `beforeunload` blocks BFCache in modern browsers.
     window.addEventListener('pagehide', storePosition);
     return () => {
-      window.removeEventListener('beforeunload', storePosition);
       window.removeEventListener('pagehide', storePosition);
       window.history.scrollRestoration = 'auto';
     };

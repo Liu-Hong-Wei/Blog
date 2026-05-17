@@ -8,6 +8,36 @@ const SiteStats = lazy(() => import('../components/SiteStats'));
 const LatestPosts = lazy(() => import('../components/LatestPosts'));
 const LatestIdeas = lazy(() => import('../components/LatestIdeas'));
 
+function SiteStatsSkeleton() {
+  return (
+    <section aria-hidden="true" className="border-b border-bgsecondary/40 px-4 py-14 md:py-20">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8 flex items-center gap-4">
+          <span className="h-px w-8 bg-primary/30" />
+          <span className="text-xs tracking-[0.2em] text-primary/50 uppercase">at a glance</span>
+        </div>
+
+        <div className="flex flex-col gap-10 md:flex-row md:gap-6">
+          <div className="flex flex-1 flex-col items-start gap-2">
+            <span className="h-9 w-16 animate-pulse rounded bg-bgsecondary/50 md:h-12 md:w-20" />
+            <span className="h-4 w-12 animate-pulse rounded bg-bgsecondary/30" />
+          </div>
+          <div aria-hidden className="hidden w-px self-stretch bg-bgsecondary/50 md:block" />
+          <div className="flex flex-1 flex-col items-start gap-2">
+            <span className="h-9 w-16 animate-pulse rounded bg-bgsecondary/50 md:h-12 md:w-20" />
+            <span className="h-4 w-12 animate-pulse rounded bg-bgsecondary/30" />
+          </div>
+          <div aria-hidden className="hidden w-px self-stretch bg-bgsecondary/50 md:block" />
+          <div className="flex flex-1 flex-col items-start gap-2">
+            <span className="h-9 w-20 animate-pulse rounded bg-bgsecondary/50 md:h-12 md:w-24" />
+            <span className="h-4 w-20 animate-pulse rounded bg-bgsecondary/30" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function SectionHeading({
   eyebrow,
   title,
@@ -36,7 +66,10 @@ function SectionHeading({
           className="group hidden shrink-0 items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-secondary/80 md:inline-flex"
         >
           {cta}
-          <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">
+          <span
+            aria-hidden
+            className="transition-transform duration-200 group-hover:translate-x-0.5"
+          >
             →
           </span>
         </NavLink>
@@ -50,7 +83,7 @@ function Homepage() {
     <div>
       <HeroSection />
 
-      <Suspense fallback={<ComponentLoadingSpinner loading="Loading..." />}>
+      <Suspense fallback={<SiteStatsSkeleton />}>
         <SiteStats />
       </Suspense>
 

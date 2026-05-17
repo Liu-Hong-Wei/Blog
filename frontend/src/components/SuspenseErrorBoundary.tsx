@@ -3,6 +3,8 @@ import React, { Component, Suspense } from 'react';
 
 import Button from './buttons/Button';
 import { PageLoadingSpinner } from './Spinners';
+import { clearPostCache } from '../hooks/usePost';
+import { clearPostsCache } from '../hooks/usePosts';
 import Error from '../pages/errors/Error';
 import NotFound from '../pages/errors/NotFound';
 import { NotFoundError, APIError } from '../utils/errors';
@@ -32,6 +34,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   handleRetry = () => {
+    clearPostsCache();
+    clearPostCache();
     this.setState({ hasError: false, error: undefined });
   };
 

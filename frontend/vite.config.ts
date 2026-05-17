@@ -20,7 +20,18 @@ export default defineConfig({
           // 路由相关依赖
           router: ['react-router'],
           // Markdown 处理相关依赖
-          markdown: ['unified', 'remark-parse', 'remark-rehype', 'rehype-react'],
+          markdown: [
+            'unified',
+            'remark-parse',
+            'remark-gfm',
+            'remark-rehype',
+            'rehype-raw',
+            'rehype-slug',
+            'rehype-autolink-headings',
+            'rehype-pretty-code',
+            'rehype-stringify',
+            'rehype-react',
+          ],
           // Tailwind CSS（如果需要的话）
           styles: [],
         },
