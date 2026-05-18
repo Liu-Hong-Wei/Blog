@@ -5,7 +5,6 @@ import { useParams } from 'react-router';
 import BackToTopButton from '../components/BackToTopButton';
 import { LightboxProvider } from '../components/Lightbox';
 import ReadingProgress from '../components/ReadingProgress';
-import { ComponentLoadingSpinner } from '../components/Spinners';
 import MainContentLayout from '../layouts/MainContentLayout';
 import Error from './errors/Error';
 import { ErrorBoundary } from '../components/SuspenseErrorBoundary';
@@ -18,7 +17,6 @@ import { estimateReadingTime } from '../utils/readingTime';
 export function PostContent({ slug }: { slug: string }) {
   const post = usePost(slug);
   const [renderedContent, setRenderedContent] = useState<ReactElement | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const headings = extractHeadings(post?.content || '');
   const readingTime = post?.content ? estimateReadingTime(post.content) : '';
 
@@ -27,7 +25,6 @@ export function PostContent({ slug }: { slug: string }) {
       setRenderedContent(null);
       return;
     }
-    setIsProcessing(true);
     markdownToHtml(post.content)
       .then(result => {
         setRenderedContent(result.success ? result.content || null : null);
@@ -35,9 +32,6 @@ export function PostContent({ slug }: { slug: string }) {
       .catch(error => {
         console.error('Markdown processing failed:', error);
         setRenderedContent(null);
-      })
-      .finally(() => {
-        setIsProcessing(false);
       });
   }, [post?.content]);
 
@@ -89,13 +83,8 @@ export function PostContent({ slug }: { slug: string }) {
 
           {/* 文章内容 */}
           <main className="max-w-full">
-            {isProcessing && <ComponentLoadingSpinner loading="Sit back and relax..." />}
-            {!isProcessing && post && !post.content && (
-              <Error emoji="🤔" content="This post is empty?!" />
-            )}
-            {!isProcessing && renderedContent && (
-              <LightboxProvider>{renderedContent}</LightboxProvider>
-            )}
+            {post && !post.content && <Error emoji="🤔" content="This post is empty?!" />}
+            {renderedContent && <LightboxProvider>{renderedContent}</LightboxProvider>}
           </main>
         </article>
 

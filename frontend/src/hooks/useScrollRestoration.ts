@@ -1,5 +1,5 @@
 import { type AnimationPlaybackControls } from 'motion';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigationType } from 'react-router';
 
 import { prefersReducedMotion } from '../utils/prefersReducedMotion';
@@ -38,6 +38,20 @@ function useScrollRestoration() {
   const restorationRafRef = useRef<number | null>(null);
   // Ref to keep any in-flight Motion animation so we can cancel or clean it up
   const scrollAnimationRef = useRef<AnimationPlaybackControls | null>(null);
+
+  // For fresh navigations (PUSH/REPLACE), synchronously jump to the top before the browser paints
+  // the new route. Without this, when you scroll down a long article and click into a short page
+  // like Ideas, AnimatePresence's popLayout exit collapses the document height while the viewport
+  // is still scrolled deep — leaving the new page's content at the top while you stare at blank
+  // space below, which reads as a white flash during the route transition.
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    if (navigationType !== 'POP' && window.scrollY > 0) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }, [location.pathname, location.search, location.hash, navigationType]);
 
   // Set scroll restoration to manual and store scroll position on unload/pagehide
   useEffect(() => {
@@ -197,8 +211,9 @@ function useScrollRestoration() {
         return;
       }
 
-      // Fallback for reduced motion or top-of-page: jump directly.
-      window.scrollTo({ top: targetTop, behavior });
+      // Fallback for reduced motion or top-of-page: jump instantly. Smooth-scrolling to 0 during
+      // a route change reveals empty space between the old scroll position and the new content.
+      window.scrollTo({ top: targetTop, behavior: 'auto' });
       isRestoringRef.current = false;
     };
 
