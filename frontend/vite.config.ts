@@ -31,9 +31,10 @@ export default defineConfig({
             'rehype-pretty-code',
             'rehype-stringify',
             'rehype-react',
+            'shiki',
           ],
-          // Tailwind CSS（如果需要的话）
-          styles: [],
+          // UI 与交互组件相关依赖
+          'ui-vendor': ['motion', 'yet-another-react-lightbox'],
         },
         // 为动态导入的模块定义命名策略
         chunkFileNames: chunkInfo => {
