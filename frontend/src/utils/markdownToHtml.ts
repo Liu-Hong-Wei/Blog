@@ -51,6 +51,25 @@ const prettyCodeOptions = {
   // },
 } as const;
 
+// Initialize the processor once to prevent recompiling and reloading Shiki on every render
+const markdownProcessor = unified()
+  .use(remarkParse) // Parse markdown to AST
+  .use(remarkGfm) // Support GitHub Flavored Markdown
+  .use(remarkRehype, { allowDangerousHtml: true }) // Transform AST to HAST with raw HTML preserved
+  .use(rehypeRaw) // Parse and merge raw HTML nodes into HAST
+  .use(rehypeSlug) // Add IDs to headings
+  .use(rehypeAutolinkHeadings, { behavior: 'append' }) // Add anchor links to headings
+  .use(rehypePrettyCode, prettyCodeOptions)
+  .use(rehypeStringify) // Serialize HAST to HTML
+  .use(rehypeReact, {
+    // Transform HTML to React elements
+    createElement,
+    Fragment,
+    jsx,
+    jsxs,
+    components: markdownComponents as any,
+  });
+
 export default async function markdownToHtml(markdown: string): Promise<MarkdownResult> {
   try {
     // 输入验证
@@ -68,35 +87,7 @@ export default async function markdownToHtml(markdown: string): Promise<Markdown
 
     // 处理 markdown 转换 remarkParse → remarkGfm → remarkRehype({ allowDangerousHtml: true })
     // → rehypeRaw → rehypeSlug → rehypeAutolinkHeadings → rehypePrettyCode → rehypeReact
-    const file = await unified()
-      .use(remarkParse) // Parse markdown to AST
-      .use(remarkGfm) // Support GitHub Flavored Markdown
-      .use(remarkRehype, { allowDangerousHtml: true }) // Transform AST to HAST with raw HTML preserved
-      .use(rehypeRaw) // Parse and merge raw HTML nodes into HAST
-      .use(rehypeSlug) // Add IDs to headings
-      .use(rehypeAutolinkHeadings, { behavior: 'append' }) // Add anchor links to headings
-      .use(rehypePrettyCode, prettyCodeOptions)
-      // .use(rehypeShiki, {           // 5. Syntax highlighting (SWITCHED TO rehype-pretty-code)
-      //   // or `theme` for a single theme
-      //   defaultLanguage: 'plaintext',
-      //   themes: {
-      //     light: 'catppuccin-latte',
-      //     dark: 'catppuccin-mocha',
-      //   },
-      //   inline: 'tailing-curly-colon',
-      //   keepBackground: false,
-      // })
-      .use(rehypeStringify) // Serialize HAST to HTML
-      // .use(rehypeSanitize)  // Sanitize HTML to prevent XSS  (DON'T NEED IT tho)
-      .use(rehypeReact, {
-        // Transform HTML to React elements
-        createElement,
-        Fragment,
-        jsx,
-        jsxs,
-        components: markdownComponents,
-      })
-      .process(markdown);
+    const file = await markdownProcessor.process(markdown);
 
     const result = file.result as ReactElement;
 
