@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 
 import { LightboxProvider, useLightbox } from '../components/Lightbox';
 import useIdeas from '../hooks/useIdeas';
+import LinkPreviewCard from '../components/LinkPreviewCard';
+import useLinkPreview from '../hooks/useLinkPreview';
+import { extractUrls } from '../utils/extractUrls';
 import MainContentLayout from '../layouts/MainContentLayout';
 import type { Idea } from '../types/types';
 
@@ -39,6 +42,23 @@ function formatIdeaDate(dateString: string): string {
       month: 'long',
       day: 'numeric',
     }) + ` ${timeStr}`
+  );
+}
+
+function LinkPreviewItem({ url }: { url: string }) {
+  const preview = useLinkPreview(url);
+  if (!preview) return null;
+  return <LinkPreviewCard {...preview} />;
+}
+
+function LinkPreviewsList({ urls }: { urls: string[] }) {
+  if (!urls || urls.length === 0) return null;
+  return (
+    <div className="mt-3 space-y-2">
+      {urls.map(url => (
+        <LinkPreviewItem key={url} url={url} />
+      ))}
+    </div>
   );
 }
 
@@ -112,6 +132,8 @@ function IdeaImageGrid({ images }: { images: string[] }) {
 }
 
 function IdeaCard({ idea }: { idea: Idea }) {
+  const urls = extractUrls(idea.content);
+
   return (
     <article className="group relative">
       {/* 时间线节点 */}
@@ -130,6 +152,8 @@ function IdeaCard({ idea }: { idea: Idea }) {
         <div className="max-w-none text-sm leading-relaxed break-words whitespace-pre-wrap text-primary/85">
           {idea.content}
         </div>
+
+        <LinkPreviewsList urls={urls} />
 
         {idea.images && idea.images.length > 0 && <IdeaImageGrid images={idea.images} />}
       </div>
