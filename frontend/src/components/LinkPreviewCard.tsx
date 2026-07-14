@@ -39,7 +39,7 @@ export default function LinkPreviewCard({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group mt-2 flex overflow-hidden rounded-xl border border-bgsecondary/30 bg-bgsecondary/15 p-3 no-underline transition-all duration-300 hover:border-bgsecondary/60 hover:bg-bgsecondary/25 hover:shadow-sm"
+      className="group flex overflow-hidden rounded-xl border border-bgsecondary/30 bg-bgsecondary/15 p-3 no-underline transition-all duration-300 hover:border-bgsecondary/60 hover:bg-bgsecondary/25 hover:shadow-sm"
     >
       {/* Thumbnail */}
       <div className="mr-3 h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-bgsecondary/40">
@@ -83,9 +83,11 @@ export default function LinkPreviewCard({
             {description}
           </p>
         )}
-        <div className="mt-1">
-          <DomainBadge siteName={siteName} />
-        </div>
+        {siteName && (
+          <div className="mt-1">
+            <DomainBadge siteName={siteName} />
+          </div>
+        )}
       </div>
     </a>
   );
