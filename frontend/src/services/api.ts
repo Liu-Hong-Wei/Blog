@@ -1,4 +1,4 @@
-import type { About, Idea, Post, Tag } from '../types/types';
+import type { About, Idea, LinkPreviewData, Post, Tag } from '../types/types';
 import { NotFoundError, APIError } from '../utils/errors';
 
 // API URL is determined by the environment (production or development)
@@ -57,4 +57,12 @@ export const IdeasAPI = {
 // 关于页面API
 export const AboutAPI = {
   get: () => fetchAPI<PaginatedResponse<About>>('about/').then(data => data.results[0]),
+};
+
+// Link Preview API
+export const LinkPreviewAPI = {
+  get: (url: string): Promise<LinkPreviewData | null> =>
+    fetchAPI<LinkPreviewData | { error: boolean }>(
+      `link-preview/?url=${encodeURIComponent(url)}`
+    ).then(data => ('error' in data ? null : data)),
 };
