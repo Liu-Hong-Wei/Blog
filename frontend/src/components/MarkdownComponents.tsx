@@ -1,11 +1,69 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 // components/MarkdownComponents.tsx
-import type { ComponentProps, ElementType } from 'react';
+import { Children, isValidElement, useMemo, type ComponentProps, type ElementType } from 'react';
+import LinkPreviewCard from './LinkPreviewCard';
+import useLinkPreview from '../hooks/useLinkPreview';
 
 import MarkdownImage from './MarkdownImage';
 
 const mergeClassName = (base: string, className?: string) =>
   className ? `${base} ${className}` : base;
+
+function BareLinkCardLoader({ url }: { url: string }) {
+  const preview = useLinkPreview(url);
+  if (!preview) return null;
+  return (
+    <div className="mt-2">
+      <LinkPreviewCard {...preview} />
+    </div>
+  );
+}
+
+function ParagraphWithLinkPreview({
+  className,
+  children,
+  ...props
+}: ComponentProps<'p'>) {
+  const bareLinkInfo = useMemo(() => {
+    const childArray = Children.toArray(children);
+    if (childArray.length !== 1) return null;
+    const child = childArray[0];
+    if (!isValidElement(child)) return null;
+    if (child.type !== 'a') return null;
+    const aProps = child.props as ComponentProps<'a'>;
+    // Bare link: the text content of the <a> equals its href
+    if (!aProps.href || aProps.children !== aProps.href) return null;
+    return { href: aProps.href, aProps };
+  }, [children]);
+
+  if (!bareLinkInfo) {
+    return (
+      <p
+        {...props}
+        className={mergeClassName('my-3 text-base leading-relaxed text-primary', className)}
+      >
+        {children}
+      </p>
+    );
+  }
+
+  return (
+    <div className="my-3">
+      <a
+        href={bareLinkInfo.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={mergeClassName(
+          'text-secondary underline decoration-secondary/50 util-transition hover:decoration-secondary dark:text-secondary',
+          (bareLinkInfo.aProps as Record<string, string>).className
+        )}
+      >
+        {bareLinkInfo.href}
+      </a>
+      <BareLinkCardLoader url={bareLinkInfo.href} />
+    </div>
+  );
+}
 
 export const markdownComponents: Partial<Record<string, ElementType>> = {
   h1: ({ className, ...props }: ComponentProps<'h1'>) => (
@@ -50,12 +108,7 @@ export const markdownComponents: Partial<Record<string, ElementType>> = {
       )}
     />
   ),
-  p: ({ className, ...props }: ComponentProps<'p'>) => (
-    <p
-      {...props}
-      className={mergeClassName('my-3 text-base leading-relaxed text-primary', className)}
-    />
-  ),
+  p: ParagraphWithLinkPreview,
   a: ({ className, ...props }: ComponentProps<'a'>) => (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a
