@@ -32,7 +32,7 @@ function ParagraphWithLinkPreview({
     if (child.type !== 'a') return null;
     const aProps = child.props as ComponentProps<'a'>;
     // Bare link: the text content of the <a> equals its href
-    if (!aProps.href || aProps.children !== aProps.href) return null;
+    if (!aProps.href || String(aProps.children) !== aProps.href) return null;
     return { href: aProps.href, aProps };
   }, [children]);
 
