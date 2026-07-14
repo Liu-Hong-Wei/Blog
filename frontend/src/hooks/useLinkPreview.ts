@@ -24,9 +24,8 @@ export default function useLinkPreview(url: string): LinkPreviewData | null {
   );
 
   useEffect(() => {
-    // Already resolved — use cached value
+    // Already resolved — use cached value (state initializer already seeded data)
     if (dataCache.has(url)) {
-      setData(dataCache.get(url)!);
       return;
     }
 
