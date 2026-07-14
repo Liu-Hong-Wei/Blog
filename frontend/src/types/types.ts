@@ -61,3 +61,11 @@ export interface NavButtonProps {
   ariaControls?: string;
   children: ReactNode;
 }
+
+export interface LinkPreviewData {
+  url: string;
+  title: string;
+  description: string;
+  image: string;
+  site_name: string;
+}
