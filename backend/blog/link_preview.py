@@ -15,8 +15,9 @@ _CACHE_MAX_SIZE = 500
 def extract_urls(text: str) -> list[str]:
     """Extract unique HTTP(S) URLs from plain text.
 
-    Used by frontend utility — included here for completeness; the
-    primary URL extraction happens client-side in extractUrls.ts.
+    Intentionally unused — kept as a server-side utility for potential
+    future use. The primary URL extraction happens client-side in
+    extractUrls.ts.
     """
     urls = re.findall(r'https?://[^\s]+', text)
     seen: set[str] = set()
